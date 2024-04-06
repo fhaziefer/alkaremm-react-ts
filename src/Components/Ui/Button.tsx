@@ -2,24 +2,29 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../Utils/cn';
 
 type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
-    variant?: 'primary' | 'secondary' ;
+    variant?: 'neutral' | 'primary' | 'secondary' | 'accent' | 'ghost' | 'link' ;
+    disabled?: boolean
 }
 
-export default function Button({className, variant, ...props}: ButtonProps) {
-    return <button {...props} className={cn(buttonVariants({variant}), className)} />;
+export default function Button({className, disabled, variant, ...props}: ButtonProps) {
+    return <button disabled={disabled} {...props} className={cn(buttonVariants({variant}), className)} />;
 }
 
 const buttonVariants = cva(
-    'py-2 px-4 rounded-md font-semibold hover:opacity-50',
+    'btn',
     {
         variants: {
             variant: {
-                primary: 'bg-blue-700 text-black',
-                secondary: 'bg-white text-black',
+                neutral: 'btn btn-neutral',
+                primary: 'btn btn-primary text-white hover:text-gray-100',
+                secondary: 'btn btn-secondary text-white hover:text-gray-100',
+                accent: 'btn btn-accent hover:text-gray-800',
+                ghost: 'btn btn-ghost hover:text-white',
+                link: 'btn btn-link',
             }
         },
         defaultVariants: {
-            variant: 'primary'
+            variant: 'neutral'
         }
     }
 )
