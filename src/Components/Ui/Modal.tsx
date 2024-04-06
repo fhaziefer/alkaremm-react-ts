@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import cn from "classnames"
 import { useOnClickOutside } from "usehooks-ts";
 
