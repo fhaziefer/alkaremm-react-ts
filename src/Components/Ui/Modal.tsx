@@ -2,14 +2,14 @@ import React, { useRef } from 'react';
 import cn from "classnames"
 import { useOnClickOutside } from "usehooks-ts";
 
-type CheckBoxProps = React.HTMLAttributes<HTMLInputElement> & {
+type ModalProps = {
     label?: string;
     body?: string;
     open: boolean;
     onClose(): void;
 }
 
-export default function Modal({ open, onClose, label, body }: CheckBoxProps) {
+export default function Modal({ open, onClose, label, body }: ModalProps) {
     const ref = useRef(null);
     useOnClickOutside(ref, () => {
         onClose();
