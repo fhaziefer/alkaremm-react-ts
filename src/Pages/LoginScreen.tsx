@@ -23,14 +23,12 @@ const LoginScreen = (props: Props) => {
 
     setAuthenticated(true)
     setAdmin(true)
-    console.log(admin)
     navigate('/admin/dashboard')
   }
 
   const handleUser = () => {
     setAuthenticated(true)
     setAdmin(false)
-    console.log(authenticated)
     navigate('/')
   }
 
