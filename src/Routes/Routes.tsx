@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
-import { AuthContext } from '../Context/AuthContext'
-import { Routes as Router, Route, Navigate, Outlet } from 'react-router-dom'
+import { Routes as Router, Route } from 'react-router-dom'
+
+import UserRoute from './UserRoute'
+import AdminRoute from './AdminRoute'
 
 import RegisterScreen from '../Pages/RegisterScreen'
 import LoginScreen from '../Pages/LoginScreen'
@@ -10,27 +11,14 @@ import AdminDashboardScreen from '../Pages/(admin)/AdminDashboardScreen'
 
 type Props = {}
 
-const UserRoute = () => {
-  const { authenticated } = useContext(AuthContext)
-
-  if (!authenticated) return <Navigate to='login' replace />
-  return <Outlet />
-}
-
-const AdminRoute = () => {
-  const { authenticated, admin } = useContext(AuthContext)
-
-  if (!authenticated && !admin) return <Navigate to='login' replace />
-  return <Outlet />
-}
-
 const Routes = (props: Props) => {
   return (
     <Router>
-      <Route path='/login' element={<LoginScreen />} />
+      <Route path='/register' element={<RegisterScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route element={<UserRoute />}>
         <Route path='/' element={<HomeScreen />} />
+        <Route path='/profile' element={<ProfileScreen />} />
       </Route>
       <Route element={<AdminRoute />}>
         <Route path='/admin/dashboard' element={<AdminDashboardScreen />} />
