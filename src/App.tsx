@@ -1,13 +1,13 @@
-import React from "react";
-import Header from "./Components/Header";
+import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './Context/AuthContext';
+import Routes from './Routes/Routes';
 
-function App() {
+const App: React.FC = () => {
 
   return (
-    <div className="prose">
-      <Header/>
-      <h1>Alkareem</h1>
-    </div>
+    <BrowserRouter>
+      <AuthProvider><Routes /></AuthProvider>
+    </BrowserRouter>
   )
 }
 
