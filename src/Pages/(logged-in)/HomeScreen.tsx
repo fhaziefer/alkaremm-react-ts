@@ -35,24 +35,24 @@ const HomeScreen = (props: Props) => {
   }, []);
 
   return (
-    <div className='flex flex-col gap-2 justify-between items-center text-center'>
-      {isLoading ? (
-        <p>Loading users...</p>
-      ) : (
-        <div className='prose'>
-          {users?.data.map((user) => (
-            <div className='flex flex-col justify-between items-center border-b-2' key={user.id}>
-              <img className='w-20 h-20' src={`${process.env.REACT_APP_BASE_URL}${user.profil.avatar}`}/>
-              <strong>{user.username}</strong>
-              <p>{user.profil.name}</p>
-              <i>{user.profil.address?.city} </i>
-              <b>{user.profil.address?.province}</b>
-            </div>
-          ))}
-        </div>
-      )}
-      <Button onClick={handleClick} variant='primary'>Login</Button>
-    </div>
+      <div className='flex flex-col gap-2 justify-between items-center text-center'>
+        {isLoading ? (
+          <p>Loading users...</p>
+        ) : (
+          <div className='prose'>
+            {users?.data.map((user) => (
+              <div className='flex flex-col justify-between items-center border-b-2' key={user.id}>
+                <img className='w-20 h-20 rounded-full' src={`${process.env.REACT_APP_BASE_URL}${user.profil.avatar}`} />
+                <strong>{user.username}</strong>
+                <p>{user.profil.name}</p>
+                <i>{user.profil.address?.city} </i>
+                <b>{user.profil.address?.province}</b>
+              </div>
+            ))}
+          </div>
+        )}
+        <Button onClick={handleClick} variant='primary'>Login</Button>
+      </div>
   );
 };
 
