@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../Components/Ui/Button';
 import axios from 'axios';
 import { TypeUsers } from '../../Types/Alkareem/GetAllUserRes';
+import Input from '../../Components/Ui/Input';
 
 type Props = {};
 
