@@ -51,7 +51,7 @@ const HomeScreen = (props: Props) => {
             ))}
           </div>
         )}
-        <Button onClick={handleClick} variant='primary'>Login</Button>
+        <Button variant='outline' onClick={handleClick}>Login</Button>
       </div>
   );
 };
