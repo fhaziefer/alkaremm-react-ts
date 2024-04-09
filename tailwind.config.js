@@ -4,7 +4,18 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      scrollbar: {
+        width: 'thin',
+        track: 'bg-gray-100',
+        thumb: {
+          default: 'bg-gray-300',
+          '&:hover': {
+            backgroundColor: 'gray-400',
+          },
+        },
+      },
+    },
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
