@@ -7,10 +7,11 @@ type InputProps = React.HTMLAttributes<HTMLInputElement> & {
     disabled?: boolean
     placeholder?: string
     type?: string
+    value?: string
 }
 
-export default function Input({className, disabled, variant, placeholder, type, ...props}: InputProps) {
-    return <input disabled={disabled} placeholder={placeholder} type={type} {...props} className={cn(inputVariants({variant}), className)} />;
+export default function Input({className, disabled, variant, placeholder, type, value, ...props}: InputProps) {
+    return <input value={value} disabled={disabled} placeholder={placeholder} type={type} {...props} className={cn(inputVariants({variant}), className)} />;
 }
 
 const inputVariants = cva(
