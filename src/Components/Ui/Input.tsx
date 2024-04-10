@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../Utils/cn';
 
 type InputProps = React.HTMLAttributes<HTMLInputElement> & {
-    variant?: 'primary' | 'secondary' | 'error';
+    variant?: 'primary' | 'secondary' | 'error' | 'join'; 
     disabled?: boolean
     placeholder?: string
     type?: string
@@ -15,13 +15,14 @@ export default function Input({className, disabled, variant, placeholder, type, 
 }
 
 const inputVariants = cva(
-    'input',
+    '',
     {
         variants: {
             variant: {
                 primary: 'input input-bordered w-full max-w-xs',
                 secondary: 'input w-full max-w-xs',
-                error: 'input input-bordered input-error w-full max-w-xs'
+                error: 'input input-bordered input-error w-full max-w-xs',
+                join: 'input input-bordered join-item'
             }
         },
         defaultVariants: {
