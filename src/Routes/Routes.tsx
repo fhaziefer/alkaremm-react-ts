@@ -8,7 +8,7 @@ import LoginScreen from '../Pages/LoginScreen'
 import HomeScreen from '../Pages/(logged-in)/HomeScreen'
 import ProfileScreen from '../Pages/(logged-in)/ProfileScreen'
 import AdminDashboardScreen from '../Pages/(admin)/AdminDashboardScreen'
-import Table from '../Pages/(logged-in)/Table'
+
 
 type Props = {}
 
@@ -20,7 +20,6 @@ const Routes = (props: Props) => {
       <Route element={<UserRoute />}>
         <Route path='/' element={<HomeScreen />} />
         <Route path='/profile' element={<ProfileScreen />} />
-        <Route path='/profile/users' element={<Table />} />
       </Route>
       <Route element={<AdminRoute />}>
         <Route path='/admin/dashboard' element={<AdminDashboardScreen />} />
