@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from './Ui/Button'
 import { UserListProps } from '../Types/Components/UserTable'
-import { Datum, TypeUsers } from '../Types/Alkareem/GetAllUserRes'
 
 const UserTable: React.FC<UserListProps> = ({ ...props }) => {
     return (
