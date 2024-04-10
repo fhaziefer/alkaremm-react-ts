@@ -1,7 +1,4 @@
-import { useState } from 'react';
-import CheckBox from './Ui/CheckBox';
 import Input from './Ui/Input'
-import Button from './Ui/Button';
 
 const LoginForm = ({ username, setUsername, password, setPassword }: any) => {
 
