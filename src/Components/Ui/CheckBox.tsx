@@ -2,12 +2,13 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../Utils/cn';
 
 type CheckBoxProps = React.HTMLAttributes<HTMLInputElement> & {
-    variant?: 'primary' | 'secondary';
+    variant?: 'primary' | 'secondary' | 'neutral';
     disabled?: boolean
+    checked?: boolean
 }
 
-export default function CheckBox({className, disabled, variant, ...props}: CheckBoxProps) {
-    return <input disabled={disabled} type='checkbox' {...props} className={cn(checkBoxVariants({variant}), className)} />;
+export default function CheckBox({className, checked, disabled, variant, ...props}: CheckBoxProps) {
+    return <input checked={checked} disabled={disabled} type='checkbox' {...props} className={cn(checkBoxVariants({variant}), className)} />;
 }
 
 const checkBoxVariants = cva(
@@ -15,8 +16,9 @@ const checkBoxVariants = cva(
     {
         variants: {
             variant: {
-                primary: 'checkbox checkbox-primary rounded-full',
-                secondary: 'checkbox rounded-full',
+                neutral: 'checkbox-neutral',
+                primary: 'checkbox-primary',
+                secondary: 'checkbox-secondary',
             }
         },
         defaultVariants: {
