@@ -9,7 +9,7 @@ type Props = {}
 const LoginScreen = (props: Props) => {
 
   const { authenticated, setAuthenticated } = useContext(AuthContext)
-  const { admin, setAdmin } = useContext(AuthContext)
+  const { isAdmin, setIsAdmin } = useContext(AuthContext)
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
 
@@ -17,7 +17,7 @@ const LoginScreen = (props: Props) => {
 
   const handleLogout = () => {
     setAuthenticated(false)
-    setAdmin(false)
+    setIsAdmin(false)
   }
 
   const handleAdmin = () => {
@@ -25,13 +25,13 @@ const LoginScreen = (props: Props) => {
     //! SETUP POST METHOD AXIOS LOGIN AND SET ROLE
 
     setAuthenticated(true)
-    setAdmin(true)
+    setIsAdmin(true)
     navigate('/admin/dashboard')
   }
 
   const handleUser = () => {
     setAuthenticated(true)
-    setAdmin(false)
+    setIsAdmin(false)
     navigate('/')
   }
 

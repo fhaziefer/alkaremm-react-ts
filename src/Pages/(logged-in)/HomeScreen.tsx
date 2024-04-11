@@ -5,13 +5,14 @@ import { TypeUsers } from '../../Types/Alkareem/GetAllUserRes';
 import UserTable from '../../Components/UserTable';
 import { env } from '../../Utils/env';
 import Header from '../../Components/Header';
+import Footer from '../../Components/Footer';
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
   const [users, setUsers] = useState<TypeUsers | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(true)
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -67,6 +68,7 @@ const HomeScreen = (props: Props) => {
                 avatar={`${process.env.REACT_APP_BASE_URL}${user.profil.avatar}`}
                 username={user.username}/>
               ))}
+              <Footer/>
             </div>
           )}
         </div>
