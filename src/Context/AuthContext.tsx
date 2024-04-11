@@ -7,16 +7,16 @@ type Props = {
 
 type IAuthContext = {
   authenticated: boolean
-  admin?: boolean
+  isAdmin?: boolean
   setAuthenticated: (newState: boolean) => void
-  setAdmin: (newState: boolean) => void
+  setIsAdmin: (newState: boolean) => void
 }
 
 const initialValue = {
   authenticated: false,
-  admin: false,
+  isAdmin: false,
   setAuthenticated: () => {},
-  setAdmin: () => {}
+  setIsAdmin: () => {}
 }
 
 const AuthContext = createContext<IAuthContext>(initialValue)
@@ -24,12 +24,12 @@ const AuthContext = createContext<IAuthContext>(initialValue)
 const AuthProvider = ({children}: Props) => {
 
   const [authenticated, setAuthenticated] = useState(initialValue.authenticated)
-  const [admin, setAdmin] = useState(initialValue.admin)
+  const [isAdmin, setIsAdmin] = useState(initialValue.isAdmin)
 
   const navigate = useNavigate()
 
   return (
-    <AuthContext.Provider value={{authenticated, setAuthenticated, admin, setAdmin}}>
+    <AuthContext.Provider value={{authenticated, setAuthenticated, isAdmin, setIsAdmin}}>
       {children}
     </AuthContext.Provider>
   )
