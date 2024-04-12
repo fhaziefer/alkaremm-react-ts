@@ -19,7 +19,7 @@ const Routes = (props: Props) => {
       <Route path='/login' element={<LoginScreen />} />
       <Route element={<UserRoute />}>
         <Route path='/' element={<HomeScreen />} />
-        <Route path='/profile' element={<ProfileScreen />} />
+        <Route path='/profile/:id' element={<ProfileScreen />} />
       </Route>
       <Route element={<AdminRoute />}>
         <Route path='/admin/dashboard' element={<AdminDashboardScreen />} />

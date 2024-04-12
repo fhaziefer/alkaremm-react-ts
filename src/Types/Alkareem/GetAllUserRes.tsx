@@ -1,4 +1,4 @@
-export interface TypeUsers {
+export interface ISearchUsers {
   data: Datum[];
   paging: Paging;
 }

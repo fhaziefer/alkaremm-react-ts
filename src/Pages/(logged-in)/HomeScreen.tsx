@@ -1,85 +1,133 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { TypeUsers } from '../../Types/Alkareem/GetAllUserRes';
+import { ISearchUsers } from '../../Types/Alkareem/GetAllUserRes';
 import UserTable from '../../Components/UserTable';
-import { env } from '../../Utils/env';
-import Header from '../../Components/Header';
 import Footer from '../../Components/Footer';
+import Loading from '../../Components/Loading';
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiSearchUser } from '../../Services/Api/AlkareemApi/alkareemApi';
+import Input from '../../Components/Ui/Input';
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
-  const [users, setUsers] = useState<TypeUsers | null>(null);
+  const [users, setUsers] = useState<ISearchUsers | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(true)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [query, setQuery] = useState('')
+  const [page, setPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(1)
+
+  const { getItem } = useLocalStorage()
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate('/login', { replace: true });
-  };
-  const handleClick2 = () => {
-    navigate('/profile/users', { replace: true });
+  const handleQuery = (event: any) => {
+    const inputQuery = event.value.toLowerCase()
+    setQuery(inputQuery);
   };
 
+  const next = () => {
+    setIsLoading(true)
+    if (page === totalPage) return;
+    setPage(page + 1);
+  };
+
+  const prev = () => {
+    setIsLoading(true)
+    if (page === 1) return;
+    setPage(page - 1);
+  };
+
+  const handleProfile = (event: any) => {
+    const value = event.currentTarget.getAttribute('id')
+    // alert(`Profile ${value}`)
+    navigate(`/profile/${value}`, { replace: false });
+  };
+
+  const handleEdit = (event: any) => {
+    const value = event.currentTarget.getAttribute('id')
+    alert(`Edit ${value}`)
+    // navigate(`/profile/${value}`, { replace: false });
+  };
+
+  const handleDelete = (event: any) => {
+    const value = event.currentTarget.getAttribute('id')
+    alert(`Delete ${value}`)
+    // navigate(`/profile/${value}`, { replace: false });
+  };
+
+  useEffect(() => {
+    const admin = getItem('role')
+    if (admin !== 'USER') {
+      setIsAdmin(true)
+    }
+  }, [])
+
   const fetchUsers = async () => {
-    try {
-      const url = `${env.REACT_APP_BASE_URL}/user/search?keyword=%&page=1`;
-      const headers = {
-        Authorization: '183e3653-8df5-4438-8cd1-c15c071722f0',
-      };
-      const response = await axios.get<TypeUsers>(url, { headers });
-      setUsers(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+    const token = getItem('token')
+    const users = await apiSearchUser({ token: token, query: query, page: page })
+    if (users.status !== 200) {
+      setIsError(true)
+      setIsLoading(false)
+    } else {
+      setUsers(users.data)
+      setTotalPage(users.data.paging.total_page)
+      setIsLoading(false)
     }
   };
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [query, page]);
 
   return (
-
     <div className="flex min-h-screen">
-      {/* Left Column (Sticky with Fixed Height) */}
-      <div
-        className="sticky left-0 top-0 bottom-0 w-64 h-screen bg-gray-800 text-white overflow-auto p-4 hidden md:block"
-        style={{ position: "fixed" }}
-      >
-        Kolom Kiri (Sticky)
-      </div>
-
-      {/* Center Column (Scrollable Content) with max-width and flexbox */}
       <div className="flex-grow overflow-x-scroll scrollbar-thin scrollbar-thumb-gray-300 px-2">
-        <div className="flex flex-col min-h-screen justify-content-center items-center"> {/* Centered Content */}
+        <div className="flex flex-col min-h-screen justify-content-center items-center">
+        <div className='flex items-center justify-center w-72'>
+                <Input placeholder='Nama, bani, alamat...' onChange={(e) =>
+                  handleQuery(
+                    (e.target as HTMLInputElement)
+                  )
+                } />
+              </div>
           {isLoading ? (
-            <p>Loading users...</p>
+            <Loading />
           ) : (
-            <div>
+            <div className='flex flex-col items-center justify-center'>
+              
               {users?.data.map((user) => (
-                <UserTable
-                isAdmin={isAdmin}
-                key={user.id}
-                name={user.profil.name}
-                bani={user.profil.bani.bani_name}
-                avatar={`${process.env.REACT_APP_BASE_URL}${user.profil.avatar}`}
-                username={user.username}/>
+                <div key={user.id} className='flex items-center justify-center w-auto'>
+                  <UserTable
+                    id={user.id}
+                    isAdmin={isAdmin}
+                    profileButton={handleProfile}
+                    editButton={handleEdit}
+                    deleteButton={handleDelete}
+                    key={user.id}
+                    name={user.profil.name}
+                    bani={user.profil.bani.bani_name}
+                    avatar={`${process.env.REACT_APP_BASE_URL}${user.profil.avatar}`}
+                    username={user.username} />
+                </div>
               ))}
-              <Footer/>
+              <div className="join grid grid-cols-2 mx-4">
+                {page !== 1
+                  ? <button onClick={prev} className="join-item btn btn-outline">Previous page</button>
+                  : <button disabled className="join-item btn btn-outline">Previous page</button>
+                }
+                {page !== totalPage
+                  ? <button onClick={next} className="join-item btn btn-outline">Next page</button>
+                  : <button disabled className="join-item btn btn-outline">Next page</button>
+                }
+              </div>
+              <div className='w-[100%]'>
+                <Footer />
+              </div>
             </div>
           )}
         </div>
-      </div>
-
-      {/* Right Column (Sticky with Fixed Height) */}
-      <div
-        className="sticky right-0 top-0 bottom-0 w-64 h-screen bg-gray-800 text-white overflow-auto p-4 hidden md:block"
-        style={{ position: "fixed" }}
-      >
-        Kolom Kanan (Sticky)
       </div>
     </div>
   );
