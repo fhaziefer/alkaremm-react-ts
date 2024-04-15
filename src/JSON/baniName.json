@@ -1,0 +1,30 @@
+[
+    {
+        "query":"",
+        "label":"Semua"
+    },
+    {
+        "query":"hannah",
+        "label":"Bani Hannah/Abdulloh"
+    },
+    {
+        "query":"salamah",
+        "label":"Bani Salamah/Manshur"
+    },
+    {
+        "query":"aisyah",
+        "label":"Bani Aisyah/Jauhari"
+    },
+    {
+        "query":"maryam",
+        "label":"Bani Maryam/Marzuqi"
+    },
+    {
+        "query":"zainab",
+        "label":"Bani Zainab/Mahrus"
+    },
+    {
+        "query":"qomariyah",
+        "label":"Bani Qomariyah/Zaini"
+    }
+]

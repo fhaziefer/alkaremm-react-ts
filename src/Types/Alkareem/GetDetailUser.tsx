@@ -9,17 +9,22 @@ export interface Data {
 }
 
 export interface Profil {
+  id?: string;
   name?: string;
+  bio?: string;
   avatar?: string;
   gender?: string;
-  husband?: any;
-  wife?: Wife;
-  parent?: Wife;
+  husband?: Person;
+  wife?: Person;
+  alive_status?: boolean;
+  parent?: Person;
+  status?: string;
   children?: Child[];
   generasi?: Generasi;
   bani?: Bani;
   contact?: Contact;
   address?: Address;
+  birthday?: string;
 }
 
 export interface Address {
@@ -48,8 +53,11 @@ export interface Generasi {
 export interface Child {
   anak_ke: number;
   name: string;
+  alive_status?: boolean;
 }
 
-export interface Wife {
-  name: string;
+export interface Person {
+  id?: string;
+  name?: string;
+  alive_status?: boolean;
 }

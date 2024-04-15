@@ -25,7 +25,7 @@ export const useLocalStorage = () => {
         }
     }
 
-    const cleatItem = () => {
+    const clearItem = () => {
         try {
             window.localStorage.clear()
         } catch (error) {
@@ -33,5 +33,5 @@ export const useLocalStorage = () => {
         }
     }
 
-    return { setItem, getItem, removeItem, cleatItem }
+    return { setItem, getItem, removeItem, clearItem }
 }

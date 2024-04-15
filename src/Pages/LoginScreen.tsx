@@ -1,12 +1,11 @@
-import React, { useContext, useState } from 'react'
-import { AuthContext } from '../Context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import Button from '../Components/Ui/Button'
 import LoginForm from '../Components/LoginForm';
-import { apiLogin, apiLogout } from '../Services/Api/AlkareemApi/alkareemApi';
-import { useLocalStorage } from '../Hooks/useLocalStorage';
-
 import Modal from '../Components/Ui/Modal';
+import { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { apiLogin } from '../Services/Api/AlkareemApi/alkareemApi';
+import { useLocalStorage } from '../Hooks/useLocalStorage';
 
 type Props = {}
 
@@ -23,6 +22,26 @@ const LoginScreen = (props: Props) => {
 
   const navigate = useNavigate();
 
+  const { getItem } = useLocalStorage()
+  const token = getItem('token')
+  const admin = getItem('role')
+
+  useEffect(() => {
+    setIsLoading(true)
+    
+    if (token) {
+      setAuthenticated(true)
+      if (admin !== 'USER') {
+        setIsAdmin(true)
+      }
+      setIsLoading(false)
+      navigate('/')
+    } else {
+      setIsLoading(false)
+    }
+
+  }, [])
+
   const login = async () => {
     setIsLoading(true)
     const userLogin = await apiLogin({ username, password })
@@ -32,9 +51,10 @@ const LoginScreen = (props: Props) => {
       setModalOpen((prev) => !prev)
       return;
     } else {
-      setItem('id',userLogin.data.data.id)
-      setItem('token',userLogin.data.data.token)
-      setItem('role',userLogin.data.data.role)
+      setItem('id', userLogin.data.data.id)
+      setItem('token', userLogin.data.data.token)
+      setItem('role', userLogin.data.data.role)
+      setItem('username', userLogin.data.data.username)
       setItem('LOGIN_STATUS', true)
       if (userLogin.data.data.role !== 'USER') {
         setIsAdmin(true)

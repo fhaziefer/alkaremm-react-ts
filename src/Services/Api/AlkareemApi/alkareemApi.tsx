@@ -3,6 +3,7 @@ import { env } from "../../../Utils/env"
 import { ILogin, IPassword, IRegister, IReqDetailUser, IReqSearchUsers, IToken } from "../../../Types/Alkareem/PostRequest"
 import { ISearchUsers } from "../../../Types/Alkareem/GetAllUserRes"
 import {IDetailUser} from "../../../Types/Alkareem/GetDetailUser"
+import { IChildren } from "../../../Types/Alkareem/GetChildren"
 
 const baseUrl = env.REACT_APP_BASE_URL
 
@@ -72,7 +73,7 @@ export async function apiSearchUser({ ...props }: IReqSearchUsers) {
         };
         const searchUser = await axios
             .get<ISearchUsers>
-            (`${baseUrl}/user/search?keyword=%${props.query}&page=${props.page}`,
+            (`${baseUrl}/user/search/bani?keyword=%${props.query}&bani=%${props.bani}&page=${props.page}&size=75`,
                 { headers })
         return searchUser
     } catch (error: any) {
@@ -91,6 +92,22 @@ export async function apiDetailUser({ ...props }: IReqDetailUser) {
             (`${baseUrl}/user/${props.id}`,
                 { headers })
         return user
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiChildren({ ...props }: IReqDetailUser) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const children = await axios
+            .get<IChildren>
+            (`${baseUrl}/user/children/${props.id}`,
+                { headers })
+        return children
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage

@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { Navigate, Outlet } from 'react-router-dom'
 import SideBar from '../Components/SideBar'
+import Header from '../Components/Header'
 
 type Props = {}
 
@@ -14,8 +15,11 @@ const UserRoute = (props: Props) => {
     return (
         <div>
             <SideBar />
-            <div className='flex-grow overflow-x-auto p-4'>
-                <Outlet />
+            <Header/>
+            <div className='ml-0 md:ml-24 lg:ml-64'>
+                <div className='w-full'>
+                    <Outlet />
+                </div>
             </div>
         </div>
     )

@@ -21,7 +21,9 @@ export interface IPassword {
 export interface IReqSearchUsers {
     token?: string;
     query?: string;
+    bani?: string;
     page?: number;
+    size?: number;
 }
 
 export interface IReqDetailUser {

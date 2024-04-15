@@ -1,10 +1,10 @@
-import { yearNow } from "../Utils/currentDates"
+import { getYearNow } from "../Utils/birthdayConverter";
 import { FaInstagram, FaYoutube, FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
 
-    const year = yearNow()
+    const year = getYearNow()
     const instagram = 'https://instagram.com/pondoklirboyo'
     const twitter = 'https://twitter.com/pondok_lirboyo'
     const youtube = 'https://youtube.com/c/PondokPesantrenLirboyo'

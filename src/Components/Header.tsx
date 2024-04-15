@@ -1,10 +1,34 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import LogoutAlert from './LogoutAlert';
 
 const Header = () => {
+
+    const [modalOpen, setModalOpen] = useState(false)
+
+    const navigate = useNavigate();
+
+    const homeHandler = () => {
+        navigate('/', { replace: true })
+    }
+
+    const profileHandler = () => {
+        navigate('/profile', { replace: true })
+    }
+
+    const settingHandler = () => {
+        navigate('/profile/setting', { replace: true })
+    }
+
+    const logoutHandler = () => {
+        setModalOpen((prev) => !prev)
+    }
+
     return (
-        <div className="navbar bg-base-100">
+        <div className="px-4 navbar bg-base-100 md:hidden lg:hidden">
+            <LogoutAlert open={modalOpen}/>
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl rounded-full hover:text-white">Alkareem</a>
+                <a onClick={homeHandler} className="btn btn-ghost text-xl rounded-full hover:text-white">Alkareem</a>
             </div>
             <div className="flex-none gap-2">
                 <div className="dropdown dropdown-end">
@@ -14,13 +38,13 @@ const Header = () => {
                         </div>
                     </div>
                     <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                        <li>
+                        <li onClick={profileHandler}>
                             <a className="justify-between">
                                 Profile
                             </a>
                         </li>
-                        <li><a>Settings</a></li>
-                        <li><a>Logout</a></li>
+                        <li onClick={settingHandler}><a>Settings</a></li>
+                        <li onClick={logoutHandler}><a>Logout</a></li>
                     </ul>
                 </div>
             </div>
