@@ -31,7 +31,7 @@ export async function apiCity({ ...props }: IReqAddress) {
     try {
         const searchUser = await axios
             .get<IGetAddress>
-            (`${baseUrl}kabkota/get/?d_provinsi_id=${props.query}`)
+            (`${baseUrl}kabkota/get/?d_provinsi_id=${props.id}`)
         return searchUser
     } catch (error: any) {
         const errorMessage = error.response.data.message;
@@ -43,7 +43,7 @@ export async function apiDistrict({ ...props }: IReqAddress) {
     try {
         const searchUser = await axios
             .get<IGetAddress>
-            (`${baseUrl}kecamatan/get/?d_kabkota_id=${props.query}`)
+            (`${baseUrl}kecamatan/get/?d_kabkota_id=${props.id}`)
         return searchUser
     } catch (error: any) {
         const errorMessage = error.response.data.message;
@@ -55,7 +55,7 @@ export async function apiVillage({ ...props }: IReqAddress) {
     try {
         const searchUser = await axios
             .get<IGetAddress>
-            (`${baseUrl}kelurahan/get/?d_kecamatan_id=${props.query}`)
+            (`${baseUrl}kelurahan/get/?d_kecamatan_id=${props.id}`)
         return searchUser
     } catch (error: any) {
         const errorMessage = error.response.data.message;

@@ -28,12 +28,12 @@ export default function ModalDialog({ ...props }: ModalProps) {
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">{props.label}</h3>
                     <p className="py-4">{props.body}</p>
-                    {props.btn ? <div className="modal-action">
+                    {props.btn && <div className="modal-action">
                         <form className='flex flex-row gap-2' method="dialog">
-                            <Button className='w-28' variant='primary' onClick={props.onYes}>{props.btnYesLabel}</Button>
+                            <Button className='w-auto' variant='primary' onClick={props.onYes}>{props.btnYesLabel}</Button>
                             <Button className='w-28' variant='ghost' onClick={() => props.onClose()}>Tidak</Button>
                         </form>
-                    </div> : null}
+                    </div>}
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button onClick={() => props.onClose()}></button>

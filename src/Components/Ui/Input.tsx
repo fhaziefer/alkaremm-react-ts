@@ -19,9 +19,9 @@ const inputVariants = cva(
     {
         variants: {
             variant: {
-                primary: 'input input-bordered w-full max-w-xs',
-                secondary: 'input w-full max-w-xs',
-                error: 'input input-bordered input-error w-full max-w-xs',
+                primary: 'input input-bordered w-full',
+                secondary: 'input w-full',
+                error: 'input input-bordered input-error w-full',
                 join: 'input input-bordered join-item'
             }
         },

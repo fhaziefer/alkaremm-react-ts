@@ -20,6 +20,17 @@ const Header = () => {
         navigate('/profile/setting', { replace: true })
     }
 
+    const handleAdress = (
+        street: string,
+        village: string,
+        district: string,
+        city: string,
+        province: string,
+        postal: string) => {
+        console.log(street, village, district, city, province, postal)
+        setModalOpen((prev) => !prev)
+    }
+
     const logoutHandler = () => {
         setModalOpen((prev) => !prev)
     }

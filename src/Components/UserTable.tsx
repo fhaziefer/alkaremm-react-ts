@@ -4,7 +4,7 @@ import { UserListProps } from '../Types/Components/UserTable'
 
 const UserTable: React.FC<UserListProps> = ({ ...props }) => {
     return (
-        <tr className="hover:bg-gray-900 focus:bg-gray-900" key={props.id}>
+        <tr className="hover:bg-gray-900 focus:bg-gray-900 cursor-pointer" key={props.id}>
             <td id={props.id} onClick={props.profileButton}>
                 <div className="flex items-center gap-3">
                     <div className="avatar">

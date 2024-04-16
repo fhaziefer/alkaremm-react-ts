@@ -3,7 +3,7 @@ export interface IReqFull {
 }
 
 export interface IReqAddress {
-    query : string;
+    id : string;
 }
 
 export interface IReqPostal {

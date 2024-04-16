@@ -89,7 +89,7 @@ const SearchScreen = (props: Props) => {
 
   return (
     <div className="flex flex-col min-h-screen items-center pt-4">
-      <Input onChange={(e) =>
+      <Input className='w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%]' onChange={(e) =>
         handleQuery(
           (e.target as HTMLInputElement)
         )} placeholder="Nama, alamat..." />
