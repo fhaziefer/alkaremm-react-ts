@@ -18,8 +18,8 @@ const HomeScreen = (props: Props) => {
     logout()
   };
 
-  const logout = async () =>{
-    const logout = await apiLogout({token: token})
+  const logout = async () => {
+    const logout = await apiLogout({ token: token })
     if (logout.status !== 200) {
       return;
     } else {

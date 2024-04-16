@@ -1,9 +1,10 @@
 import React from 'react'
+import SettingAddress from '../../Components/SettingAddress'
 
 const UserSettingScreen = () => {
   return (
-    <div>
-      <h1>Setting</h1>
+    <div className='p-4'>
+      <SettingAddress/>
     </div>
   )
 }
