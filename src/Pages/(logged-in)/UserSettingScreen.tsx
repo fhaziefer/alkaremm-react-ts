@@ -12,6 +12,8 @@ import Loading from '../../Components/Loading'
 import SettingUsername from '../../Components/Settings/SettingUsername'
 import SettingBio from '../../Components/Settings/SettingBio'
 import SettingBrithday from '../../Components/Settings/SettingBrithday'
+import SettingContact from '../../Components/Settings/SettingContact'
+import SettingPassword from '../../Components/Settings/SettingPassword'
 
 const UserSettingScreen = () => {
 
@@ -28,6 +30,8 @@ const UserSettingScreen = () => {
   const [birthdayOpen, setBirthdayOpen] = useState(false)
   const [addressOpen, setAddressOpen] = useState(false)
   const [logoutOpen, setLogoutOpen] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
+  const [passwordOpen, setPasswordOpen] = useState(false)
 
   const addressHandler = (
     street: string,
@@ -56,6 +60,19 @@ const UserSettingScreen = () => {
     birthdayNew: string) => {
     alert(`${birthdayNew}`)
     setBirthdayOpen((prev) => !prev)
+  }
+
+  const contactHandler = (
+    phoneNew: string | undefined, instagramNew: string | undefined
+  ) => {
+    alert(`${phoneNew} & ${instagramNew}`)
+    setContactOpen((prev) => !prev)
+  }
+
+  const passwordHandler = (
+    password: string) => {
+    alert(`${password}`)
+    setPasswordOpen((prev) => !prev)
   }
 
   const clickHandler = () => {
@@ -128,13 +145,13 @@ const UserSettingScreen = () => {
           </Modal>
 
           <Modal
-          open={birthdayOpen}
-          onClose={() => setBirthdayOpen((prev) => !prev)}
+            open={birthdayOpen}
+            onClose={() => setBirthdayOpen((prev) => !prev)}
           >
             <SettingBrithday
-            birthdayNow={birthday || 'Belum ditambahkan'}
-            onClick={() => setBirthdayOpen((prev)=> !prev)}
-            onClicked={birthdayHandler}
+              birthdayNow={birthday || 'Belum ditambahkan'}
+              onClick={() => setBirthdayOpen((prev) => !prev)}
+              onClicked={birthdayHandler}
             />
           </Modal>
 
@@ -152,6 +169,29 @@ const UserSettingScreen = () => {
               streetNow={userData?.data.profil?.address?.street}
               onClick={() => setAddressOpen((prev) => !prev)}
               onClicked={addressHandler}
+            />
+          </Modal>
+
+          <Modal
+            open={contactOpen}
+            onClose={
+              () => setContactOpen((prev) => !prev)
+            }
+          >
+            <SettingContact
+              onClicked={contactHandler}
+              onClick={() => setContactOpen((prev) => !prev)} />
+          </Modal>
+
+          <Modal
+            open={passwordOpen}
+            onClose={
+              () => setPasswordOpen((prev) => !prev)
+            }
+          >
+            <SettingPassword
+              onClicked={passwordHandler}
+              onClick={() => setPasswordOpen((prev) => !prev)}
             />
           </Modal>
 
@@ -199,7 +239,7 @@ const UserSettingScreen = () => {
               item={addressValue} />
 
             <SettingItems
-              onClick={clickHandler}
+              onClick={() => setContactOpen((prev) => !prev)}
               label='Informasi Kontak'
               subLabel='Edit WhatsApp dan Instagram'
               item={(userData?.data.profil?.contact?.phone && userData?.data.profil?.contact?.instagram) ?
@@ -214,10 +254,8 @@ const UserSettingScreen = () => {
                 `${userData?.data.profil?.bani?.bani_name} ∙ ${userStatus}` :
                 (userData?.data.profil?.bani?.bani_name || 'Belum ditambahkan')} />
 
-
-
             <SettingItems
-              onClick={clickHandler}
+              onClick={()=>setPasswordOpen((prev)=>!prev)}
               label='Keamanan'
               subLabel='Ubah kata sandi Anda' />
 

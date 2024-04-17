@@ -17,7 +17,7 @@ import UserDetailScreen from '../Pages/(logged-in)/UserDetailScreen'
 import UserSettingScreen from '../Pages/(logged-in)/UserSettingScreen'
 import ProfileScreen from '../Pages/(logged-in)/ProfileScreen'
 import SearchScreen from '../Pages/(logged-in)/SearchScreen'
-
+import AboutScreen from '../Pages/(logged-in)/AboutScreen'
 
 type Props = {}
 
@@ -41,6 +41,7 @@ const Routes = (props: Props) => {
         <Route path='/:id' element={<UserDetailScreen />} />
         <Route path='/profile/setting' element={<UserSettingScreen />} />
         <Route path='/profile' element={<ProfileScreen />} />
+        <Route path='/about' element={<AboutScreen />} />
       </Route>
       
     </Router>

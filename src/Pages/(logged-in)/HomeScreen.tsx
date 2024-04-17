@@ -1,21 +1,27 @@
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiCountUser, apiLogout } from '../../Services/Api/AlkareemApi/alkareemApi';
+import { apiCountUser, apiGetUserCurrent, apiLogout } from '../../Services/Api/AlkareemApi/alkareemApi';
 import Button from '../../Components/Ui/Button';
 import { useEffect, useState } from 'react';
 import { ICountUser } from '../../Types/Alkareem/GetTotalUserCount';
+
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
   const [totalUser, setTotalUser] = useState<ICountUser|null>(null)
-  const { getItem, clearItem } = useLocalStorage()
+  const { getItem, clearItem, setItem } = useLocalStorage()
   const navigate = useNavigate();
   const token = getItem('token')
 
   const handleSearch = (event: any) => {
     navigate(`/search`, { replace: false });
   };
+
+  const handleAbout = (event: any) => {
+    navigate(`/about`, { replace: true });
+  };
+
 
   const handleLogout = (event: any) => {
     logout()
@@ -40,14 +46,25 @@ const HomeScreen = (props: Props) => {
     }
   }
 
+  const getCurrentUserData = async () => {
+    const userData = await apiGetUserCurrent({token: token})
+    if (userData.status !== 200) {
+      return;
+    } else {
+      setItem('USER_DATA', userData.data)
+    }
+  }
+
   useEffect(() => {
     getTotalUser()
+    getCurrentUserData()
   }, [token])
 
   return (
     <div className="p-4">
       <div>Total Jumlah Bani Abdul Karim: {totalUser?.data.totalUser}</div>
       <div>Total Jumlah KK Bani Abdul Karim: {totalUser?.data.totalFamily}</div>
+      <Button onClick={handleAbout}>About</Button>
       <Button onClick={handleSearch}>Search</Button>
       <Button onClick={handleLogout}>Logout</Button>
     </div>

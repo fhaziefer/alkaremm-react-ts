@@ -1,5 +1,4 @@
-import { ChangeEvent, ReactEventHandler, useEffect, useState } from 'react';
-import Input from '../Ui/Input';
+import { ChangeEvent, ReactEventHandler, useState } from 'react';
 import Button from '../Ui/Button';
 
 type Props = {
@@ -62,7 +61,7 @@ const SettingBio = ({ ...props }: Props) => {
     return (
         <div className='flex flex-col gap-4'>
             <h1 className='text-3xl font-bold pl-1'>Bio</h1>
-            <h1 className='text-sm mb-4 pl-1'>Tulis Bio Anda, Bio akan muncul di halaman profil Anda.</h1>
+            <h1 className='text-sm mb-4 pl-1'>Tulislah bio Anda, yang nantinya akan ditampilkan di halaman profil Anda.</h1>
             <div className='relative'>
                 <textarea
                     className="textarea textarea-bordered w-full h-36"

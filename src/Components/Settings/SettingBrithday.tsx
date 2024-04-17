@@ -61,7 +61,7 @@ const SettingBrithday = ({ ...props }: Props) => {
     return (
         <div className='flex flex-col gap-4'>
             <h1 className='text-3xl font-bold pl-1'>Tanggal Lahir</h1>
-            <h1 className='text-sm mb-4 pl-1'>Sesuaikan tanggal lahir Anda!</h1>
+            <h1 className='text-sm mb-4 pl-1'>Silakan perbarui tanggal lahir Anda sesuai dengan data yang benar.</h1>
             <div className='flex flex-row gap-2 items-center justify-between'>
                 <DropdownOption
                     label='Tanggal'

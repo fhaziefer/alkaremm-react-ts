@@ -222,7 +222,7 @@ const SettingAddress = ({ ...props }: Props) => {
         <>
             <div className='flex flex-col gap-4'>
                 <h1 className='text-3xl font-bold pl-1'>Informasi Alamat</h1>
-                <h1 className='text-sm mb-4 pl-1'>Sesuaikan alamat Anda dengan data alamat yang valid!</h1>
+                <h1 className='text-sm mb-4 pl-1'>Silakan pastikan alamat Anda sesuai dengan data alamat yang valid!</h1>
                 <h1 className='text-sm pl-3'>Provinsi</h1>
                 <DropdownOption disabled={provinceDisable} loading={isLoading} onClicked={handleProvince} data={province?.result} label={props.provinceNow || 'Belum diatur'} />
                 <h1 className='text-sm pl-3'>Kota/Kabupaten</h1>
@@ -241,6 +241,9 @@ const SettingAddress = ({ ...props }: Props) => {
                         handleStreet(
                             (e.target as HTMLInputElement)
                         )} placeholder={props.streetNow || 'Belum diatur'} />}
+
+                <p className='text-xs mb-4 pl-1 text-justify'><strong className='text-gray-200'>Note: </strong>Untuk memastikan keakuratan informasi alamat Anda, harap lengkapi semua detail yang diperlukan, termasuk nama jalan atau nama gedung, desa/kelurahan, kecamatan, kota/kabupaten, provinsi, dan kode pos. Hal ini akan membantu dalam memastikan bahwa alamat Anda dapat diakses dengan mudah dan akurat.</p>
+
                 <div className='flex-row flex w-full justify-between my-6'>
                     <Button
                         onClick={handleCancel}

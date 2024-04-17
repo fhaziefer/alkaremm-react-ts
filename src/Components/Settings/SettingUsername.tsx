@@ -1,4 +1,4 @@
-import { ReactEventHandler, useEffect, useState } from 'react';
+import { ReactEventHandler, useState } from 'react';
 import Input from '../Ui/Input';
 import { LuAtSign } from "react-icons/lu";
 import Button from '../Ui/Button';
@@ -60,7 +60,7 @@ const SettingUsername = ({ ...props }: Props) => {
     return (
         <div className='flex flex-col gap-4'>
             <h1 className='text-3xl font-bold pl-1'>Username</h1>
-            <h1 className='text-sm mb-4 pl-1'>Sesuaikan username Anda!</h1>
+            <h1 className='text-sm mb-4 pl-1'>Silakan sesuaikan username Anda.</h1>
             <h1 className='text-sm -mb-2 pl-3'>Username</h1>
             <label className="input input-bordered flex items-center relative">
                 <LuAtSign className='text-white' />
