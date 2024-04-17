@@ -7,7 +7,7 @@ type ModalProps = {
     body?: string;
     open: boolean;
     onClose(): void;
-    children?: ReactElement
+    children?: ReactElement | never[]
 }
 
 export default function Modal({ ...props }: ModalProps) {
@@ -25,7 +25,7 @@ export default function Modal({ ...props }: ModalProps) {
                 <div className="modal-box">
                     {props.label && <h3 className="font-bold text-lg">{props.label}</h3>}
                     {props.body && <p className="py-4">{props.body}</p>}
-                    {props.children}
+                    {props.children && props.children}
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button onClick={() => props.onClose()}></button>

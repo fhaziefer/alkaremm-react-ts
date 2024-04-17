@@ -22,7 +22,7 @@ const inputVariants = cva(
                 primary: 'input input-bordered w-full',
                 secondary: 'input w-full',
                 error: 'input input-bordered input-error w-full',
-                join: 'input input-bordered join-item'
+                join: 'input focus:border-none join-item'
             }
         },
         defaultVariants: {

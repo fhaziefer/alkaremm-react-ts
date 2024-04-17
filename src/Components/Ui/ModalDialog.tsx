@@ -27,11 +27,11 @@ export default function ModalDialog({ ...props }: ModalProps) {
             <dialog className={modalClass}>
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">{props.label}</h3>
-                    <p className="py-4">{props.body}</p>
+                    <p className="pt-4">{props.body}</p>
                     {props.btn && <div className="modal-action">
-                        <form className='flex flex-row gap-2' method="dialog">
-                            <Button className='w-auto' variant='primary' onClick={props.onYes}>{props.btnYesLabel}</Button>
-                            <Button className='w-28' variant='ghost' onClick={() => props.onClose()}>Tidak</Button>
+                        <form className='flex-row flex w-full justify-between my-6' method="dialog">
+                            <Button className='w-[49%]' variant='ghost' onClick={() => props.onClose()}>Tidak</Button>
+                            <Button className='w-[49%]' variant='primary' onClick={props.onYes}>{props.btnYesLabel}</Button>
                         </form>
                     </div>}
                 </div>

@@ -1,9 +1,9 @@
-import DropdownOption from './Ui/DropdownOption';
-import { useEffect, useState } from 'react';
-import { IGetAddress } from '../Types/Address/GetAddress';
-import { apiCity, apiDistrict, apiPostal, apiProvince, apiVillage } from '../Services/Api/AddressApi/addressApi';
-import Input from './Ui/Input';
-import Button from './Ui/Button';
+import DropdownOption from '../Ui/DropdownOption';
+import { ReactEventHandler, useEffect, useState } from 'react';
+import { IGetAddress } from '../../Types/Address/GetAddress';
+import { apiCity, apiDistrict, apiPostal, apiProvince, apiVillage } from '../../Services/Api/AddressApi/addressApi';
+import Input from '../Ui/Input';
+import Button from '../Ui/Button';
 
 type Props = {
     onClicked?: (
@@ -14,6 +14,13 @@ type Props = {
         province: string,
         postal: string
     ) => void;
+    streetNow?: string
+    villageNow?: string
+    districtNow?: string
+    cityNow?: string
+    provinceNow?: string
+    postalNow?: string
+    onClick?: ReactEventHandler;
 };
 
 const SettingAddress = ({ ...props }: Props) => {
@@ -177,6 +184,7 @@ const SettingAddress = ({ ...props }: Props) => {
     }
 
     const handleButton = () => {
+        //! SET API HERE
         const street = streetText
         const village = villageText
         const district = districtText
@@ -184,28 +192,76 @@ const SettingAddress = ({ ...props }: Props) => {
         const province = provinceText
         const postal = postalText
         if (props.onClicked) {
-            props.onClicked(street,village,district,city,province,postal);
+            props.onClicked(street, village, district, city, province, postal);
+        }
+    }
+
+    const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setProvinceId('');
+        setProvinceText('');
+        setCityId('');
+        setCityText('');
+        setDistrictId('');
+        setDistrictText('');
+        setVillageId('');
+        setVillageText('');
+        setPostalId('');
+        setPostalText('');
+        setStreetText('');
+        setCityDisable(true);
+        setDistrictDisable(true);
+        setVillageDisable(true);
+        setPostalDisable(true);
+        setStreetDisable(true);
+        if (props.onClick) {
+            props.onClick(event);
         }
     }
 
     return (
         <>
             <div className='flex flex-col gap-4'>
-                <DropdownOption disabled={provinceDisable} loading={isLoading} onClicked={handleProvince} data={province?.result} label='Provinsi' />
-                <DropdownOption disabled={cityDisable} loading={isLoading} onClicked={handleCity} data={city?.result} label='Kabupaten/Kota' />
-                <DropdownOption disabled={districtDisable} loading={isLoading} onClicked={handleDistrict} data={district?.result} label='Kecamatan' />
-                <DropdownOption disabled={villageDisable} loading={isLoading} onClicked={handleVillage} data={village?.result} label='Desa' />
-                <DropdownOption disabled={postalDisable} loading={isLoading} onClicked={handlePostal} data={postal?.result} label='Kode Pos' />
+                <h1 className='text-3xl font-bold pl-1'>Informasi Alamat</h1>
+                <h1 className='text-sm mb-4 pl-1'>Sesuaikan alamat Anda dengan data alamat yang valid!</h1>
+                <h1 className='text-sm pl-3'>Provinsi</h1>
+                <DropdownOption disabled={provinceDisable} loading={isLoading} onClicked={handleProvince} data={province?.result} label={props.provinceNow || 'Belum diatur'} />
+                <h1 className='text-sm pl-3'>Kota/Kabupaten</h1>
+                <DropdownOption disabled={cityDisable} loading={isLoading} onClicked={handleCity} data={city?.result} label={props.cityNow || 'Belum diatur'} />
+                <h1 className='text-sm pl-3'>Kecamatan</h1>
+                <DropdownOption disabled={districtDisable} loading={isLoading} onClicked={handleDistrict} data={district?.result} label={props.districtNow || 'Belum diatur'} />
+                <h1 className='text-sm pl-3'>Desa/Kelurahan</h1>
+                <DropdownOption disabled={villageDisable} loading={isLoading} onClicked={handleVillage} data={village?.result} label={props.villageNow || 'Belum diatur'} />
+                <h1 className='text-sm pl-3'>Kode Pos</h1>
+                <DropdownOption disabled={postalDisable} loading={isLoading} onClicked={handlePostal} data={postal?.result} label={props.postalNow || 'Belum diatur'} />
+                <h1 className='text-sm pl-3'>Nama jalan/gedung</h1>
                 {streetDisable ? <Input disabled onChange={(e) =>
                     handleStreet(
                         (e.target as HTMLInputElement)
-                    )} placeholder='Jalan, gedung, dll..' /> : <Input onChange={(e) =>
+                    )} placeholder={props.streetNow || 'Belum diatur'} /> : <Input onChange={(e) =>
                         handleStreet(
                             (e.target as HTMLInputElement)
-                        )} placeholder='Jalan, gedung, dll..' />}
-                {streetText.length > 4 ? <Button onClick={handleButton} className='w-full'>Konfirmasi</Button>
-                    : <Button disabled onClick={handleButton}>Konfirmasi</Button>
-                }
+                        )} placeholder={props.streetNow || 'Belum diatur'} />}
+                <div className='flex-row flex w-full justify-between my-6'>
+                    <Button
+                        onClick={handleCancel}
+                        variant='ghost'
+                        className='w-[49%]'>
+                        Batal
+                    </Button>
+                    {streetText.length > 4 ?
+                        <Button
+                            onClick={handleButton}
+                            variant='primary'
+                            className='w-[49%]'>
+                            Konfirmasi
+                        </Button>
+                        : <Button
+                            className='w-[49%]'
+                            disabled>
+                            Konfirmasi
+                        </Button>
+                    }
+                </div>
             </div>
         </>
     )

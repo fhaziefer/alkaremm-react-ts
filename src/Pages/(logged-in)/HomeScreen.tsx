@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiLogout } from '../../Services/Api/AlkareemApi/alkareemApi';
+import { apiCountUser, apiLogout } from '../../Services/Api/AlkareemApi/alkareemApi';
 import Button from '../../Components/Ui/Button';
+import { useEffect, useState } from 'react';
+import { ICountUser } from '../../Types/Alkareem/GetTotalUserCount';
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
+  const [totalUser, setTotalUser] = useState<ICountUser|null>(null)
   const { getItem, clearItem } = useLocalStorage()
   const navigate = useNavigate();
   const token = getItem('token')
@@ -28,8 +31,23 @@ const HomeScreen = (props: Props) => {
     }
   }
 
+  const getTotalUser = async () => {
+    const total = await apiCountUser({token: token})
+    if (total.status !== 200) {
+      return;
+    } else {
+      setTotalUser(total.data)
+    }
+  }
+
+  useEffect(() => {
+    getTotalUser()
+  }, [token])
+
   return (
     <div className="p-4">
+      <div>Total Jumlah Bani Abdul Karim: {totalUser?.data.totalUser}</div>
+      <div>Total Jumlah KK Bani Abdul Karim: {totalUser?.data.totalFamily}</div>
       <Button onClick={handleSearch}>Search</Button>
       <Button onClick={handleLogout}>Logout</Button>
     </div>

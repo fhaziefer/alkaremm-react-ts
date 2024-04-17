@@ -22,7 +22,7 @@ const DropdownOption = ({ label, data, disabled = false, loading = false, onClic
     };
 
     return (
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 w-full">
             <select
                 className={`select ${disabled ? 'select-disabled' : 'select-bordered'} flex w-[100%]`}
                 onChange={handleSelectChange}

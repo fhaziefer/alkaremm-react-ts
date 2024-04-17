@@ -4,6 +4,7 @@ import { ILogin, IPassword, IRegister, IReqDetailUser, IReqSearchUsers, IToken }
 import { ISearchUsers } from "../../../Types/Alkareem/GetAllUserRes"
 import {IDetailUser} from "../../../Types/Alkareem/GetDetailUser"
 import { IChildren } from "../../../Types/Alkareem/GetChildren"
+import { ICountUser } from "../../../Types/Alkareem/GetTotalUserCount"
 
 const baseUrl = env.REACT_APP_BASE_URL
 
@@ -45,8 +46,8 @@ export async function apiGetUserCurrent({ ...props }: IToken) {
         const headers = {
             Authorization: props.token,
         };
-        const user = await axios.get(`${baseUrl}/user/current`, { headers })
-        return user.data.data
+        const user = await axios.get<IDetailUser>(`${baseUrl}/user/current`, { headers })
+        return user
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage
@@ -108,6 +109,22 @@ export async function apiChildren({ ...props }: IReqDetailUser) {
             (`${baseUrl}/user/children/${props.id}`,
                 { headers })
         return children
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiCountUser({ ...props }: IReqDetailUser) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const totalUser = await axios
+            .get<ICountUser>
+            (`${baseUrl}/total-users`,
+                { headers })
+        return totalUser
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage

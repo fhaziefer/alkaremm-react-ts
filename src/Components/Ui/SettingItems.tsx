@@ -12,7 +12,7 @@ type Props = {
 const SettingItems = ({ ...props }: Props) => {
     return (
         <div className='flex justify-between p-4 hover:opacity-75 h-[75px] cursor-pointer' onClick={props.onClick}>
-            <div className='flex items-center max-w-[50%]'>
+            <div className='flex items-center w-[50%]'>
                 <ul>
                     <li className={cn(props.clasname)}>{props.label}</li>
                     {props.subLabel &&
@@ -23,7 +23,7 @@ const SettingItems = ({ ...props }: Props) => {
                 </ul>
             </div>
             {props.item &&
-                <div className='flex items-center max-w-[40%]'>
+                <div className='flex items-center w-[45%]'>
                     <ul className='w-[100%]'>
                         <li className='text-gray-500 text-sm text-right overflow-hidden whitespace-nowrap overflow-ellipsis'>
                             {props.item}
