@@ -64,7 +64,7 @@ const SettingBio = ({ ...props }: Props) => {
             <h1 className='text-sm mb-4 pl-1'>Tulislah bio Anda, yang nantinya akan ditampilkan di halaman profil Anda.</h1>
             <div className='relative'>
                 <textarea
-                    className="textarea textarea-bordered w-full h-36"
+                    className="textarea textarea-bordered w-full h-36 resize-none"
                     placeholder={props.bioNow}
                     value={bio}
                     onChange={handleBioChange}

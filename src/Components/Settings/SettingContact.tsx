@@ -75,7 +75,7 @@ const SettingContact = ({ ...props }: Props) => {
 
             <div className='flex flex-col gap-4'>
 
-            <h1 className='text-sm pl-3'>Nomor WhatsApp</h1>
+            <h1 className='text-xs pl-1 -mb-2'>Nomor WhatsApp</h1>
                 
                 <label className="input input-bordered flex items-center relative">
                     <div className='w-10 h-full flex items-center'>
@@ -91,7 +91,7 @@ const SettingContact = ({ ...props }: Props) => {
                     {error && <span className="label-text-alt text-red-500 absolute right-0 pr-4">{errorMessage}</span>}
                 </label>
 
-                <h1 className='text-sm pl-3'>Instagram</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Instagram</h1>
                 <label className="input input-bordered flex items-center relative">
                     <div className='w-10 h-full flex items-center'>
                         <span className='font-bold text-white'>@</span>

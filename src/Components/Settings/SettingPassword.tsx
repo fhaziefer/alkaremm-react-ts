@@ -50,7 +50,6 @@ const SettingPassword: React.FC<Props> = ({ onClicked, onClick }: Props) => {
     }, [password, retypePassword])
 
     const handleButton = () => {
-
         setIsLoading(true);
         setTimeout(() => {
             if (onClicked) {
@@ -79,7 +78,7 @@ const SettingPassword: React.FC<Props> = ({ onClicked, onClick }: Props) => {
             <h1 className="text-3xl font-bold pl-1">Keamanan</h1>
             <h1 className='text-sm mb-4 pl-1'>Silakan ubah kata sandi Anda.</h1>
             <div className="flex flex-col gap-4">
-            <h1 className='text-sm pl-3'>Kata Sandi Baru</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Kata Sandi Baru</h1>
                 <label className="input input-bordered flex items-center relative">
                     <Input
                         type={showPassword ? "text" : "password"}
@@ -97,7 +96,7 @@ const SettingPassword: React.FC<Props> = ({ onClicked, onClick }: Props) => {
                         )}
                     </div>
                 </label>
-                <h1 className='text-sm pl-3'>Ulangi Kata Sandi Baru</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Ulangi Kata Sandi Baru</h1>
                 <label className="input input-bordered flex items-center relative">
                     <Input
                         type={showPassword ? "text" : "password"}

@@ -1,0 +1,12 @@
+{
+    "data":[
+        {
+            "id":"MALE",
+            "text":"Laki-laki"
+        },
+        {
+            "id":"FEMALE",
+            "text":"Perempuan"
+        }
+    ]
+}

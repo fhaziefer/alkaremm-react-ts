@@ -14,75 +14,39 @@ import SettingBio from '../../Components/Settings/SettingBio'
 import SettingBrithday from '../../Components/Settings/SettingBrithday'
 import SettingContact from '../../Components/Settings/SettingContact'
 import SettingPassword from '../../Components/Settings/SettingPassword'
+import SettingProfileInfo from '../../Components/Settings/SettingProfileInfo'
+import SettingFamilyInfo from '../../Components/Settings/SettingFamilyInfo'
+import { env } from '../../Utils/env'
 
 const UserSettingScreen = () => {
 
   const { getItem } = useLocalStorage()
-  const token = getItem('token')
-
   const [isLoading, setIsLoading] = useState(true)
 
-  const [userData, setUserData] = useState<IDetailUser | null>(null)
-  const [userStatus, setUserStatus] = useState('')
-
+  //* MODAL OPEN AND CLOSE
   const [usernameOpen, setUsernameOpen] = useState(false)
   const [bioOpen, setBioOpen] = useState(false)
+  const [profileInfoOpen, setProfileInfoOpen] = useState(false)
   const [birthdayOpen, setBirthdayOpen] = useState(false)
   const [addressOpen, setAddressOpen] = useState(false)
   const [logoutOpen, setLogoutOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
+  const [familyInfoOpen, setFamilyInfoOpen] = useState(false)
   const [passwordOpen, setPasswordOpen] = useState(false)
 
-  const addressHandler = (
-    street: string,
-    village: string,
-    district: string,
-    city: string,
-    province: string,
-    postal: string) => {
-    alert(`${street}, ${village}, ${district}, ${city}, ${province}, ${postal}.`)
-    setAddressOpen((prev) => !prev)
-  }
+  //* STATING API
+  const [userData, setUserData] = useState<IDetailUser | null>(null)
+  const [userStatus, setUserStatus] = useState('')
+  const apiUrl = env.REACT_APP_BASE_URL
+  const token = getItem('token')
 
-  const usernameHandler = (
-    usernameNow: string) => {
-    alert(`${usernameNow}`)
-    setUsernameOpen((prev) => !prev)
-  }
-
-  const bioHandler = (
-    bioNew: string) => {
-    alert(`${bioNew}`)
-    setBioOpen((prev) => !prev)
-  }
-
-  const birthdayHandler = (
-    birthdayNew: string) => {
-    alert(`${birthdayNew}`)
-    setBirthdayOpen((prev) => !prev)
-  }
-
-  const contactHandler = (
-    phoneNew: string | undefined, instagramNew: string | undefined
-  ) => {
-    alert(`${phoneNew} & ${instagramNew}`)
-    setContactOpen((prev) => !prev)
-  }
-
-  const passwordHandler = (
-    password: string) => {
-    alert(`${password}`)
-    setPasswordOpen((prev) => !prev)
-  }
-
-  const clickHandler = () => {
-    alert('Clicked')
-  }
-
+  //* API CALLING
   const getUserData = async () => {
     const dataFetch = await apiGetUserCurrent({ token: token })
+
     if (dataFetch.status !== 200) {
       setIsLoading(false)
+
     } else {
       setUserData(dataFetch.data)
 
@@ -100,22 +64,80 @@ const UserSettingScreen = () => {
     }
   }
 
-
   useEffect(() => {
     getUserData()
   }, [token])
 
+  //* SHORTING API
   const birthday = getStringDate(userData?.data.profil?.birthday)
+  const street = userData?.data.profil?.address?.street
   const age = getAge(userData?.data.profil?.birthday)
+  const addressValue = street ? street : 'Belum ditambahkan';
+  const avatar = `${apiUrl}${userData?.data.profil?.avatar}`
 
-  const address = `${userData?.data.profil?.address?.street}, ${userData?.data.profil?.address?.village}, ${userData?.data.profil?.address?.district}, ${userData?.data.profil?.address?.city}, ${userData?.data.profil?.address?.province}, ${userData?.data.profil?.address?.postal_code}`;
+  //* HANDLER ADDRESS USER
+  const addressHandler = (
+    street: string,
+    village: string,
+    district: string,
+    city: string,
+    province: string,
+    postal: string) => {
+    alert(`${street}, ${village}, ${district}, ${city}, ${province}, ${postal}.`)
+    setAddressOpen((prev) => !prev)
+  }
 
-  const postalCode = userData?.data.profil?.address?.postal_code;
-  const addressValue = postalCode ? address : 'Belum ditambahkan';
+  //* HANDLER USERNAME USER
+  const usernameHandler = (
+    usernameNow: string) => {
+    alert(`${usernameNow}`)
+    setUsernameOpen((prev) => !prev)
+  }
 
+  //* HANDLER BIO USER
+  const bioHandler = (
+    bioNew: string) => {
+    alert(`${bioNew}`)
+    setBioOpen((prev) => !prev)
+  }
+
+  //* HANDLER PROFILE INFO USER
+  const profileInfohandler = () => {
+    setProfileInfoOpen((prev) => !prev)
+  }
+
+  //* HANDLER BIRTHDAY USER
+  const birthdayHandler = (
+    birthdayNew: string) => {
+    alert(`${birthdayNew}`)
+    setBirthdayOpen((prev) => !prev)
+  }
+
+  //* HANDLER CONTACT USER
+  const contactHandler = (
+    phoneNew: string | undefined, instagramNew: string | undefined
+  ) => {
+    alert(`${phoneNew} & ${instagramNew}`)
+    setContactOpen((prev) => !prev)
+  }
+
+  //* HANDLER FAMILY INFO HANDLER USER
+  const familyInfoHandler = () => {
+    setFamilyInfoOpen((prev) => !prev)
+  }
+
+  //* HANDLER PASSWORD USER
+  const passwordHandler = (
+    password: string) => {
+    alert(`${password}`)
+    setPasswordOpen((prev) => !prev)
+  }
+
+  const clickHandler = () => {
+    alert('Clicked')
+  }
 
   return (
-
     <>
       {isLoading ? <Loading /> :
 
@@ -124,9 +146,7 @@ const UserSettingScreen = () => {
           <Modal
             open={usernameOpen}
             onClose={
-              () => setUsernameOpen((prev) => !prev)
-            }
-          >
+              () => setUsernameOpen((prev) => !prev)}>
             <SettingUsername
               usernameNow={userData?.data.username || 'Belum ditambahkan'}
               onClick={() => setUsernameOpen((prev) => !prev)}
@@ -135,8 +155,7 @@ const UserSettingScreen = () => {
 
           <Modal
             open={bioOpen}
-            onClose={() => setBioOpen((prev) => !prev)}
-          >
+            onClose={() => setBioOpen((prev) => !prev)}>
             <SettingBio
               bioNow={userData?.data.profil?.bio || 'Belum ditambahkan'}
               onClick={() => setBioOpen((prev) => !prev)}
@@ -146,8 +165,7 @@ const UserSettingScreen = () => {
 
           <Modal
             open={birthdayOpen}
-            onClose={() => setBirthdayOpen((prev) => !prev)}
-          >
+            onClose={() => setBirthdayOpen((prev) => !prev)}>
             <SettingBrithday
               birthdayNow={birthday || 'Belum ditambahkan'}
               onClick={() => setBirthdayOpen((prev) => !prev)}
@@ -157,9 +175,7 @@ const UserSettingScreen = () => {
 
           <Modal
             open={addressOpen}
-            onClose={
-              () => setAddressOpen((prev) => !prev)
-            }>
+            onClose={() => setAddressOpen((prev) => !prev)}>
             <SettingAddress
               provinceNow={userData?.data.profil?.address?.province}
               cityNow={userData?.data.profil?.address?.city}
@@ -174,25 +190,38 @@ const UserSettingScreen = () => {
 
           <Modal
             open={contactOpen}
-            onClose={
-              () => setContactOpen((prev) => !prev)
-            }
-          >
+            onClose={() => setContactOpen((prev) => !prev)}>
             <SettingContact
               onClicked={contactHandler}
-              onClick={() => setContactOpen((prev) => !prev)} />
+              onClick={() => setContactOpen((prev) => !prev)}
+            />
           </Modal>
 
           <Modal
             open={passwordOpen}
-            onClose={
-              () => setPasswordOpen((prev) => !prev)
-            }
-          >
+            onClose={() => setPasswordOpen((prev) => !prev)}>
             <SettingPassword
               onClicked={passwordHandler}
               onClick={() => setPasswordOpen((prev) => !prev)}
             />
+          </Modal>
+
+          <Modal
+            open={profileInfoOpen}
+            onClose={() => setProfileInfoOpen((prev) => !prev)}>
+            <SettingProfileInfo
+              avatar={avatar}
+              onClicked={profileInfohandler}
+              onClick={() => setProfileInfoOpen((prev) => !prev)}
+            />
+          </Modal>
+
+          <Modal
+            open={familyInfoOpen}
+            onClose={() => setFamilyInfoOpen((prev) => !prev)}>
+            <SettingFamilyInfo
+              onClicked={familyInfoHandler}
+              onClick={() => setFamilyInfoOpen((prev) => !prev)} />
           </Modal>
 
           <LogoutAlert open={logoutOpen} />
@@ -202,23 +231,17 @@ const UserSettingScreen = () => {
             <h1 className='text-4xl p-4 font-bold'>Pengaturan dan Privasi</h1>
 
             <SettingItems
-              onClick={
-                () => setUsernameOpen((prev) => !prev)
-              }
+              onClick={() => setUsernameOpen((prev) => !prev)}
               label='Username'
               item={`@${userData?.data.username || 'Belum ditambahkan'}`} />
 
-
             <SettingItems
-              onClick={
-                () => setBioOpen((prev) => !prev)
-              }
+              onClick={() => setBioOpen((prev) => !prev)}
               label='Bio'
-              item={userData?.data.profil?.bio || 'Belum ditambahkan'}
-            />
+              item={userData?.data.profil?.bio || 'Belum ditambahkan'} />
 
             <SettingItems
-              onClick={clickHandler}
+              onClick={() => setProfileInfoOpen((prev) => !prev)}
               label='Informasi Profil'
               subLabel='Edit foto profil, nama, dll...'
               item={userData?.data.profil?.name || 'Belum ditambahkan'} />
@@ -247,7 +270,7 @@ const UserSettingScreen = () => {
                 (userData?.data.profil?.contact?.phone || 'Belum ditambahkan')} />
 
             <SettingItems
-              onClick={clickHandler}
+              onClick={() => setFamilyInfoOpen((prev) => !prev)}
               label='Informasi Hubungan Keluarga'
               subLabel='Edit Bani, status pernikahan, putra-putri, dll...'
               item={(userData?.data.profil?.bani?.bani_name && userStatus) ?
@@ -255,7 +278,7 @@ const UserSettingScreen = () => {
                 (userData?.data.profil?.bani?.bani_name || 'Belum ditambahkan')} />
 
             <SettingItems
-              onClick={()=>setPasswordOpen((prev)=>!prev)}
+              onClick={() => setPasswordOpen((prev) => !prev)}
               label='Keamanan'
               subLabel='Ubah kata sandi Anda' />
 
@@ -273,7 +296,7 @@ const UserSettingScreen = () => {
             <div className="divider px-4 md:px-0"></div>
 
             <SettingItems
-              clasname='text-rose-500'
+              color='error'
               onClick={() => setLogoutOpen((prev) => !prev)}
               label='Keluar'
               subLabel='Keluar dari akun Anda' />

@@ -223,17 +223,17 @@ const SettingAddress = ({ ...props }: Props) => {
             <div className='flex flex-col gap-4'>
                 <h1 className='text-3xl font-bold pl-1'>Informasi Alamat</h1>
                 <h1 className='text-sm mb-4 pl-1'>Silakan pastikan alamat Anda sesuai dengan data alamat yang valid!</h1>
-                <h1 className='text-sm pl-3'>Provinsi</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Provinsi</h1>
                 <DropdownOption disabled={provinceDisable} loading={isLoading} onClicked={handleProvince} data={province?.result} label={props.provinceNow || 'Belum diatur'} />
-                <h1 className='text-sm pl-3'>Kota/Kabupaten</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Kota/Kabupaten</h1>
                 <DropdownOption disabled={cityDisable} loading={isLoading} onClicked={handleCity} data={city?.result} label={props.cityNow || 'Belum diatur'} />
-                <h1 className='text-sm pl-3'>Kecamatan</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Kecamatan</h1>
                 <DropdownOption disabled={districtDisable} loading={isLoading} onClicked={handleDistrict} data={district?.result} label={props.districtNow || 'Belum diatur'} />
-                <h1 className='text-sm pl-3'>Desa/Kelurahan</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Desa/Kelurahan</h1>
                 <DropdownOption disabled={villageDisable} loading={isLoading} onClicked={handleVillage} data={village?.result} label={props.villageNow || 'Belum diatur'} />
-                <h1 className='text-sm pl-3'>Kode Pos</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Kode Pos</h1>
                 <DropdownOption disabled={postalDisable} loading={isLoading} onClicked={handlePostal} data={postal?.result} label={props.postalNow || 'Belum diatur'} />
-                <h1 className='text-sm pl-3'>Nama jalan/gedung</h1>
+                <h1 className='text-xs pl-1 -mb-2'>Nama jalan/gedung</h1>
                 {streetDisable ? <Input disabled onChange={(e) =>
                     handleStreet(
                         (e.target as HTMLInputElement)
