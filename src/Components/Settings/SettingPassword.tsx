@@ -8,7 +8,7 @@ type Props = {
     onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-const SettingPassword: React.FC<Props> = ({ onClicked, onClick }: Props) => {
+const SettingPassword = ({ onClicked, onClick }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
