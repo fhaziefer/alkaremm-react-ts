@@ -2,7 +2,7 @@ import { ChangeEvent, ReactEventHandler, useState } from 'react';
 import Button from '../Ui/Button';
 
 type Props = {
-    onClicked?: (bioNew: string) => void;
+    onClicked?: (bio: string) => void;
     bioNow?: string;
     bioValue?: string;
     onClick?: ReactEventHandler | undefined;

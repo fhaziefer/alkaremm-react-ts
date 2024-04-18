@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiChildren, apiDetailUser } from '../../Services/Api/AlkareemApi/alkareemApi';
+import { apiChildren, apiDetailUser } from '../../Services/Api/AlkareemApi/get';
 import { IDetailUser } from '../../Types/Alkareem/GetDetailUser';
 import { env } from '../../Utils/env';
 import ProfileCard from '../../Components/DetailUserCard';

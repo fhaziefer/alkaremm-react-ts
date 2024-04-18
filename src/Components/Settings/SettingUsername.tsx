@@ -5,7 +5,7 @@ import Button from '../Ui/Button';
 
 type Props = {
     onClicked?: (
-        usernameNew: string,
+        username: string,
     ) => void;
     usernameNow?: string;
     onClick?: ReactEventHandler | undefined;
@@ -38,10 +38,10 @@ const SettingUsername = ({ ...props }: Props) => {
     const handleButton = () => {
         //! SET API HERE
         setIsLoading(true)
-        const usenameNew = usernameValue
+        const username = usernameValue
         setTimeout(() => {
             if (props.onClicked) {
-                props.onClicked(usenameNew);
+                props.onClicked(username);
                 setErrorMessage('');
                 setUsernameValue('')
                 setIsLoading(false)

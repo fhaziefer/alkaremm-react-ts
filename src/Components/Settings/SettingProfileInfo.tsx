@@ -4,9 +4,13 @@ import Button from '../Ui/Button'
 import DropdownOption from '../Ui/DropdownOption';
 
 type Props = {
-    onClicked?: () => void;
+    onClicked?: (
+        name: string,
+        gender: string,
+        avatar: string
+    ) => void;
     onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-    avatar?: string
+    avatarNow?: string
 };
 
 const SettingProfileInfo = ({ onClicked, onClick, ...props }: Props) => {
@@ -27,9 +31,12 @@ const SettingProfileInfo = ({ onClicked, onClick, ...props }: Props) => {
 
     const handleButton = () => {
         setIsLoading(true);
+        const name = 'NAME'
+        const gender = 'GENDER'
+        const avatar = 'AVATAR'
         setTimeout(() => {
             if (onClicked) {
-                onClicked()
+                onClicked(name, gender, avatar)
                 setError(false);
                 setIsLoading(false);
             }
@@ -56,7 +63,7 @@ const SettingProfileInfo = ({ onClicked, onClick, ...props }: Props) => {
                 <div className='flex-row flex h-24'>
                     <div className="avatar p-1 cursor-pointer w-24  relative ">
                         <div className="rounded-full hover:ring ring-offset-base-100 ring-offset-2 hover:ring-primary">
-                            <img src={props.avatar} />
+                            <img src={props.avatarNow} />
                         </div>
                     </div>
                     <div className='flex flex-col ml-4 w-[67%] gap-2'>

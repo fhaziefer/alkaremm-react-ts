@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { apiGetUserCurrent } from '../../Services/Api/AlkareemApi/alkareemApi'
+import { apiGetUserCurrent } from '../../Services/Api/AlkareemApi/get'
 import { IDetailUser } from '../../Types/Alkareem/GetDetailUser'
 import { useLocalStorage } from '../../Hooks/useLocalStorage'
 import { getAge, getStringDate } from '../../Utils/birthdayConverter'
@@ -77,55 +77,57 @@ const UserSettingScreen = () => {
     district: string,
     city: string,
     province: string,
-    postal: string) => {
+    postal: string
+  ) => {
     alert(`${street}, ${village}, ${district}, ${city}, ${province}, ${postal}.`)
     setAddressOpen((prev) => !prev)
   }
 
   //* HANDLER USERNAME USER
   const usernameHandler = (
-    usernameNow: string) => {
-    alert(`${usernameNow}`)
+    username: string
+  ) => {
+    alert(username)
     setUsernameOpen((prev) => !prev)
   }
 
   //* HANDLER BIO USER
   const bioHandler = (
-    bioNew: string) => {
-    alert(`${bioNew}`)
+    bio: string
+  ) => {
+    alert(bio)
     setBioOpen((prev) => !prev)
   }
 
   //* HANDLER PROFILE INFO USER
-  const profileInfohandler = () => {
+  const profileInfohandler = (
+    name: string,
+    gender: string,
+    avatar: string
+  ) => {
+    alert(`${name}, ${gender}, ${avatar}`)
     setProfileInfoOpen((prev) => !prev)
   }
 
   //* HANDLER BIRTHDAY USER
   const birthdayHandler = (
-    birthdayNew: string) => {
-    alert(`${birthdayNew}`)
+    birthday: string
+  ) => {
+    alert(birthday)
     setBirthdayOpen((prev) => !prev)
   }
 
   //* HANDLER CONTACT USER
   const contactHandler = (
-    phoneNew: string | undefined, instagramNew: string | undefined
+    phone: string | undefined, instagram: string | undefined
   ) => {
-    alert(`${phoneNew} & ${instagramNew}`)
+    alert(`${phone} & ${instagram}`)
     setContactOpen((prev) => !prev)
   }
 
   //* HANDLER FAMILY INFO HANDLER USER
   const familyInfoHandler = () => {
     setFamilyInfoOpen((prev) => !prev)
-  }
-
-  //* HANDLER PASSWORD USER
-  const passwordHandler = (
-    password: string) => {
-    alert(`${password}`)
-    setPasswordOpen((prev) => !prev)
   }
 
   const clickHandler = () => {
@@ -196,8 +198,8 @@ const UserSettingScreen = () => {
             open={passwordOpen}
             onClose={() => setPasswordOpen((prev) => !prev)}>
             <SettingPassword
-              onClicked={passwordHandler}
-              onClick={() => setPasswordOpen((prev) => !prev)}
+              onConfirm={() => setPasswordOpen((prev) => !prev)}
+              onCancel={() => setPasswordOpen((prev) => !prev)}
             />
           </Modal>
 
@@ -205,7 +207,7 @@ const UserSettingScreen = () => {
             open={profileInfoOpen}
             onClose={() => setProfileInfoOpen((prev) => !prev)}>
             <SettingProfileInfo
-              avatar={avatar}
+              avatarNow={avatar}
               onClicked={profileInfohandler}
               onClick={() => setProfileInfoOpen((prev) => !prev)}
             />

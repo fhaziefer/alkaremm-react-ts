@@ -13,11 +13,6 @@ export interface IToken {
     token: string;
 }
 
-export interface IPassword {
-    token?: string;
-    password?: string;
-}
-
 export interface IReqSearchUsers {
     token?: string;
     query?: string;
@@ -30,3 +25,14 @@ export interface IReqDetailUser {
     id?: string;
     token?: string;
 }
+
+export interface IUsername {
+    token?: string;
+    username: string;
+}
+
+export interface IPassword {
+    token?: string;
+    password?: string;
+}
+

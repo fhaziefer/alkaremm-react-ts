@@ -5,7 +5,7 @@ import UserTable from '../../Components/UserTable';
 import Footer from '../../Components/Footer';
 import Loading from '../../Components/Loading';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiSearchUser } from '../../Services/Api/AlkareemApi/alkareemApi';
+import { apiSearchUser } from '../../Services/Api/AlkareemApi/get';
 import baniName from '../../JSON/baniName.json'
 import Input from '../../Components/Ui/Input';
 

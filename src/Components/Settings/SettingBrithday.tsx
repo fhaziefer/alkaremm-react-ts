@@ -7,7 +7,7 @@ import yearList from '../../JSON/year.json'
 
 type Props = {
     onClicked?: (
-        birthdayNew: string,
+        birthday: string,
     ) => void;
     birthdayNow?: string;
     onClick?: ReactEventHandler | undefined;
@@ -37,11 +37,11 @@ const SettingBrithday = ({ ...props }: Props) => {
 
     const handleButton = () => {
         setIsLoading(true)
-        const brithdayNew = `${year}-${month}-${date}`
+        const brithday = `${year}-${month}-${date}`
         //! SET API HERE
         setTimeout(() => {
             if (props.onClicked) {
-                props.onClicked(brithdayNew);
+                props.onClicked(brithday);
                 setDisable(true)
                 setIsLoading(false)
             }

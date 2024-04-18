@@ -4,7 +4,9 @@ import Button from '../Ui/Button'
 import SettingItems from '../Ui/SettingItems';
 
 type Props = {
-    onClicked?: () => void;
+    onClicked?: (
+        
+    ) => void;
     onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 

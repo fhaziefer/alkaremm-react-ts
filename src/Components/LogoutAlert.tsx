@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../Hooks/useLocalStorage';
-import { apiLogout } from '../Services/Api/AlkareemApi/alkareemApi';
+import { apiLogout } from '../Services/Api/AlkareemApi/delete';
 import ModalDialog from './Ui/ModalDialog';
 import { useState } from 'react';
 

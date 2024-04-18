@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiCountUser, apiGetUserCurrent, apiLogout } from '../../Services/Api/AlkareemApi/alkareemApi';
+import { apiCountUser, apiGetUserCurrent } from '../../Services/Api/AlkareemApi/get';
 import Button from '../../Components/Ui/Button';
 import { useEffect, useState } from 'react';
 import { ICountUser } from '../../Types/Alkareem/GetTotalUserCount';
-
+import { apiLogout } from '../../Services/Api/AlkareemApi/delete';
 
 type Props = {};
 

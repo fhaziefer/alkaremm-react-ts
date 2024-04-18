@@ -1,45 +1,12 @@
 import axios from "axios"
 import { env } from "../../../Utils/env"
-import { ILogin, IPassword, IRegister, IReqDetailUser, IReqSearchUsers, IToken } from "../../../Types/Alkareem/PostRequest"
+import { IReqDetailUser, IReqSearchUsers, IToken } from "../../../Types/Alkareem/ReqType"
 import { ISearchUsers } from "../../../Types/Alkareem/GetAllUserRes"
-import {IDetailUser} from "../../../Types/Alkareem/GetDetailUser"
+import { IDetailUser } from "../../../Types/Alkareem/GetDetailUser"
 import { IChildren } from "../../../Types/Alkareem/GetChildren"
 import { ICountUser } from "../../../Types/Alkareem/GetTotalUserCount"
 
 const baseUrl = env.REACT_APP_BASE_URL
-
-export async function apiLogin({ ...props }: ILogin) {
-    try {
-        const login = await axios.post(`${baseUrl}/login`, { ...props })
-        return login
-    } catch (error: any) {
-        const errorMessage = error.response.data.errors;
-        return errorMessage
-    }
-}
-
-export async function apiRegister({ ...props }: IRegister) {
-    try {
-        const register = await axios.post(`${baseUrl}/register`, { ...props })
-        return register
-    } catch (error: any) {
-        const errorMessage = error.response.data.errors;
-        return errorMessage
-    }
-}
-
-export async function apiLogout({ ...props }: IToken) {
-    try {
-        const headers = {
-            Authorization: props.token,
-        };
-        const logout = await axios.delete(`${baseUrl}/logout`, { headers })
-        return logout
-    } catch (error: any) {
-        const errorMessage = error.response.data.errors;
-        return errorMessage
-    }
-}
 
 export async function apiGetUserCurrent({ ...props }: IToken) {
     try {
@@ -48,19 +15,6 @@ export async function apiGetUserCurrent({ ...props }: IToken) {
         };
         const user = await axios.get<IDetailUser>(`${baseUrl}/user/current`, { headers })
         return user
-    } catch (error: any) {
-        const errorMessage = error.response.data.errors;
-        return errorMessage
-    }
-}
-
-export async function apiChangePassword({ ...props }: IPassword) {
-    try {
-        const headers = {
-            Authorization: props.token,
-        };
-        const changePassword = await axios.patch(`${baseUrl}/user/current`, { headers })
-        return changePassword
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage

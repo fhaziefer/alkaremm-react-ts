@@ -4,8 +4,8 @@ import Input from '../Ui/Input'
 
 type Props = {
     onClicked?: (
-        phoneNew?: string | undefined,
-        instagramNew?: string | undefined
+        phone?: string | undefined,
+        instagram?: string | undefined
     ) => void;
     onClick?: ReactEventHandler | undefined;
 }

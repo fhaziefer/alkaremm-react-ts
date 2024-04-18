@@ -2,19 +2,24 @@ import React, { useEffect, useState } from 'react';
 import Button from '../Ui/Button';
 import Input from '../Ui/Input';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiChangePassword } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
-    onClicked?: (password: string) => void;
-    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-const SettingPassword = ({ onClicked, onClick }: Props) => {
+const SettingPassword = ({ onConfirm, onCancel }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [password, setPassword] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+
+    const { getItem } = useLocalStorage()
+    const token = getItem('token')
 
     const handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = event.target.value;
@@ -49,18 +54,25 @@ const SettingPassword = ({ onClicked, onClick }: Props) => {
 
     }, [password, retypePassword])
 
-    const handleButton = () => {
+    const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true);
-        setTimeout(() => {
-            if (onClicked) {
-                onClicked(password);
+        if (onConfirm) {
+            const changePassword = await apiChangePassword({ token: token, password: retypePassword })
+            if (changePassword.status !== 200) {
+                setErrorMessage('Gagal memperbaharui password, coba ulangi.')
+                setPassword('');
+                setRetypePassword('');
+                setIsLoading(false)
+                setError(true)
+            } else {
                 setPassword('');
                 setRetypePassword('');
                 setErrorMessage('');
-                setError(false);
-                setIsLoading(false);
+                onConfirm(event)
+                setIsLoading(false)
+                setError(false)
             }
-        }, 3000);
+        }
     };
 
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,8 +80,8 @@ const SettingPassword = ({ onClicked, onClick }: Props) => {
         setRetypePassword('');
         setErrorMessage('');
         setError(false);
-        if (onClick) {
-            onClick(event);
+        if (onCancel) {
+            onCancel(event);
         }
     };
 
