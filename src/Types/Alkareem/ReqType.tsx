@@ -36,3 +36,8 @@ export interface IPassword {
     password?: string;
 }
 
+export interface IBio {
+    token?: string;
+    bio?: string;
+}
+
