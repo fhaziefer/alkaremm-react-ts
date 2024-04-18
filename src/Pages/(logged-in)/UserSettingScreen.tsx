@@ -4,10 +4,12 @@ import { IDetailUser } from '../../Types/Alkareem/GetDetailUser'
 import { useLocalStorage } from '../../Hooks/useLocalStorage'
 import { getAge, getStringDate } from '../../Utils/birthdayConverter'
 import { env } from '../../Utils/env'
+
 import Loading from '../../Components/Loading'
 import Footer from '../../Components/Footer'
 import Modal from '../../Components/Ui/Modal'
 import LogoutAlert from '../../Components/LogoutAlert'
+
 import SettingUsername from '../../Components/Settings/SettingUsername'
 import SettingAddress from '../../Components/Settings/SettingAddress'
 import SettingItems from '../../Components/Ui/SettingItems'
