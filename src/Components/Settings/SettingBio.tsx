@@ -1,14 +1,18 @@
 import { ChangeEvent, ReactEventHandler, useState } from 'react';
 import Button from '../Ui/Button';
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiChangeBio } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
-    onClicked?: (bio: string) => void;
-    bioNow?: string;
+    onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     bioValue?: string;
-    onClick?: ReactEventHandler | undefined;
+    bioNow?: string;
 }
 
-const SettingBio = ({ ...props }: Props) => {
+const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
+    const { getItem } = useLocalStorage()
+    const token = getItem('token')
     const [bio, setBio] = useState<string>(props.bioValue || '');
     const [charCount, setCharCount] = useState<number>(props.bioValue ? props.bioValue.length : 0);
     const [isLoading, setIsLoading] = useState(false)
@@ -35,26 +39,33 @@ const SettingBio = ({ ...props }: Props) => {
         }
     };
 
-    const handleButton = () => {
+    const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true)
         const bioNew = bio
         //! SET API HERE
-        setTimeout(() => {
-            if (props.onClicked) {
-                props.onClicked(bioNew);
-                setErrorMessage('');
+        if (onConfirm) {
+            const changeBio = await apiChangeBio({token: token, bio: bioNew})
+            if (changeBio.status !== 200) {
+                setErrorMessage('Gagal memperbaharui bio, coba ulangi.')
                 setBio('')
                 setIsLoading(false)
+                setError(true)
+            } else {
+                onConfirm(event)
+                setErrorMessage('');
+                setBio('')
+                setCharCount(0)
+                setIsLoading(false)
             }
-        }, 5000);
+        }
     }
 
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
         setErrorMessage('');
         setBio('')
         setCharCount(0)
-        if (props.onClick) {
-            props.onClick(event);
+        if (onCancel) {
+            onCancel(event);
         }
     }
 

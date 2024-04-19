@@ -70,32 +70,18 @@ const UserSettingScreen = () => {
   const addressValue = street ? street : 'Belum ditambahkan';
   const avatar = `${apiUrl}${userData?.data.profil?.avatar}`
 
-  //* HANDLER ADDRESS USER
-  const addressHandler = (
-    street: string,
-    village: string,
-    district: string,
-    city: string,
-    province: string,
-    postal: string
-  ) => {
-    alert(`${street}, ${village}, ${district}, ${city}, ${province}, ${postal}.`)
-    setAddressOpen((prev) => !prev)
-  }
-
   //* HANDLER USERNAME USER
   const usernameHandler = (
     username: string
   ) => {
     alert(username)
+    getUserData()
     setUsernameOpen((prev) => !prev)
   }
 
   //* HANDLER BIO USER
-  const bioHandler = (
-    bio: string
-  ) => {
-    alert(bio)
+  const bioHandler = () => {
+    getUserData()
     setBioOpen((prev) => !prev)
   }
 
@@ -105,29 +91,53 @@ const UserSettingScreen = () => {
     gender: string,
     avatar: string
   ) => {
-    alert(`${name}, ${gender}, ${avatar}`)
+    getUserData()
     setProfileInfoOpen((prev) => !prev)
+    alert(`${name}, ${gender}, ${avatar}`)
   }
 
   //* HANDLER BIRTHDAY USER
   const birthdayHandler = (
     birthday: string
   ) => {
-    alert(birthday)
+    getUserData()
     setBirthdayOpen((prev) => !prev)
+    alert(birthday)
+  }
+
+  //* HANDLER ADDRESS USER
+  const addressHandler = (
+    street: string,
+    village: string,
+    district: string,
+    city: string,
+    province: string,
+    postal: string
+  ) => {
+    getUserData()
+    setAddressOpen((prev) => !prev)
+    alert(`${street}, ${village}, ${district}, ${city}, ${province}, ${postal}.`)
   }
 
   //* HANDLER CONTACT USER
   const contactHandler = (
     phone: string | undefined, instagram: string | undefined
   ) => {
-    alert(`${phone} & ${instagram}`)
+    getUserData()
     setContactOpen((prev) => !prev)
+    alert(`${phone} & ${instagram}`)
   }
 
   //* HANDLER FAMILY INFO HANDLER USER
   const familyInfoHandler = () => {
+    getUserData()
     setFamilyInfoOpen((prev) => !prev)
+  }
+
+  //* HANDLER PASSWORD USER
+  const passwordHandler = () => {
+    getUserData()
+    setPasswordOpen((prev) => !prev)
   }
 
   const clickHandler = () => {
@@ -155,8 +165,8 @@ const UserSettingScreen = () => {
             onClose={() => setBioOpen((prev) => !prev)}>
             <SettingBio
               bioNow={userData?.data.profil?.bio || 'Belum ditambahkan'}
-              onClick={() => setBioOpen((prev) => !prev)}
-              onClicked={bioHandler}
+              onConfirm={bioHandler}
+              onCancel={() => setBioOpen((prev) => !prev)}
             />
           </Modal>
 
@@ -198,7 +208,7 @@ const UserSettingScreen = () => {
             open={passwordOpen}
             onClose={() => setPasswordOpen((prev) => !prev)}>
             <SettingPassword
-              onConfirm={() => setPasswordOpen((prev) => !prev)}
+              onConfirm={passwordHandler}
               onCancel={() => setPasswordOpen((prev) => !prev)}
             />
           </Modal>
