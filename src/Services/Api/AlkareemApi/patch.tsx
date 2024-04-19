@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IPassword, IUsername } from "../../../Types/Alkareem/ReqType";
+import { IAddress, IBio, IContact, IPassword, IUsername } from "../../../Types/Alkareem/ReqType";
 const baseUrl = env.REACT_APP_BASE_URL
 
 //* USERNAME
@@ -31,6 +31,63 @@ export async function apiChangePassword({ ...props }: IPassword) {
         };
         const changePassword = await axios.patch(`${baseUrl}/user/current`, data, { headers })
         return changePassword
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* BIO
+export async function apiChangeBio({ ...props }: IBio) {
+    try {
+        const data = {
+            bio: props.bio
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const changeBio = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return changeBio
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* ADDRESS
+export async function apiChangeAddress({ ...props }: IAddress) {
+    try {
+        const data = {
+            street: props.street,
+            village: props.village,
+            district: props.district,
+            city: props.city,
+            province: props.province,
+            postal_code: props.postal_code
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const changeAddress = await axios.patch(`${baseUrl}/user/profile/address/current`, data, { headers })
+        return changeAddress
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* CONTACT
+export async function apiChangeContact({ ...props }: IContact) {
+    try {
+        const data = {
+            phone: props.phone,
+            instagram: props.instagram
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const changeContact = await axios.patch(`${baseUrl}/user/profile/contact/current`, data, { headers })
+        return changeContact
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage

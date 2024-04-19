@@ -41,3 +41,18 @@ export interface IBio {
     bio?: string;
 }
 
+export interface IAddress {
+    token?: string;
+    street?: string;
+    village?: string;
+    district?: string;
+    city?: string;
+    province?: string;
+    postal_code?: string;
+}
+
+export interface IContact {
+    token?: string;
+    phone?: string;
+    instagram?: string;
+}
