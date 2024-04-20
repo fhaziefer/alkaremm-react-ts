@@ -76,7 +76,7 @@ export async function apiCountUser({ ...props }: IReqDetailUser) {
         };
         const totalUser = await axios
             .get<ICountUser>
-            (`${baseUrl}/total-users`,
+            (`${baseUrl}/users/total`,
                 { headers })
         return totalUser
     } catch (error: any) {

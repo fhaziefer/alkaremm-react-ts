@@ -10,7 +10,7 @@ type Props = {};
 
 const HomeScreen = (props: Props) => {
   const [totalUser, setTotalUser] = useState<ICountUser|null>(null)
-  const { getItem, clearItem, setItem } = useLocalStorage()
+  const { getItem, clearItem } = useLocalStorage()
   const navigate = useNavigate();
   const token = getItem('token')
 
@@ -21,7 +21,6 @@ const HomeScreen = (props: Props) => {
   const handleAbout = (event: any) => {
     navigate(`/about`, { replace: true });
   };
-
 
   const handleLogout = (event: any) => {
     logout()
@@ -46,18 +45,8 @@ const HomeScreen = (props: Props) => {
     }
   }
 
-  const getCurrentUserData = async () => {
-    const userData = await apiGetUserCurrent({token: token})
-    if (userData.status !== 200) {
-      return;
-    } else {
-      setItem('USER_DATA', userData.data)
-    }
-  }
-
   useEffect(() => {
     getTotalUser()
-    getCurrentUserData()
   }, [token])
 
   return (

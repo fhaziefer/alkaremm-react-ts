@@ -28,7 +28,7 @@ const Routes = (props: Props) => {
       //* PUBLIC ROUTE
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='/login' element={<LoginScreen />} />
-      
+
       //* ADMIN ROUTE
       <Route element={<AdminRoute />}>
         <Route path='/admin/dashboard' element={<AdminDashboardScreen />} />

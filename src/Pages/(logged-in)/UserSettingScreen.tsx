@@ -66,8 +66,12 @@ const UserSettingScreen = () => {
   //* SHORTING API
   const birthday = getStringDate(userData?.data.profil?.birthday)
   const street = userData?.data.profil?.address?.street
+  const village = userData?.data.profil?.address?.village
+  const district = userData?.data.profil?.address?.district
+  const city = userData?.data.profil?.address?.city
+  const province = userData?.data.profil?.address?.province
   const age = getAge(userData?.data.profil?.birthday)
-  const addressValue = street ? street : 'Belum ditambahkan';
+  const addressValue = street ? `${street}, ${village}, ${district}, ${city}, ${province}` : 'Belum ditambahkan';
   const avatar = `${apiUrl}${userData?.data.profil?.avatar}`
 
   //* HANDLER USERNAME USER
