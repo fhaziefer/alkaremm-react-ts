@@ -312,10 +312,10 @@ const SettingAddress = ({ onConfirm, onCancel, ...props }: Props) => {
                     label='Kode Pos' />
 
                 <h1 className='text-xs pl-1 -mb-2'>Nama Jalan/Gedung</h1>
-                {streetDisable ? <Input disabled onChange={(e) =>
+                {streetDisable ? <Input className='text-sm' disabled onChange={(e) =>
                     handleStreet(
                         (e.target as HTMLInputElement)
-                    )} placeholder='Nama Jalan/Gedung' /> : <Input onChange={(e) =>
+                    )} placeholder='Nama Jalan/Gedung' /> : <Input className='text-sm' onChange={(e) =>
                         handleStreet(
                             (e.target as HTMLInputElement)
                         )} placeholder='Nama Jalan/Gedung' />}

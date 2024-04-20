@@ -1,6 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
-import { apiCountUser } from '../Services/Api/AlkareemApi/get';
-import { useLocalStorage } from '../Hooks/useLocalStorage';
+import { createContext, ReactNode, useState } from 'react';
 
 type Props = {
   children?: ReactNode;

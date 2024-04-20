@@ -28,7 +28,7 @@ export async function apiSearchUser({ ...props }: IReqSearchUsers) {
         };
         const searchUser = await axios
             .get<ISearchUsers>
-            (`${baseUrl}/user/search/bani?keyword=%${props.query}&bani=%${props.bani}&page=${props.page}&size=75`,
+            (`${baseUrl}/user/search/bani?keyword=${props.query}&bani=%${props.bani}&page=${props.page}&size=75`,
                 { headers })
         return searchUser
     } catch (error: any) {

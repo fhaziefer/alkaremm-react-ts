@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ISearchUsers } from '../../Types/Alkareem/GetAllUserRes';
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiSearchUser } from '../../Services/Api/AlkareemApi/get';
 import UserTable from '../../Components/UserTable';
 import Footer from '../../Components/Footer';
 import Loading from '../../Components/Loading';
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiSearchUser } from '../../Services/Api/AlkareemApi/get';
 import baniName from '../../JSON/baniName.json'
 import Input from '../../Components/Ui/Input';
+import { useDebounce } from '../../Hooks/useDebounce';
 
-type Props = {};
-
-const SearchScreen = (props: Props) => {
+const SearchScreen = () => {
   const [users, setUsers] = useState<ISearchUsers | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false)
@@ -20,13 +19,15 @@ const SearchScreen = (props: Props) => {
   const [baniQuery, setBaniQuery] = useState('')
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
-
+  
   const { getItem } = useLocalStorage()
   const navigate = useNavigate();
 
+  const debouncedQuery = useDebounce(query)
+
   const handleQuery = (event: any) => {
     const inputQuery = event.value.toLowerCase()
-    setQuery(inputQuery);
+    setQuery(inputQuery)
   };
 
   const handleOption = (event: any) => {
@@ -71,8 +72,9 @@ const SearchScreen = (props: Props) => {
   }, [])
 
   const fetchUsers = async () => {
+    setIsLoading(true)
     const token = getItem('token')
-    const users = await apiSearchUser({ token: token, bani: baniQuery, query: query, page: page })
+    const users = await apiSearchUser({ token: token, bani: baniQuery, query: debouncedQuery, page: page })
     if (users.status !== 200) {
       setIsError(true)
       setIsLoading(false)
@@ -85,7 +87,7 @@ const SearchScreen = (props: Props) => {
 
   useEffect(() => {
     fetchUsers();
-  }, [query, baniQuery, page]);
+  }, [debouncedQuery, baniQuery, page]);
 
   return (
     <div className="flex flex-col min-h-screen items-center pt-4">
@@ -107,7 +109,7 @@ const SearchScreen = (props: Props) => {
         </div>
       </div>
       {isLoading ? (
-        <Loading />
+          <Loading />
       ) : (
         <div className='w-full sm:w-[80%] md:w-[80%] lg:w-[60%]'>
           {users?.data.length !== 0 ?
