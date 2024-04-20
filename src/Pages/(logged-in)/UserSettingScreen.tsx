@@ -71,10 +71,7 @@ const UserSettingScreen = () => {
   const avatar = `${apiUrl}${userData?.data.profil?.avatar}`
 
   //* HANDLER USERNAME USER
-  const usernameHandler = (
-    username: string
-  ) => {
-    alert(username)
+  const usernameHandler = () => {
     getUserData()
     setUsernameOpen((prev) => !prev)
   }
@@ -97,26 +94,15 @@ const UserSettingScreen = () => {
   }
 
   //* HANDLER BIRTHDAY USER
-  const birthdayHandler = (
-    birthday: string
-  ) => {
+  const birthdayHandler = () => {
     getUserData()
     setBirthdayOpen((prev) => !prev)
-    alert(birthday)
   }
 
   //* HANDLER ADDRESS USER
-  const addressHandler = (
-    street: string,
-    village: string,
-    district: string,
-    city: string,
-    province: string,
-    postal: string
-  ) => {
+  const addressHandler = () => {
     getUserData()
     setAddressOpen((prev) => !prev)
-    alert(`${street}, ${village}, ${district}, ${city}, ${province}, ${postal}.`)
   }
 
   //* HANDLER CONTACT USER
@@ -155,16 +141,14 @@ const UserSettingScreen = () => {
             onClose={
               () => setUsernameOpen((prev) => !prev)}>
             <SettingUsername
-              usernameNow={userData?.data.username || 'Belum ditambahkan'}
-              onClick={() => setUsernameOpen((prev) => !prev)}
-              onClicked={usernameHandler} />
+              onCancel={() => setUsernameOpen((prev) => !prev)}
+              onConfirm={usernameHandler} />
           </Modal>
 
           <Modal
             open={bioOpen}
             onClose={() => setBioOpen((prev) => !prev)}>
             <SettingBio
-              bioNow={userData?.data.profil?.bio || 'Belum ditambahkan'}
               onConfirm={bioHandler}
               onCancel={() => setBioOpen((prev) => !prev)}
             />
@@ -174,9 +158,8 @@ const UserSettingScreen = () => {
             open={birthdayOpen}
             onClose={() => setBirthdayOpen((prev) => !prev)}>
             <SettingBrithday
-              birthdayNow={birthday || 'Belum ditambahkan'}
-              onClick={() => setBirthdayOpen((prev) => !prev)}
-              onClicked={birthdayHandler}
+              onConfirm={birthdayHandler}
+              onCancel={() => setBirthdayOpen((prev) => !prev)}
             />
           </Modal>
 
@@ -184,14 +167,8 @@ const UserSettingScreen = () => {
             open={addressOpen}
             onClose={() => setAddressOpen((prev) => !prev)}>
             <SettingAddress
-              provinceNow={userData?.data.profil?.address?.province}
-              cityNow={userData?.data.profil?.address?.city}
-              districtNow={userData?.data.profil?.address?.district}
-              villageNow={userData?.data.profil?.address?.village}
-              postalNow={userData?.data.profil?.address?.postal_code}
-              streetNow={userData?.data.profil?.address?.street}
-              onClick={() => setAddressOpen((prev) => !prev)}
-              onClicked={addressHandler}
+              onConfirm={addressHandler}
+              onCancel={() => setAddressOpen((prev) => !prev)}
             />
           </Modal>
 

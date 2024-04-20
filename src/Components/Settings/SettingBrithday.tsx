@@ -1,60 +1,77 @@
-import React, { useState, ReactEventHandler } from 'react'
+import React, { useState } from 'react'
 import Button from '../Ui/Button';
 import DropdownOption from '../Ui/DropdownOption';
 import dateList from '../../JSON/date.json'
 import monthList from '../../JSON/month.json'
 import yearList from '../../JSON/year.json'
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiChangeBrithday } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
-    onClicked?: (
-        birthday: string,
-    ) => void;
-    birthdayNow?: string;
-    onClick?: ReactEventHandler | undefined;
+    onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
-const SettingBrithday = ({ ...props }: Props) => {
+const SettingBrithday = ({ onConfirm, onCancel, ...props }: Props) => {
+
+    const { getItem } = useLocalStorage()
+    const token = getItem('token')
 
     const [isLoading, setIsLoading] = useState(false)
-    const [disable, setDisable] = useState(true)
+    const [error, setError] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const [date, setDate] = useState('')
     const [month, setMonth] = useState('')
     const [year, setYear] = useState('')
+    const [monthDisable, setMonthDisable] = useState(true)
+    const [yearDisable, setYearDisable] = useState(true)
+
+    const resetDropdowns = () => {
+        setDate('');
+        setMonth('');
+        setYear('');
+        setMonthDisable(true);
+        setYearDisable(true);
+        setError(true);
+    };
 
     const handleDate = (id: string, text: string) => {
         setDate(id)
-        setDisable(false)
+        setMonthDisable(false)
     }
     const handleMonth = (id: string, text: string) => {
         setMonth(id)
-        setDisable(false)
+        setYearDisable(false)
     }
-    const handleYear = (id: string, text: string) => {
+    const handleYear = (id:string, text: string) => {
         setYear(text)
-        setDisable(false)
+        setError(false)
     }
 
-    const handleButton = () => {
+    const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true)
-        const brithday = `${year}-${month}-${date}`
+        const birthday = `${year}-${month}-${date}`
         //! SET API HERE
-        setTimeout(() => {
-            if (props.onClicked) {
-                props.onClicked(brithday);
-                setDisable(true)
+        if (onConfirm) {
+            const changeBrithday = await apiChangeBrithday({ token: token, birthday: birthday })
+            if (changeBrithday.status !== 200) {
+                setErrorMessage('Gagal memperbaharui tanggal lahir, coba lagi.')
+                resetDropdowns();
                 setIsLoading(false)
+            } else {
+                resetDropdowns();
+                onConfirm(event)
+                setIsLoading(false)
+                setError(false)
             }
-        }, 5000);
+        }
     }
 
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setDate('')
-        setMonth('')
-        setYear('')
-        setDisable(true)
-        if (props.onClick) {
-            props.onClick(event);
+        if (onCancel) {
+            resetDropdowns();
+            onCancel(event);
         }
     }
 
@@ -62,7 +79,7 @@ const SettingBrithday = ({ ...props }: Props) => {
         <div className='flex flex-col gap-4'>
             <h1 className='text-3xl font-bold pl-1'>Tanggal Lahir</h1>
             <h1 className='text-sm mb-4 pl-1'>Silakan perbarui tanggal lahir Anda sesuai dengan data yang benar.</h1>
-            <div className='flex flex-row gap-2 items-center justify-between'>
+            <div className='flex flex-row gap-2 items-center justify-between relative mb-4'>
                 <DropdownOption
                     label='Tanggal'
                     data={dateList.data}
@@ -70,14 +87,17 @@ const SettingBrithday = ({ ...props }: Props) => {
                 />
                 <DropdownOption
                     label='Bulan'
+                    disabled={monthDisable}
                     data={monthList.data}
                     onClicked={handleMonth}
                 />
                 <DropdownOption
                     label='Tahun'
+                    disabled={yearDisable}
                     data={yearList.data}
                     onClicked={handleYear}
                 />
+                {error && <span className="label-text-alt text-red-500 absolute right-0 -bottom-8 pr-1">{errorMessage}</span>}
             </div>
             <div className='flex-row flex w-full justify-between my-6'>
                 <Button
@@ -90,7 +110,7 @@ const SettingBrithday = ({ ...props }: Props) => {
                 </Button>
                 <Button
                     onClick={handleButton}
-                    disabled={isLoading || disable}
+                    disabled={isLoading || error}
                     variant='primary'
                     className='w-[49%]'
                 >

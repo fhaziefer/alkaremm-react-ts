@@ -2,17 +2,19 @@ import { ReactEventHandler, useState } from 'react';
 import Input from '../Ui/Input';
 import { LuAtSign } from "react-icons/lu";
 import Button from '../Ui/Button';
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiChangeUsername } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
-    onClicked?: (
-        username: string,
-    ) => void;
+    onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     usernameNow?: string;
-    onClick?: ReactEventHandler | undefined;
 }
 
-const SettingUsername = ({ ...props }: Props) => {
+const SettingUsername = ({ onConfirm, onCancel, ...props }: Props) => {
 
+    const { getItem } = useLocalStorage()
+    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -35,25 +37,30 @@ const SettingUsername = ({ ...props }: Props) => {
         }
     }
 
-    const handleButton = () => {
-        //! SET API HERE
+    const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true)
         const username = usernameValue
-        setTimeout(() => {
-            if (props.onClicked) {
-                props.onClicked(username);
-                setErrorMessage('');
+        //! SET API HERE
+        if (onConfirm) {
+            const changeUsername = await apiChangeUsername({ token: token, username: username })
+            if (changeUsername.status !== 200) {
+                setErrorMessage(changeUsername)
                 setUsernameValue('')
+                setError(true)
+                setIsLoading(false)
+            } else {
+                setUsernameValue('')
+                onConfirm(event)
                 setIsLoading(false)
             }
-        }, 5000);
+        }
     }
 
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
         setErrorMessage('');
         setUsernameValue('')
-        if (props.onClick) {
-            props.onClick(event);
+        if (onCancel) {
+            onCancel(event);
         }
     }
 

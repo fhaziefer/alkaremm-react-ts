@@ -6,15 +6,13 @@ import { apiChangeBio } from '../../Services/Api/AlkareemApi/patch';
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-    bioValue?: string;
-    bioNow?: string;
 }
 
 const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
     const { getItem } = useLocalStorage()
     const token = getItem('token')
-    const [bio, setBio] = useState<string>(props.bioValue || '');
-    const [charCount, setCharCount] = useState<number>(props.bioValue ? props.bioValue.length : 0);
+    const [bio, setBio] = useState('')
+    const [charCount, setCharCount] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -44,7 +42,7 @@ const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
         const bioNew = bio
         //! SET API HERE
         if (onConfirm) {
-            const changeBio = await apiChangeBio({token: token, bio: bioNew})
+            const changeBio = await apiChangeBio({ token: token, bio: bioNew })
             if (changeBio.status !== 200) {
                 setErrorMessage('Gagal memperbaharui bio, coba ulangi.')
                 setBio('')
@@ -76,16 +74,19 @@ const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
             <div className='relative'>
                 <textarea
                     className="textarea textarea-bordered w-full h-36 resize-none"
-                    placeholder={props.bioNow}
+                    placeholder='Bio'
                     value={bio}
                     onChange={handleBioChange}
                     maxLength={maxChars}
                 />
-                <div className='absolute bottom-0 w-full' >
+                <div className='absolute bottom-4 w-full' >
                     <span className={`absolute bottom-0 right-0 pr-4 pb-7 text-xs ${isMaxCharsReached ? 'text-red-500' : ''}`}>
                         {charCount}/{maxChars}
                     </span>
                     <progress className={`progress w-full ${progressBarClass}`} value={charPercentage} max="100"></progress>
+                </div>
+                <div className='relative mb-4'>
+                    {error && <span className="label-text-alt text-red-500 absolute right-0 -bottom-6 pr-1">{errorMessage}</span>}
                 </div>
             </div>
             <div className='flex-row flex w-full justify-between my-6'>

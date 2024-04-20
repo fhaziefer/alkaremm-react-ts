@@ -1,39 +1,39 @@
 {
     "data":[
         {
-            "id":"1",
+            "id":"01",
             "text":"Januari"
         },
         {
-            "id":"2",
+            "id":"02",
             "text":"Februari"
         },
         {
-            "id":"3",
+            "id":"03",
             "text":"Maret"
         },
         {
-            "id":"4",
+            "id":"04",
             "text":"April"
         },
         {
-            "id":"5",
+            "id":"05",
             "text":"Mei"
         },
         {
-            "id":"6",
+            "id":"06",
             "text":"Juni"
         },
         {
-            "id":"7",
+            "id":"07",
             "text":"Juli"
         },
         {
-            "id":"8",
+            "id":"08",
             "text":"Agustus"
         },
         {
-            "id":"9",
+            "id":"09",
             "text":"September"
         },
         {

@@ -56,3 +56,8 @@ export interface IContact {
     phone?: string;
     instagram?: string;
 }
+
+export interface IBirthday {
+    token?: string;
+    birthday?: string;
+}

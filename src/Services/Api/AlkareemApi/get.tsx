@@ -84,3 +84,16 @@ export async function apiCountUser({ ...props }: IReqDetailUser) {
         return errorMessage
     }
 }
+
+export async function apiGetAddressCurrent({ ...props }: IToken) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const address = await axios.get(`${baseUrl}/user/profile/address/current`, { headers })
+        return address
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}

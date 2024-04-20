@@ -4,28 +4,23 @@ import { IGetAddress } from '../../Types/Address/GetAddress';
 import { apiCity, apiDistrict, apiPostal, apiProvince, apiVillage } from '../../Services/Api/AddressApi/addressApi';
 import Input from '../Ui/Input';
 import Button from '../Ui/Button';
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiChangeAddress } from '../../Services/Api/AlkareemApi/patch';
+import { apiCreateAddress } from '../../Services/Api/AlkareemApi/post';
+import { apiGetAddressCurrent } from '../../Services/Api/AlkareemApi/get';
 
 type Props = {
-    onClicked?: (
-        street: string,
-        village: string,
-        district: string,
-        city: string,
-        province: string,
-        postal: string
-    ) => void;
-    streetNow?: string
-    villageNow?: string
-    districtNow?: string
-    cityNow?: string
-    provinceNow?: string
-    postalNow?: string
-    onClick?: ReactEventHandler;
+    onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-const SettingAddress = ({ ...props }: Props) => {
+const SettingAddress = ({ onConfirm, onCancel, ...props }: Props) => {
 
+    const { getItem } = useLocalStorage()
+    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const [provinceDisable, setProvinceDisable] = useState(true)
     const [cityDisable, setCityDisable] = useState(true)
@@ -54,14 +49,13 @@ const SettingAddress = ({ ...props }: Props) => {
 
     const getProvince = async () => {
         setIsLoading(true)
-        setProvinceDisable(true)
         const address = await apiProvince()
         if (address.status !== 200) {
             setIsLoading(false)
             setProvinceDisable(false)
             return
         } else if (address.data.result.length === 0) {
-            console.log('Data tidak ditemukan')
+            setErrorMessage('Data tidak ditemukan, periksa koneksi internet Anda')
             setIsLoading(false)
             setProvinceDisable(false)
             return
@@ -76,7 +70,7 @@ const SettingAddress = ({ ...props }: Props) => {
         setIsLoading(true)
         const address = await apiCity({ id: provinceId })
         if (address.data.result.length === 0) {
-            console.log('Data tidak ditemukan')
+            setErrorMessage('Data tidak ditemukan, periksa koneksi internet Anda')
             setIsLoading(false)
             return
         } else {
@@ -89,7 +83,7 @@ const SettingAddress = ({ ...props }: Props) => {
         setIsLoading(true)
         const address = await apiDistrict({ id: cityId })
         if (address.data.result.length === 0) {
-            console.log('Data tidak ditemukan')
+            setErrorMessage('Data tidak ditemukan, periksa koneksi internet Anda')
             setIsLoading(false)
             return
         } else {
@@ -102,7 +96,7 @@ const SettingAddress = ({ ...props }: Props) => {
         setIsLoading(true)
         const address = await apiVillage({ id: districtId })
         if (address.data.result.length === 0) {
-            console.log('Data tidak ditemukan')
+            setErrorMessage('Data tidak ditemukan, periksa koneksi internet Anda')
             setIsLoading(false)
             return
         } else {
@@ -115,7 +109,7 @@ const SettingAddress = ({ ...props }: Props) => {
         setIsLoading(true)
         const address = await apiPostal({ cityId: cityId, districtId: districtId })
         if (address.data.result.length === 0) {
-            console.log('Data tidak ditemukan')
+            setErrorMessage('Data tidak ditemukan, periksa koneksi internet Anda')
             setIsLoading(false)
             return
         } else {
@@ -143,11 +137,8 @@ const SettingAddress = ({ ...props }: Props) => {
         }
 
         if (villageId) {
-            getPostal()
             setPostalDisable(false)
-        }
-
-        if (postalId) {
+            getPostal()
             setStreetDisable(false)
         }
 
@@ -179,24 +170,21 @@ const SettingAddress = ({ ...props }: Props) => {
     }
 
     const handleStreet = (event: any) => {
-        const streetInput = event.value
+        const streetInput = event.value;
+        if (streetInput.length > 49) {
+            setError(true);
+            setErrorMessage('Nama Jalan/Nama Gedung tidak boleh lebih dari 50 karakter');
+        } else if (streetInput.length < 8) {
+            setError(true);
+            setErrorMessage('Nama Jalan/Nama Gedung tidak valid');
+        } else {
+            setError(false);
+            setErrorMessage('');
+        }
         setStreetText(streetInput);
     }
 
-    const handleButton = () => {
-        //! SET API HERE
-        const street = streetText
-        const village = villageText
-        const district = districtText
-        const city = cityText
-        const province = provinceText
-        const postal = postalText
-        if (props.onClicked) {
-            props.onClicked(street, village, district, city, province, postal);
-        }
-    }
-
-    const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const resetDropdowns = () => {
         setProvinceId('');
         setProvinceText('');
         setCityId('');
@@ -213,8 +201,67 @@ const SettingAddress = ({ ...props }: Props) => {
         setVillageDisable(true);
         setPostalDisable(true);
         setStreetDisable(true);
-        if (props.onClick) {
-            props.onClick(event);
+        setError(true)
+    }
+
+    const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        setIsLoading(true);
+
+        const street = streetText;
+        const village = villageText;
+        const district = districtText;
+        const city = cityText;
+        const province = provinceText;
+        const postal = postalText;
+
+        if (onConfirm) {
+            try {
+                const checkAddressResponse = await apiGetAddressCurrent({ token });
+
+                if (checkAddressResponse.status !== 200) {
+                    const createAddressResponse = await apiCreateAddress({ token, province, city, district, village, postal_code: postal, street });
+
+                    if (createAddressResponse.status !== 200) {
+                        setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
+                        setError(true);
+                    } else {
+                        onConfirm(event);
+                        resetDropdowns();
+                    }
+                } else {
+                    const changeAddressResponse = await apiChangeAddress({ token, province, city, district, village, postal_code: postal, street });
+
+                    if (changeAddressResponse.status === 403) {
+                        const createAddressResponse = await apiCreateAddress({ token, province, city, district, village, postal_code: postal, street });
+
+                        if (createAddressResponse.status !== 200) {
+                            setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
+                            setError(true);
+                        } else {
+                            onConfirm(event);
+                            resetDropdowns();
+                        }
+                    } else if (changeAddressResponse.status === 400) {
+                        setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
+                        setError(true);
+                    } else {
+                        onConfirm(event);
+                        resetDropdowns();
+                    }
+                }
+            } catch (error) {
+                setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
+                setError(true);
+            }
+
+            setIsLoading(false);
+        }
+    };
+
+    const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
+        if (onCancel) {
+            resetDropdowns()
+            onCancel(event);
         }
     }
 
@@ -223,25 +270,58 @@ const SettingAddress = ({ ...props }: Props) => {
             <div className='flex flex-col gap-4'>
                 <h1 className='text-3xl font-bold pl-1'>Informasi Alamat</h1>
                 <h1 className='text-sm mb-4 pl-1'>Silakan pastikan alamat Anda sesuai dengan data alamat yang valid!</h1>
+
                 <h1 className='text-xs pl-1 -mb-2'>Provinsi</h1>
-                <DropdownOption disabled={provinceDisable} loading={isLoading} onClicked={handleProvince} data={province?.result} label={props.provinceNow || 'Belum diatur'} />
+                <DropdownOption
+                    disabled={provinceDisable}
+                    loading={isLoading}
+                    onClicked={handleProvince}
+                    data={province?.result}
+                    label='Provinsi' />
+
                 <h1 className='text-xs pl-1 -mb-2'>Kota/Kabupaten</h1>
-                <DropdownOption disabled={cityDisable} loading={isLoading} onClicked={handleCity} data={city?.result} label={props.cityNow || 'Belum diatur'} />
+                <DropdownOption
+                    disabled={cityDisable}
+                    loading={isLoading}
+                    onClicked={handleCity}
+                    data={city?.result}
+                    label='Kota/Kabupaten' />
+
                 <h1 className='text-xs pl-1 -mb-2'>Kecamatan</h1>
-                <DropdownOption disabled={districtDisable} loading={isLoading} onClicked={handleDistrict} data={district?.result} label={props.districtNow || 'Belum diatur'} />
+                <DropdownOption
+                    disabled={districtDisable}
+                    loading={isLoading}
+                    onClicked={handleDistrict}
+                    data={district?.result}
+                    label='Kecamatan' />
+
                 <h1 className='text-xs pl-1 -mb-2'>Desa/Kelurahan</h1>
-                <DropdownOption disabled={villageDisable} loading={isLoading} onClicked={handleVillage} data={village?.result} label={props.villageNow || 'Belum diatur'} />
+                <DropdownOption
+                    disabled={villageDisable}
+                    loading={isLoading}
+                    onClicked={handleVillage}
+                    data={village?.result}
+                    label='Desa/Kelurahan' />
+
                 <h1 className='text-xs pl-1 -mb-2'>Kode Pos</h1>
-                <DropdownOption disabled={postalDisable} loading={isLoading} onClicked={handlePostal} data={postal?.result} label={props.postalNow || 'Belum diatur'} />
-                <h1 className='text-xs pl-1 -mb-2'>Nama jalan/gedung</h1>
+                <DropdownOption
+                    disabled={postalDisable}
+                    loading={isLoading}
+                    onClicked={handlePostal}
+                    data={postal?.result}
+                    label='Kode Pos' />
+
+                <h1 className='text-xs pl-1 -mb-2'>Nama Jalan/Gedung</h1>
                 {streetDisable ? <Input disabled onChange={(e) =>
                     handleStreet(
                         (e.target as HTMLInputElement)
-                    )} placeholder={props.streetNow || 'Belum diatur'} /> : <Input onChange={(e) =>
+                    )} placeholder='Nama Jalan/Gedung' /> : <Input onChange={(e) =>
                         handleStreet(
                             (e.target as HTMLInputElement)
-                        )} placeholder={props.streetNow || 'Belum diatur'} />}
-
+                        )} placeholder='Nama Jalan/Gedung' />}
+                <div className='relative mb-4'>
+                    {error ? <span className="label-text-alt text-red-500 absolute right-0 -bottom-4 pr-1">{errorMessage}</span> : <span className="label-text-alt absolute right-0 -bottom-4 pr-1">Contoh: <i>Jl. KH. Abdul Karim Ponpes Lirboyo</i></span>}
+                </div>
                 <p className='text-xs mb-4 pl-1 text-justify'><strong className='text-gray-200'>Note: </strong>Untuk memastikan keakuratan informasi alamat Anda, harap lengkapi semua detail yang diperlukan, termasuk nama jalan atau nama gedung, desa/kelurahan, kecamatan, kota/kabupaten, provinsi, dan kode pos. Hal ini akan membantu dalam memastikan bahwa alamat Anda dapat diakses dengan mudah dan akurat.</p>
 
                 <div className='flex-row flex w-full justify-between my-6'>
@@ -251,19 +331,21 @@ const SettingAddress = ({ ...props }: Props) => {
                         className='w-[49%]'>
                         Batal
                     </Button>
-                    {streetText.length > 4 ?
-                        <Button
-                            onClick={handleButton}
-                            variant='primary'
-                            className='w-[49%]'>
-                            Konfirmasi
-                        </Button>
-                        : <Button
-                            className='w-[49%]'
-                            disabled>
-                            Konfirmasi
-                        </Button>
-                    }
+                    <Button
+                        onClick={handleButton}
+                        disabled={isLoading || error}
+                        variant='primary'
+                        className='w-[49%]'
+                    >
+                        {isLoading ?
+                            (
+                                <span
+                                    className="loading loading-spinner loading-md">
+                                </span>
+                            ) : (
+                                'Konfirmasi'
+                            )}
+                    </Button>
                 </div>
             </div>
         </>

@@ -1,13 +1,13 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IAddress, IBio, IContact, IPassword, IUsername } from "../../../Types/Alkareem/ReqType";
+import { IAddress, IBio, IBirthday, IContact, IPassword, IUsername } from "../../../Types/Alkareem/ReqType";
 const baseUrl = env.REACT_APP_BASE_URL
 
 //* USERNAME
 export async function apiChangeUsername({ ...props }: IUsername) {
     try {
         const data = {
-            usernmae: props.username
+            username: props.username
         }
         const headers = {
             Authorization: props.token,
@@ -48,6 +48,23 @@ export async function apiChangeBio({ ...props }: IBio) {
         };
         const changeBio = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
         return changeBio
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* BIRTHDAY
+export async function apiChangeBrithday({ ...props }: IBirthday) {
+    try {
+        const data = {
+            birthday: props.birthday
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const changeBrithday = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return changeBrithday
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage
