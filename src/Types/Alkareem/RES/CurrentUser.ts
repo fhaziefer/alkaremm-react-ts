@@ -42,6 +42,11 @@ interface Profil {
   children?: Child[];
   address?: Address;
   contact?: Contact;
+  profileBani?: ProfileBani[];
+}
+
+interface ProfileBani {
+  bani: Bani;
 }
 
 interface Contact {

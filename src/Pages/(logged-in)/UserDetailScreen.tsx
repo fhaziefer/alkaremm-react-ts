@@ -67,11 +67,10 @@ const UserDetailScreen = () => {
               return
             } else {
               const husbandId = user.data.data.profil.husband.userId
+              console.log(husbandId)
               var children = await apiChildren({ token: token, id: husbandId })
             }
-
           }
-
         }
 
       }
