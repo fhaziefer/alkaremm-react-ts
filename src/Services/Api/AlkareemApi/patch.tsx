@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IAddress, IBio, IBirthday, IContact, IPassword, IUsername } from "../../../Types/Alkareem/ReqType";
+import { IAddress, IAvatar, IBio, IBirthday, IContact, IPassword, IProfileInfo, IToken, IUsername } from "../../../Types/Alkareem/REQ/ReqType";
 const baseUrl = env.REACT_APP_BASE_URL
 
 //* USERNAME
@@ -93,6 +93,23 @@ export async function apiChangeAddress({ ...props }: IAddress) {
     }
 }
 
+//* PHONE ONLY
+export async function apiChangePhone({ ...props }: IContact) {
+    try {
+        const data = {
+            phone: props.phone
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const changePhone = await axios.patch(`${baseUrl}/user/profile/contact/current`, data, { headers })
+        return changePhone
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
 //* CONTACT
 export async function apiChangeContact({ ...props }: IContact) {
     try {
@@ -103,8 +120,58 @@ export async function apiChangeContact({ ...props }: IContact) {
         const headers = {
             Authorization: props.token,
         };
-        const changeContact = await axios.patch(`${baseUrl}/user/profile/contact/current`, data, { headers })
-        return changeContact
+        const changePhone = await axios.patch(`${baseUrl}/user/profile/contact/current`, data, { headers })
+        return changePhone
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* REMOVE AVATAR
+export async function apiRemoveAvatar({ ...props }: IToken) {
+    try {
+        const headers = {
+            Authorization: props.token
+        };
+        const remove = await axios.patch(`${baseUrl}/user/profile/avatar/current/remove`, {}, { headers });
+        return remove;
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage;
+    }
+}
+
+//* CHANGE AVATAR
+export async function apiUploadAvatar(token:string, avatar:File) {
+    try {
+        const formData = new FormData();
+        formData.append('avatar', avatar);
+        const headers = {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data'
+        };
+
+        const uploadAvatar = await axios.patch(`${baseUrl}/user/profile/avatar/current`, formData, { headers });
+        return uploadAvatar;
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage;
+    }
+}
+
+//* NAME AND GENDER
+export async function apiChangeProfileInfo({...props}:IProfileInfo) {
+    try {
+        const data = {
+            name: props.name,
+            gender: props.gender
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const profileInfo = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return profileInfo
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage

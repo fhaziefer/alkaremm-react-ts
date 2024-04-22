@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IAddress, ILogin, IRegister } from "../../../Types/Alkareem/ReqType";
+import { IAddress, IContact, ILogin, IProfileInfo, IRegister } from "../../../Types/Alkareem/REQ/ReqType";
 
 const baseUrl = env.REACT_APP_BASE_URL
 
@@ -24,6 +24,40 @@ export async function apiRegister({ ...props }: IRegister) {
     }
 }
 
+export async function apiCreateProfile({ ...props }: IProfileInfo) {
+    try {
+        const data = {
+            name: props.name,
+            gender: props.gender
+        }
+        const headers = {
+            Authorization: props.token
+        }
+        const createProfile = await axios.post(`${baseUrl}/user/profile`, data, { headers })
+        return createProfile
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiCreateContact({ ...props }: IContact) {
+    try {
+        const data = {
+            instagram: props.instagram,
+            phone: props.phone
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const createContact = await axios.post(`${baseUrl}/user/profile/contact`, data, { headers })
+        return createContact;
+    } catch (error: any) {
+        const errrorMessage = error.response.data.errors;
+        return errrorMessage
+    }
+}
+
 export async function apiCreateAddress({ ...props }: IAddress) {
     try {
         const data = {
@@ -37,7 +71,7 @@ export async function apiCreateAddress({ ...props }: IAddress) {
         const headers = {
             Authorization: props.token,
         };
-        const createAddress = await axios.post(`${baseUrl}/user/profile/address`, data, {headers})
+        const createAddress = await axios.post(`${baseUrl}/user/profile/address`, data, { headers })
         return createAddress;
     } catch (error: any) {
         const errrorMessage = error.response.data.errors;

@@ -1,4 +1,4 @@
-import { ReactEventHandler } from 'react'
+import { ReactElement, ReactEventHandler, ReactNode } from 'react'
 import { cva } from 'class-variance-authority';
 
 type Props = {
@@ -7,6 +7,7 @@ type Props = {
     item?: string
     clasname?: string
     onClick?: ReactEventHandler
+    image?: string
     size?: 'normal' | 'tiny' | 'small' | 'large'
     color?: 'normal' | 'error'
 }
@@ -18,14 +19,14 @@ export default function SettingItems({ size, color, ...props }: Props) {
     return (
         <>
             <div
-                className={`flex justify-between hover:opacity-75 ${SizeVariants({size})} cursor-pointer`}
+                className={`flex justify-between hover:opacity-75 ${SizeVariants({ size })} cursor-pointer`}
                 onClick={props.onClick}>
                 <div className='flex items-center w-[50%]'>
                     <ul>
                         {/* label of list */}
-                        <li className={ColorVariants({color})}>
+                        <li className={ColorVariants({ color })}>
                             {props.label}
-                        </li> 
+                        </li>
 
                         {/* sublabel of list */}
                         {props.subLabel &&
@@ -40,10 +41,18 @@ export default function SettingItems({ size, color, ...props }: Props) {
                 {props.item &&
                     <div className='flex items-center w-[45%]'>
                         <ul className='w-[100%]'>
-                            <li className='text-gray-500 text-sm text-right overflow-hidden whitespace-nowrap overflow-ellipsis'>
-                                {props.item}
-                            </li>
+                            {props.item &&
+                                <li className='text-gray-500 text-sm text-right overflow-hidden whitespace-nowrap overflow-ellipsis'>
+                                    {props.item}
+                                </li>}
                         </ul>
+                    </div>
+                }
+                {props.image &&
+                    <div className="avatar mr-1">
+                        <div className="rounded-full">
+                            <img alt="User avatar" src={props.image} />
+                        </div>
                     </div>
                 }
             </div>

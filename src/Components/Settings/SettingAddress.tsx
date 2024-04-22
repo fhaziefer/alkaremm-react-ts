@@ -18,7 +18,7 @@ const SettingAddress = ({ onConfirm, onCancel, ...props }: Props) => {
 
     const { getItem } = useLocalStorage()
     const token = getItem('token')
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -222,11 +222,13 @@ const SettingAddress = ({ onConfirm, onCancel, ...props }: Props) => {
                     const createAddressResponse = await apiCreateAddress({ token, province, city, district, village, postal_code: postal, street });
 
                     if (createAddressResponse.status !== 200) {
-                        setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
                         setError(true);
+                        setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
+                        setIsLoading(false)
                     } else {
-                        onConfirm(event);
                         resetDropdowns();
+                        setIsLoading(false)
+                        onConfirm(event);
                     }
                 } else {
                     const changeAddressResponse = await apiChangeAddress({ token, province, city, district, village, postal_code: postal, street });
@@ -237,23 +239,26 @@ const SettingAddress = ({ onConfirm, onCancel, ...props }: Props) => {
                         if (createAddressResponse.status !== 200) {
                             setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
                             setError(true);
+                            setIsLoading(false)
                         } else {
                             onConfirm(event);
                             resetDropdowns();
+                            setIsLoading(false)
                         }
                     } else if (changeAddressResponse.status === 400) {
-                        setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
                         setError(true);
+                        setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
+                        setIsLoading(false)
                     } else {
-                        onConfirm(event);
                         resetDropdowns();
+                        setIsLoading(false)
+                        onConfirm(event);
                     }
                 }
             } catch (error) {
                 setErrorMessage('Gagal memperbaharui alamat, coba sekali lagi');
                 setError(true);
             }
-
             setIsLoading(false);
         }
     };

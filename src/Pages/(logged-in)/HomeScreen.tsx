@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiCountUser, apiGetUserCurrent } from '../../Services/Api/AlkareemApi/get';
+import { apiCountUser } from '../../Services/Api/AlkareemApi/get';
 import Button from '../../Components/Ui/Button';
 import { useEffect, useState } from 'react';
-import { ICountUser } from '../../Types/Alkareem/GetTotalUserCount';
 import { apiLogout } from '../../Services/Api/AlkareemApi/delete';
+import { ICountTotalUsers } from '../../Types/Alkareem/RES/CountUser';
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
-  const [totalUser, setTotalUser] = useState<ICountUser|null>(null)
+  const [totalUser, setTotalUser] = useState<ICountTotalUsers|null>(null)
   const { getItem, clearItem } = useLocalStorage()
   const navigate = useNavigate();
   const token = getItem('token')

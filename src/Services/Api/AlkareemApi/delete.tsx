@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IToken } from "../../../Types/Alkareem/ReqType";
+import { IToken } from "../../../Types/Alkareem/REQ/ReqType";
 
 const baseUrl = env.REACT_APP_BASE_URL
 

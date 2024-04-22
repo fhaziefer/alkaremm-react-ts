@@ -1,10 +1,11 @@
 import axios from "axios"
 import { env } from "../../../Utils/env"
-import { IReqDetailUser, IReqSearchUsers, IToken } from "../../../Types/Alkareem/ReqType"
-import { ISearchUsers } from "../../../Types/Alkareem/GetAllUserRes"
-import { IDetailUser } from "../../../Types/Alkareem/GetDetailUser"
-import { IChildren } from "../../../Types/Alkareem/GetChildren"
-import { ICountUser } from "../../../Types/Alkareem/GetTotalUserCount"
+import { IReqDetailUser, IReqSearchUsers, IToken } from "../../../Types/Alkareem/REQ/ReqType"
+import { ICurrentUser } from "../../../Types/Alkareem/RES/CurrentUser"
+import { ISearchUser } from "../../../Types/Alkareem/RES/SearchUser"
+import { ICountTotalUsers } from "../../../Types/Alkareem/RES/CountUser"
+import { IChildren } from "../../../Types/Alkareem/RES/ChildrenById"
+import { IUserById } from "../../../Types/Alkareem/RES/UserById"
 
 const baseUrl = env.REACT_APP_BASE_URL
 
@@ -13,7 +14,9 @@ export async function apiGetUserCurrent({ ...props }: IToken) {
         const headers = {
             Authorization: props.token,
         };
-        const user = await axios.get<IDetailUser>(`${baseUrl}/user/current`, { headers })
+        const user = await axios
+            .get<ICurrentUser>
+            (`${baseUrl}/user/current`, { headers })
         return user
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
@@ -27,8 +30,8 @@ export async function apiSearchUser({ ...props }: IReqSearchUsers) {
             Authorization: props.token,
         };
         const searchUser = await axios
-            .get<ISearchUsers>
-            (`${baseUrl}/user/search/bani?keyword=${props.query}&bani=%${props.bani}&page=${props.page}&size=75`,
+            .get<ISearchUser>
+            (`${baseUrl}/user/search/bani?keyword=${props.query}&bani=${props.bani}&page=${props.page}&size=100`,
                 { headers })
         return searchUser
     } catch (error: any) {
@@ -43,7 +46,7 @@ export async function apiDetailUser({ ...props }: IReqDetailUser) {
             Authorization: props.token,
         };
         const user = await axios
-            .get<IDetailUser>
+            .get<IUserById>
             (`${baseUrl}/user/${props.id}`,
                 { headers })
         return user
@@ -75,10 +78,23 @@ export async function apiCountUser({ ...props }: IReqDetailUser) {
             Authorization: props.token,
         };
         const totalUser = await axios
-            .get<ICountUser>
+            .get<ICountTotalUsers>
             (`${baseUrl}/users/total`,
                 { headers })
         return totalUser
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiGetContactCurrent({ ...props }: IToken) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const contact = await axios.get(`${baseUrl}/user/profile/contact/current`, { headers })
+        return contact
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage
@@ -92,6 +108,19 @@ export async function apiGetAddressCurrent({ ...props }: IToken) {
         };
         const address = await axios.get(`${baseUrl}/user/profile/address/current`, { headers })
         return address
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiGetProfile({ ...props }: IToken) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const profile = await axios.get(`${baseUrl}/user/profile/current`, { headers })
+        return profile
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage

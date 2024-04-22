@@ -1,17 +1,20 @@
 import { useState, ReactEventHandler } from 'react'
 import Button from '../Ui/Button'
 import Input from '../Ui/Input'
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiGetContactCurrent } from '../../Services/Api/AlkareemApi/get';
+import { apiCreateContact } from '../../Services/Api/AlkareemApi/post';
+import { apiChangeContact, apiChangePhone } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
-    onClicked?: (
-        phone?: string | undefined,
-        instagram?: string | undefined
-    ) => void;
-    onClick?: ReactEventHandler | undefined;
-}
+    onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+};
 
-const SettingContact = ({ ...props }: Props) => {
+const SettingContact = ({ onCancel, onConfirm, ...props }: Props) => {
 
+    const { getItem } = useLocalStorage()
+    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')
@@ -20,13 +23,13 @@ const SettingContact = ({ ...props }: Props) => {
 
     const handlePhoneInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         const phoneInput = event.target.value;
-        const pattern = /^[1-9][0-9]{8,10}$/;
+        const pattern = /^[1-9][0-9]{8,11}$/;
 
         if (!pattern.test(phoneInput)) {
             setError(true);
             setErrorMessage('Nomor tidak Valid');
         } else {
-            setPhone(`+62${phoneInput}`);
+            setPhone(`62${phoneInput}`);
             setError(false);
             setErrorMessage('');
         }
@@ -34,31 +37,67 @@ const SettingContact = ({ ...props }: Props) => {
 
     const handleInstagramInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInstagram(event.target.value)
-        if (event.target.value.length < 3) {
+        if (event.target.value.length < 3 && phone.length !== 0) {
             setError(false)
         }
     }
 
-    const handleButton = () => {
-        //! SET API HERE
-        setIsLoading(true)
-        setTimeout(() => {
-            if (props.onClicked) {
-                props.onClicked(phone, instagram);
-                setErrorMessage('');
-                setError(true)
-                setIsLoading(false)
-            }
-        }, 5000);
+    const resetInput = () => {
+        setInstagram('')
+        setPhone('')
+        setError(true)
+        setIsLoading(false)
     }
 
+    const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        //! SET API HERE
+        setIsLoading(true)
+        if (onConfirm) {
+            try {
+                const checkContact = await apiGetContactCurrent({ token: token })
+                if (checkContact.status !== 200) {
+                    const createContact = await apiCreateContact({ token: token, phone: phone, instagram: instagram })
+                    if (createContact.status !== 200) {
+                        setError(true)
+                        setErrorMessage('Gagal memperbaharui, coba sekali lagi')
+                    } else {
+                        onConfirm(event)
+                        resetInput()
+                    }
+                } else {
+                    if (instagram.length === 0) {
+                        const changePhone = await apiChangePhone({ token: token, phone: phone })
+                        if (changePhone.status !== 200) {
+                            setError(true)
+                            setErrorMessage('Gagal memperbaharui, coba sekali lagi')
+                        } else {
+                            onConfirm(event)
+                            resetInput()
+                        }
+                    } else {
+                        const changeContact = await apiChangeContact({ token: token, phone: phone, instagram: instagram })
+                        if (changeContact.status !== 200) {
+                            setError(true)
+                            setErrorMessage('Gagal memperbaharui, coba sekali lagi')
+                        } else {
+                            onConfirm(event)
+                            resetInput()
+                        }
+                    }
+                }
+            } catch (error) {
+                setError(true)
+                setErrorMessage('Gagal memperbaharui, coba sekali lagi')
+            }
+            setIsLoading(false);
+        }
+    }
+
+
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setPhone('')
-        setInstagram('')
-        setErrorMessage('')
-        setError(true)
-        if (props.onClick) {
-            props.onClick(event);
+        if (onCancel) {
+            resetInput()
+            onCancel(event);
         }
     }
 
@@ -75,8 +114,8 @@ const SettingContact = ({ ...props }: Props) => {
 
             <div className='flex flex-col gap-4'>
 
-            <h1 className='text-xs pl-1 -mb-2'>Nomor WhatsApp</h1>
-                
+                <h1 className='text-xs pl-1 -mb-2'>Nomor WhatsApp</h1>
+
                 <label className="input input-bordered flex items-center relative">
                     <div className='w-10 h-full flex items-center'>
                         <span className='font-bold text-white text-end'>+62</span>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ISearchUsers } from '../../Types/Alkareem/GetAllUserRes';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiSearchUser } from '../../Services/Api/AlkareemApi/get';
 import UserTable from '../../Components/UserTable';
@@ -9,9 +8,10 @@ import Loading from '../../Components/Loading';
 import baniName from '../../JSON/baniName.json'
 import Input from '../../Components/Ui/Input';
 import { useDebounce } from '../../Hooks/useDebounce';
+import { ISearchUser } from '../../Types/Alkareem/RES/SearchUser';
 
 const SearchScreen = () => {
-  const [users, setUsers] = useState<ISearchUsers | null>(null);
+  const [users, setUsers] = useState<ISearchUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -28,6 +28,7 @@ const SearchScreen = () => {
   const handleQuery = (event: any) => {
     const inputQuery = event.value.toLowerCase()
     setQuery(inputQuery)
+    setPage(1)
   };
 
   const handleOption = (event: any) => {
@@ -129,9 +130,9 @@ const SearchScreen = () => {
                     editButton={handleEdit}
                     deleteButton={handleDelete}
                     key={user.id}
-                    name={user.profil.name}
-                    bani={user.profil.bani.bani_name}
-                    avatar={`${process.env.REACT_APP_BASE_URL}${user.profil.avatar}`}
+                    name={user.profil?.name}
+                    bani={user.profil?.bani?.bani_name}
+                    avatar={`${process.env.REACT_APP_BASE_URL}${user.profil?.avatar}`}
                     username={user.username} />
                 ))}
               </tbody>

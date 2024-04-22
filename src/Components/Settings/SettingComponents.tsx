@@ -6,6 +6,7 @@ import SettingFamilyInfo from "./SettingFamilyInfo";
 import SettingPassword from "./SettingPassword";
 import SettingProfileInfo from "./SettingProfileInfo";
 import SettingUsername from "./SettingUsername";
+import SettingAvatar from "./SettingAvatar";
 
 export {
     SettingAddress,
@@ -15,5 +16,6 @@ export {
     SettingProfileInfo,
     SettingContact,
     SettingFamilyInfo,
-    SettingUsername
+    SettingUsername,
+    SettingAvatar
 }

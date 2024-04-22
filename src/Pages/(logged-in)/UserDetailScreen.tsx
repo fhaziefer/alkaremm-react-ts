@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiChildren, apiDetailUser } from '../../Services/Api/AlkareemApi/get';
-import { IDetailUser } from '../../Types/Alkareem/GetDetailUser';
 import { env } from '../../Utils/env';
 import ProfileCard from '../../Components/DetailUserCard';
 import Loading from '../../Components/Loading';
-import { IChildren } from '../../Types/Alkareem/GetChildren';
+import { ICurrentUser } from '../../Types/Alkareem/RES/CurrentUser';
+import { IChildren } from '../../Types/Alkareem/RES/ChildrenById';
+import { Wife } from '../../Types/Alkareem/RES/Wives';
 
 const UserDetailScreen = () => {
 
@@ -14,7 +15,7 @@ const UserDetailScreen = () => {
   const { getItem } = useLocalStorage()
   const token = getItem('token')
 
-  const [userData, setUserData] = useState<IDetailUser | null>(null)
+  const [userData, setUserData] = useState<ICurrentUser | null>(null)
   const [childrenData, setChildrenData] = useState<IChildren | null>(null)
   const [isLoading, setIsLoading] = useState(true);
   const url = env.REACT_APP_BASE_URL
@@ -34,28 +35,38 @@ const UserDetailScreen = () => {
 
         if (user.data.data.profil.children.length !== 0) {
 
-          const userProfileId = user.data.data.profil.id
-
-          var children = await apiChildren({ token: token, id: userProfileId })
+          var children = await apiChildren({ token: token, id: id })
 
         } else {
 
           if (user.data.data.profil?.gender !== 'FEMALE') {
 
-            if (user.data.data.profil.wife === null){
+            if (user.data.data.profil?.wives === null) {
               setIsLoading(false)
               return
             } else {
-              const wifeId = user.data.data.profil.wife.id
-              var children = await apiChildren({ token: token, id: wifeId })
+
+              const wives = user.data.data.profil?.wives
+              let wifeId1 = undefined
+
+              if (wives && wives.length > 0) {
+                wives.forEach((wife: Wife) => {
+                  wifeId1 = wife.userId
+                });
+              } else {
+                console.log("No wife data available.");
+              }
+
+              var children = await apiChildren({ token: token, id: wifeId1 })
             }
 
           } else {
+
             if (user.data.data.profil.husband === null) {
               setIsLoading(false)
               return
             } else {
-              const husbandId = user.data.data.profil.husband.id
+              const husbandId = user.data.data.profil.husband.userId
               var children = await apiChildren({ token: token, id: husbandId })
             }
 
@@ -66,7 +77,6 @@ const UserDetailScreen = () => {
       }
       if (children.status !== 200) {
         setIsLoading(false)
-        // setIsError(true)
       } else {
         setChildrenData(children.data)
         setIsLoading(false)
@@ -87,7 +97,6 @@ const UserDetailScreen = () => {
           name={userData?.data.profil?.name}
           user_alive={userData?.data.profil?.alive_status}
           parent_alive={userData?.data.profil?.parent?.alive_status}
-          wife_alive={userData?.data.profil?.wife?.alive_status}
           husband_alive={userData?.data.profil?.husband?.alive_status}
           username={userData?.data.username}
           bio={userData?.data.profil?.bio}
@@ -96,8 +105,8 @@ const UserDetailScreen = () => {
           avatar={url + userData?.data.profil?.avatar}
           gender={userData?.data.profil?.gender}
           husband={userData?.data.profil?.husband?.name}
-          wife={userData?.data.profil?.wife?.name}
-          children={childrenData?.data.children}
+          wife={userData?.data.profil?.wives}
+          children={childrenData?.data.profil?.children}
           wali={userData?.data.profil?.parent?.name}
           street={userData?.data.profil?.address?.street}
           village={userData?.data.profil?.address?.village}

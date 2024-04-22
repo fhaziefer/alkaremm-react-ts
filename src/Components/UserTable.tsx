@@ -29,7 +29,7 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                 </div>
             </td> : <td className='items-end'>
                 <div className='flex flex-col items-end gap-2'>
-                    {props.bani !== 'UNKNOWN' ? <div className="badge badge-neutral">{props.bani}</div> : <div className="badge badge-neutral">Bani Abdul Karim</div>}
+                    {props.bani !== 'UNKNOWN' ? <div className="badge badge-neutral text-xs">{props.bani}</div> : <div className="badge badge-neutral text-xs">Bani Abdul Karim</div>}
                 </div>
             </td>}
         </tr>

@@ -1,4 +1,5 @@
 export interface DetailUserCardProps {
+    id? : string
     name?: string
     username?: string
     bio?: string
@@ -9,9 +10,8 @@ export interface DetailUserCardProps {
     user_alive?: boolean
     parent_alive?: boolean
     husband_alive?: boolean
-    wife_alive?: boolean
     husband?: string
-    wife?: string
+    wife?: Data[]
     generasi?: string
     children?: Data[]
     street?: string
@@ -27,6 +27,7 @@ export interface DetailUserCardProps {
 }
 
 export interface Data {
+    istri_ke?: number | string
     anak_ke?: number | string
     name?: string
     alive_status?: boolean

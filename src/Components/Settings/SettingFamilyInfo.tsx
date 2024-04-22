@@ -5,7 +5,7 @@ import SettingItems from '../Ui/SettingItems';
 
 type Props = {
     onClicked?: (
-        
+
     ) => void;
     onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
@@ -34,9 +34,14 @@ const SettingFamilyInfo = ({ onClicked, onClick }: Props) => {
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            <h1 className="text-3xl font-bold pl-1">Informasi Hubungan Keluarga</h1>
-            <h1 className='text-sm mb-4 pl-1'>Silakan ubah kata sandi Anda.</h1>
+        <div className="flex flex-col">
+            <h1 className="text-3xl font-bold pl-1 mb-9">Informasi Hubungan Keluarga</h1>
+            <div className='border-b border-gray-600'></div>
+            <SettingItems
+                size='small'
+                label='Nama'
+                item='Yusuf Fadlulloh'
+            />
             <div className='border-b border-gray-600'></div>
             <SettingItems
                 size='small'

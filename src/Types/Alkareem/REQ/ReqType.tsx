@@ -61,3 +61,14 @@ export interface IBirthday {
     token?: string;
     birthday?: string;
 }
+
+export interface IAvatar {
+    token?: string;
+    avatar: File;
+}
+
+export interface IProfileInfo {
+    token?: string;
+    name?: string;
+    gender?: string;
+}

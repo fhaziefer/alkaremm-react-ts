@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { apiGetUserCurrent } from '../../Services/Api/AlkareemApi/get'
-import { IDetailUser } from '../../Types/Alkareem/GetDetailUser'
 import { useLocalStorage } from '../../Hooks/useLocalStorage'
 import { getAge, getStringDate } from '../../Utils/birthdayConverter'
 import { env } from '../../Utils/env'
+import { ICurrentUser } from '../../Types/Alkareem/RES/CurrentUser'
 
 import Loading from '../../Components/Loading'
 import Footer from '../../Components/Footer'
@@ -11,7 +11,7 @@ import LogoutAlert from '../../Components/LogoutAlert'
 import Modal from '../../Components/Ui/Modal'
 import SettingItems from '../../Components/Ui/SettingItems'
 
-import { SettingAddress, SettingBio, SettingBrithday, SettingContact, SettingFamilyInfo, SettingPassword, SettingProfileInfo, SettingUsername } from '../../Components/Settings/SettingComponents'
+import { SettingAvatar, SettingAddress, SettingBio, SettingBrithday, SettingContact, SettingFamilyInfo, SettingPassword, SettingProfileInfo, SettingUsername } from '../../Components/Settings/SettingComponents'
 
 const UserSettingScreen = () => {
 
@@ -19,6 +19,7 @@ const UserSettingScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   //* MODAL OPEN AND CLOSE
+  const [avatarOpen, setAvatarOpen] = useState(false)
   const [usernameOpen, setUsernameOpen] = useState(false)
   const [bioOpen, setBioOpen] = useState(false)
   const [profileInfoOpen, setProfileInfoOpen] = useState(false)
@@ -30,13 +31,15 @@ const UserSettingScreen = () => {
   const [passwordOpen, setPasswordOpen] = useState(false)
 
   //* STATING API
-  const [userData, setUserData] = useState<IDetailUser | null>(null)
+  const [userData, setUserData] = useState<ICurrentUser | null>(null)
+  const [uiGender, setUiGender] = useState('')
   const [userStatus, setUserStatus] = useState('')
   const apiUrl = env.REACT_APP_BASE_URL
   const token = getItem('token')
 
   //* API CALLING
   const getUserData = async () => {
+    setIsLoading(true)
     const dataFetch = await apiGetUserCurrent({ token: token })
 
     if (dataFetch.status !== 200) {
@@ -45,7 +48,7 @@ const UserSettingScreen = () => {
     } else {
       setUserData(dataFetch.data)
 
-      const status = dataFetch?.data?.data?.profil?.status
+      const status = dataFetch?.data?.data.profil?.status
 
       if (status === 'MARRIED') {
         setUserStatus('Menikah')
@@ -73,6 +76,22 @@ const UserSettingScreen = () => {
   const age = getAge(userData?.data.profil?.birthday)
   const addressValue = street ? `${street}, ${village}, ${district}, ${city}, ${province}` : 'Belum ditambahkan';
   const avatar = `${apiUrl}${userData?.data.profil?.avatar}`
+  const gender = userData?.data.profil?.gender
+  const phone = `0${userData?.data.profil?.contact?.phone?.slice(2)}`
+
+  useEffect(() => {
+    if (gender !== 'FEMALE') {
+      setUiGender('Laki-laki')
+    } else {
+      setUiGender('Perempuan')
+    }
+  }, [gender])
+
+  //* HANDLER AVATAR USER
+  const avatarHandler = () => {
+    getUserData()
+    setAvatarOpen((prev) => !prev)
+  }
 
   //* HANDLER USERNAME USER
   const usernameHandler = () => {
@@ -87,14 +106,9 @@ const UserSettingScreen = () => {
   }
 
   //* HANDLER PROFILE INFO USER
-  const profileInfohandler = (
-    name: string,
-    gender: string,
-    avatar: string
-  ) => {
+  const profileInfohandler = () => {
     getUserData()
     setProfileInfoOpen((prev) => !prev)
-    alert(`${name}, ${gender}, ${avatar}`)
   }
 
   //* HANDLER BIRTHDAY USER
@@ -110,12 +124,9 @@ const UserSettingScreen = () => {
   }
 
   //* HANDLER CONTACT USER
-  const contactHandler = (
-    phone: string | undefined, instagram: string | undefined
-  ) => {
+  const contactHandler = () => {
     getUserData()
     setContactOpen((prev) => !prev)
-    alert(`${phone} & ${instagram}`)
   }
 
   //* HANDLER FAMILY INFO HANDLER USER
@@ -139,6 +150,18 @@ const UserSettingScreen = () => {
       {isLoading ? <Loading /> :
 
         <div className='flex items-center'>
+
+          <Modal
+            open={avatarOpen}
+            onClose={() => setAvatarOpen((prev) => !prev)}
+          >
+            <SettingAvatar
+              avatarNow={avatar}
+              gender={gender}
+              onCancel={() => setAvatarOpen((prev) => !prev)}
+              onConfirm={avatarHandler}
+            />
+          </Modal>
 
           <Modal
             open={usernameOpen}
@@ -180,8 +203,8 @@ const UserSettingScreen = () => {
             open={contactOpen}
             onClose={() => setContactOpen((prev) => !prev)}>
             <SettingContact
-              onClicked={contactHandler}
-              onClick={() => setContactOpen((prev) => !prev)}
+              onConfirm={contactHandler}
+              onCancel={() => setContactOpen((prev) => !prev)}
             />
           </Modal>
 
@@ -198,9 +221,8 @@ const UserSettingScreen = () => {
             open={profileInfoOpen}
             onClose={() => setProfileInfoOpen((prev) => !prev)}>
             <SettingProfileInfo
-              avatarNow={avatar}
-              onClicked={profileInfohandler}
-              onClick={() => setProfileInfoOpen((prev) => !prev)}
+              onConfirm={profileInfohandler}
+              onCancel={() => setProfileInfoOpen((prev) => !prev)}
             />
           </Modal>
 
@@ -219,9 +241,29 @@ const UserSettingScreen = () => {
             <h1 className='text-4xl p-4 font-bold'>Pengaturan dan Privasi</h1>
 
             <SettingItems
+              onClick={() => setAvatarOpen((prev) => !prev)}
+              label='Foto Profil'
+              image={avatar}
+            />
+
+            <SettingItems
               onClick={() => setUsernameOpen((prev) => !prev)}
               label='Username'
               item={`@${userData?.data.username || 'Belum ditambahkan'}`} />
+
+            <SettingItems
+              onClick={() => setProfileInfoOpen((prev) => !prev)}
+              label='Informasi Profil'
+              subLabel='Edit Nama dan Jenis Kelamin'
+              item={gender? `${userData?.data.profil?.name} ∙ ${uiGender}` : userData?.data.profil?.name || 'Belum ditambahkan'} />
+
+            <SettingItems
+              onClick={() => setFamilyInfoOpen((prev) => !prev)}
+              label='Informasi Hubungan Keluarga'
+              subLabel='Edit Bani, status pernikahan, putra-putri, dll...'
+              item={(userData?.data.profil?.bani?.bani_name && userStatus) ?
+                `${userData?.data.profil?.bani?.bani_name} ∙ ${userStatus}` :
+                (userData?.data.profil?.bani?.bani_name || 'Belum ditambahkan')} />
 
             <SettingItems
               onClick={() => setBioOpen((prev) => !prev)}
@@ -229,19 +271,11 @@ const UserSettingScreen = () => {
               item={userData?.data.profil?.bio || 'Belum ditambahkan'} />
 
             <SettingItems
-              onClick={() => setProfileInfoOpen((prev) => !prev)}
-              label='Informasi Profil'
-              subLabel='Edit foto profil, nama, dll...'
-              item={userData?.data.profil?.name || 'Belum ditambahkan'} />
-
-
-            <SettingItems
               onClick={() => setBirthdayOpen((prev) => !prev)}
               label='Tanggal Lahir'
               item={(userData?.data.profil?.alive_status && age) ?
                 `${birthday} ∙ ${age}` :
                 (birthday || 'Belum ditambahkan')} />
-
 
             <SettingItems
               onClick={() => setAddressOpen((prev) => !prev)}
@@ -254,16 +288,8 @@ const UserSettingScreen = () => {
               label='Informasi Kontak'
               subLabel='Edit WhatsApp dan Instagram'
               item={(userData?.data.profil?.contact?.phone && userData?.data.profil?.contact?.instagram) ?
-                `${userData?.data.profil?.contact?.phone} ∙ ${userData?.data.profil?.contact?.instagram}` :
-                (userData?.data.profil?.contact?.phone || 'Belum ditambahkan')} />
-
-            <SettingItems
-              onClick={() => setFamilyInfoOpen((prev) => !prev)}
-              label='Informasi Hubungan Keluarga'
-              subLabel='Edit Bani, status pernikahan, putra-putri, dll...'
-              item={(userData?.data.profil?.bani?.bani_name && userStatus) ?
-                `${userData?.data.profil?.bani?.bani_name} ∙ ${userStatus}` :
-                (userData?.data.profil?.bani?.bani_name || 'Belum ditambahkan')} />
+                `${phone} ∙ ${userData?.data.profil?.contact?.instagram}` :
+                (phone || 'Belum ditambahkan')} />
 
             <SettingItems
               onClick={() => setPasswordOpen((prev) => !prev)}

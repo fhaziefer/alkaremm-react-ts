@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { DetailUserCardProps } from '../Types/Components/DetailUserCardProps'
-import Button from './Ui/Button'
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { FaLocationDot, FaUserGroup } from "react-icons/fa6";
-import TableDetailUserCard from './TableDetailUserCard';
+import TableDetailChildrenCard from './TableDetailChildrenCard';
+import TableDetailWives from './TableDetailWives';
 
 const DetailUserCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
 
@@ -33,15 +33,13 @@ const DetailUserCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
                             "{props.bio}"
                         </i></strong></div><div className="mx-auto lg:mx-0 w-4/5 py-1 border-b-2 border-primary opacity-25"></div></> : null}
 
-                        {props.wife && <p className="my-2 text-sm">
-                            Istri: {props.wife}{props.wife_alive ? null : <span>*</span>}
-                        </p>}
+                        {props.wife ? <TableDetailWives wife={props.wife}/> : null}
 
                         {props.husband && <p className="my-2 text-sm">
                             Suami: {props.husband}{props.husband_alive ? null : <span>*</span>}
                         </p>}
 
-                        {props.children ? <TableDetailUserCard children={props.children} /> : null}
+                        {props.children ? <TableDetailChildrenCard children={props.children} /> : null}
 
                         <div className="mt-6 pb-16 lg:pb-0 w-2/6 lg:w-2/6 mx-auto flex flex-wrap items-center justify-between">
                             {props.village ? <a className="link" href={'https://maps.google.com/?q=' + fullAddress} data-tippy-content="@maps_handle"><FaLocationDot className='h-7 w-7 text-primary hover:text-sky-500' /></a> : null}

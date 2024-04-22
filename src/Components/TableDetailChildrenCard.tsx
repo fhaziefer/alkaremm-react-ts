@@ -1,7 +1,7 @@
 import React from 'react'
 import { DetailUserCardProps } from '../Types/Components/DetailUserCardProps'
 
-const TableDetailUserCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
+const TableDetailChildrenCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
     return (
         <div className='pt-2 pb-1'>
             {props.children?.length !== 0 ? <h1 className='text-sm'>Putra-putri:</h1> : null}
@@ -24,9 +24,7 @@ const TableDetailUserCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
                 </table>
             </div>
         </div>
-
-
     )
 }
 
-export default TableDetailUserCard
+export default TableDetailChildrenCard

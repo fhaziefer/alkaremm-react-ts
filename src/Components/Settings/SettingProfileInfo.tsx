@@ -3,15 +3,13 @@ import Input from '../Ui/Input'
 import Button from '../Ui/Button'
 import DropdownOption from '../Ui/DropdownOption';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { apiGetProfile } from '../../Services/Api/AlkareemApi/get';
+import { apiCreateProfile } from '../../Services/Api/AlkareemApi/post';
+import { apiChangeProfileInfo } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
-    onClicked?: (
-        name: string,
-        gender: string,
-        avatarUrl: string
-    ) => void;
-    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-    avatarNow?: string
+    onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 const genderOption = [
@@ -25,68 +23,79 @@ const genderOption = [
     }
 ]
 
-const SettingProfileInfo = ({ onClicked, onClick, ...props }: Props) => {
+const SettingProfileInfo = ({ onConfirm, onCancel, ...props }: Props) => {
 
-    const [error, setError] = useState(true)
+    const { getItem } = useLocalStorage()
+    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
-    const [avatar, setAvatar] = useState({ preview: "", raw: "" });
-    const [avatarUrl, setAvatarUrl] = useState('')
+    const [error, setError] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('')
     const [name, setName] = useState('')
     const [gender, setGender] = useState('')
 
-    const { getItem } = useLocalStorage()
-    const userDataFromLocal = getItem('USER_DATA')
-    const userGender = userDataFromLocal?.data.profil?.gender
-
-    const handleChangeAvatar = () => {
-
-    }
-
-    const handleRemoveAvatar = () => {
-        setError(false)
-        if (userGender === 'FEMALE') {
-            alert('user is female')
-        } else if (userGender === 'MALE') {
-            alert('user is male')
-        } else {
-            alert('user is unknown')
-        }
-    }
-
     const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = event.target.value;
-        console.log(inputValue)
-        setError(false)
+        const inputValue = event.target.value
+            .toLowerCase()
+            .split(' ')
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
         setName(inputValue)
     };
 
     const handleGenderInput = (
-        id: string
+        id: string, text: string
     ) => {
-        console.log(id)
         setGender(id)
-        setError(false)
     }
 
-    const handleButton = () => {
+    useEffect(() => {
+        if (name.length !== 0 && gender.length !== 0) {
+            setError(false)
+        }
+    }, [name, gender])
+
+    const resetInput = () => {
+        setError(true)
+        setName('')
+        setGender('')
+    }
+
+    const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true);
-        setTimeout(() => {
-            if (onClicked) {
-                setName('')
-                setGender('')
-                onClicked(name, gender, avatarUrl)
-                setError(true);
-                setIsLoading(false);
+        if (onConfirm) {
+            const checkProfile = await apiGetProfile({ token: token })
+            if (checkProfile.status !== 200) {
+                const createProfile = await apiCreateProfile({ token: token, name: name, gender: gender })
+                if (createProfile.status !== 200) {
+                    setIsLoading(false)
+                    setError(true)
+                    setErrorMessage('Gagal memperbaharui informasi profil, coba lagi.')
+                } else {
+                    onConfirm(event)
+                    setIsLoading(false);
+                    resetInput()
+                }
+            } else {
+                const changeProfile = await apiChangeProfileInfo({ token: token, name: name, gender: gender })
+                if (changeProfile.status !== 200) {
+                    setIsLoading(false)
+                    setError(true)
+                    setErrorMessage('Gagal memperbaharui informasi profil, coba lagi.')
+                } else {
+                    onConfirm(event)
+                    setIsLoading(false);
+                    resetInput()
+                }
             }
-        }, 3000);
+        }
     }
 
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
         setName('')
         setGender('')
         setError(true)
-        if (onClick) {
-            onClick(event);
+        if (onCancel) {
+            onCancel(event);
         }
     }
 
@@ -95,27 +104,6 @@ const SettingProfileInfo = ({ onClicked, onClick, ...props }: Props) => {
             <h1 className="text-3xl font-bold pl-1 mb-4">Informasi Profil</h1>
 
             <div className="flex flex-col gap-4">
-
-                <div className='flex-row flex h-24'>
-                    <div className="avatar p-1 cursor-pointer w-24  relative ">
-                        <div className="rounded-full hover:ring ring-offset-base-100 ring-offset-2 hover:ring-primary">
-                            <img src={props.avatarNow} />
-                        </div>
-                    </div>
-                    <div className='flex flex-col ml-4 w-[67%] gap-2'>
-                        <div className='h-7 flex flex-row gap-4 items-center'>
-                            <label htmlFor="upload-button" className='text-sm cursor-pointer text-primary hover:font-bold'>Update</label>
-                            <span onClick={handleRemoveAvatar} className='text-sm cursor-pointer text-error hover:font-bold'>Remove</span>
-                            <input
-                                type="file"
-                                id="upload-button"
-                                style={{ display: "none" }}
-                                onChange={handleChangeAvatar}
-                            />
-                        </div>
-                        <span className='text-xs text-justify w-full'>Gunakan format JPG atau PNG dengan bentuk persegi, minimal 1.000 piksel per sisi. Maksimal 1 Mb.</span>
-                    </div>
-                </div>
 
                 <h1 className='text-xs pl-1 -mb-2'>Nama Lengkap</h1>
                 <Input
@@ -129,6 +117,7 @@ const SettingProfileInfo = ({ onClicked, onClick, ...props }: Props) => {
                     onClicked={handleGenderInput}
                     label='Jenis Kelamin'
                     data={genderOption} />
+
             </div>
 
             <p className='text-xs mb-2 pl-1 text-justify'><strong className='text-gray-200'>Note: </strong>Silakan masukkan nama lengkap dan jenis kelamin sesuai dengan dokumen identitas resmi negara.</p>

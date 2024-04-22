@@ -1,0 +1,21 @@
+@keyframes spin {
+  0% {
+    border-color: #756AB6;
+  }
+  25% {
+    border-color: #AC87C5;
+  }
+  50% {
+    border-color: #E0AED0;
+  }
+  75% {
+    border-color: #AC87C5;
+  }
+  100% {
+    border-color: #756AB6;
+  }
+}
+
+.border-spin {
+  animation: spin 3s ease-in-out infinite;
+}
