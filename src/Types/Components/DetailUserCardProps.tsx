@@ -24,11 +24,21 @@ export interface DetailUserCardProps {
     instagram?: string
     email?: string
     birthday?: string;
+    profileBani?: ProfileBani[];
 }
 
-export interface Data {
+interface ProfileBani {
+  bani?: Bani;
+}
+
+interface Data {
     istri_ke?: number | string
     anak_ke?: number | string
     name?: string
     alive_status?: boolean
 }
+
+interface Bani {
+    id?: number;
+    bani_name?: string;
+  }

@@ -43,12 +43,17 @@ const UserSettingScreen = () => {
     const dataFetch = await apiGetUserCurrent({ token: token })
 
     if (dataFetch.status !== 200) {
+      console.log('gagal memuat data')
       setIsLoading(false)
 
     } else {
       setUserData(dataFetch.data)
 
       const status = dataFetch?.data?.data.profil?.status
+
+      if (!status) {
+        console.log('gagal memuat data')
+      }
 
       if (status === 'MARRIED') {
         setUserStatus('Menikah')
@@ -230,8 +235,8 @@ const UserSettingScreen = () => {
             open={familyInfoOpen}
             onClose={() => setFamilyInfoOpen((prev) => !prev)}>
             <SettingFamilyInfo
-              onClicked={familyInfoHandler}
-              onClick={() => setFamilyInfoOpen((prev) => !prev)} />
+              onConfirm={familyInfoHandler}
+              onCancel={() => setFamilyInfoOpen((prev) => !prev)} />
           </Modal>
 
           <LogoutAlert open={logoutOpen} />
@@ -255,14 +260,14 @@ const UserSettingScreen = () => {
               onClick={() => setProfileInfoOpen((prev) => !prev)}
               label='Informasi Profil'
               subLabel='Edit Nama dan Jenis Kelamin'
-              item={gender? `${userData?.data.profil?.name} ∙ ${uiGender}` : userData?.data.profil?.name || 'Belum ditambahkan'} />
+              item={gender ? `${userData?.data.profil?.name} ∙ ${uiGender}` : userData?.data.profil?.name || 'Belum ditambahkan'} />
 
             <SettingItems
               onClick={() => setFamilyInfoOpen((prev) => !prev)}
               label='Informasi Hubungan Keluarga'
               subLabel='Edit Bani, status pernikahan, putra-putri, dll...'
-              item={(userData?.data.profil?.bani?.bani_name && userStatus) ?
-                `${userData?.data.profil?.bani?.bani_name} ∙ ${userStatus}` :
+              item={(userData?.data.profil?.profileBani && userStatus) ?
+                `${userData?.data.profil?.profileBani.map((data) => (` ${data.bani?.bani_name}`))} ∙ ${userStatus}` :
                 (userData?.data.profil?.bani?.bani_name || 'Belum ditambahkan')} />
 
             <SettingItems

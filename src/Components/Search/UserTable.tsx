@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from './Ui/Button'
-import { UserListProps } from '../Types/Components/UserTable'
+import Button from '../Ui/Button'
+import { UserListProps } from '../../Types/Components/UserTable'
 
 const UserTable: React.FC<UserListProps> = ({ ...props }) => {
     return (
@@ -29,7 +29,9 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                 </div>
             </td> : <td className='items-end'>
                 <div className='flex flex-col items-end gap-2'>
-                    {props.bani !== 'UNKNOWN' ? <div className="badge badge-neutral text-xs">{props.bani}</div> : <div className="badge badge-neutral text-xs">Bani Abdul Karim</div>}
+                    {props.profileBani?.map((data) => (
+                        <div key={data.bani?.id} className="badge badge-neutral badge-sm text-xs text-gray-400">{data.bani?.bani_name}</div>
+                    ))}
                 </div>
             </td>}
         </tr>

@@ -72,3 +72,13 @@ export interface IProfileInfo {
     name?: string;
     gender?: string;
 }
+
+export interface IBani {
+    token?: string;
+    baniId?: string;
+}
+
+export interface IReqSearchProfile {
+    token?: string;
+    query?: string;
+}

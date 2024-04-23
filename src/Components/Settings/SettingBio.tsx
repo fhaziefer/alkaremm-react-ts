@@ -14,7 +14,7 @@ const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
     const [bio, setBio] = useState('')
     const [charCount, setCharCount] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')
     const maxChars = 60;
     const isMaxCharsReached = charCount >= maxChars;
@@ -34,6 +34,7 @@ const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
         if (newBio.length <= maxChars) {
             setBio(newBio);
             setCharCount(newBio.length);
+            setError(false)
         }
     };
 
@@ -62,6 +63,7 @@ const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
         setErrorMessage('');
         setBio('')
         setCharCount(0)
+        setError(true)
         if (onCancel) {
             onCancel(event);
         }

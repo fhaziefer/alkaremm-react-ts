@@ -46,7 +46,7 @@ interface Profil {
 }
 
 interface ProfileBani {
-  bani: Bani;
+  bani?: Bani;
 }
 
 interface Contact {

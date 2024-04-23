@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiSearchUser } from '../../Services/Api/AlkareemApi/get';
-import UserTable from '../../Components/UserTable';
+import UserTable from '../../Components/Search/UserTable';
 import Footer from '../../Components/Footer';
 import Loading from '../../Components/Loading';
 import baniName from '../../JSON/baniName.json'
@@ -129,6 +129,7 @@ const SearchScreen = () => {
                     profileButton={handleProfile}
                     editButton={handleEdit}
                     deleteButton={handleDelete}
+                    profileBani={user.profil?.profileBani}
                     key={user.id}
                     name={user.profil?.name}
                     bani={user.profil?.bani?.bani_name}

@@ -1,11 +1,12 @@
 import axios from "axios"
 import { env } from "../../../Utils/env"
-import { IReqDetailUser, IReqSearchUsers, IToken } from "../../../Types/Alkareem/REQ/ReqType"
+import { IReqDetailUser, IReqSearchProfile, IReqSearchUsers, IToken } from "../../../Types/Alkareem/REQ/ReqType"
 import { ICurrentUser } from "../../../Types/Alkareem/RES/CurrentUser"
 import { ISearchUser } from "../../../Types/Alkareem/RES/SearchUser"
 import { ICountTotalUsers } from "../../../Types/Alkareem/RES/CountUser"
 import { IChildren } from "../../../Types/Alkareem/RES/ChildrenById"
 import { IUserById } from "../../../Types/Alkareem/RES/UserById"
+import { ISearchProfile } from "../../../Types/Alkareem/RES/SearchProfile"
 
 const baseUrl = env.REACT_APP_BASE_URL
 
@@ -120,6 +121,32 @@ export async function apiGetProfile({ ...props }: IToken) {
             Authorization: props.token,
         };
         const profile = await axios.get(`${baseUrl}/user/profile/current`, { headers })
+        return profile
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiGetBani({ ...props }: IToken) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const bani = await axios.get(`${baseUrl}/user/profile/bani/current`, { headers })
+        return bani
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiSearchProfile({ ...props }: IReqSearchProfile) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const profile = await axios.get<ISearchProfile>(`${baseUrl}/user/profile/search?keyword=${props.query}`, { headers })
         return profile
     } catch (error: any) {
         const errorMessage = error.response.data.errors;

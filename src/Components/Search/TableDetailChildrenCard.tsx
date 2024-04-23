@@ -1,10 +1,10 @@
 import React from 'react'
-import { DetailUserCardProps } from '../Types/Components/DetailUserCardProps'
+import { DetailUserCardProps } from '../../Types/Components/DetailUserCardProps'
 
 const TableDetailChildrenCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
     return (
         <div className='pt-2 pb-1'>
-            {props.children?.length !== 0 ? <h1 className='text-sm'>Putra-putri:</h1> : null}
+            {props.children?.length !== 0 ? <h1 className='text-xs font-bold mb-1'>Putra-putri:</h1> : null}
             <div className="w-64 lg:w-full mx-auto lg:mx-0 text-black">
                 <table className="table table-xs table-pin-rows table-pin-cols rounded-none">
                     <thead className='hidden'>

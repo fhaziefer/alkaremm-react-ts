@@ -21,8 +21,18 @@ interface Profil {
   alive_status?: boolean;
   avatar?: string;
   bani?: Bani;
+  profileBani? : ProfileBani[]
 }
 
 interface Bani {
+  bani_name?: string;
+}
+
+interface ProfileBani {
+  bani?: Bani;
+}
+
+interface Bani {
+  id?: number;
   bani_name?: string;
 }

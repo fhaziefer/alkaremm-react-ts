@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IAddress, IContact, ILogin, IProfileInfo, IRegister } from "../../../Types/Alkareem/REQ/ReqType";
+import { IAddress, IBani, IContact, ILogin, IProfileInfo, IRegister } from "../../../Types/Alkareem/REQ/ReqType";
 
 const baseUrl = env.REACT_APP_BASE_URL
 
@@ -73,6 +73,22 @@ export async function apiCreateAddress({ ...props }: IAddress) {
         };
         const createAddress = await axios.post(`${baseUrl}/user/profile/address`, data, { headers })
         return createAddress;
+    } catch (error: any) {
+        const errrorMessage = error.response.data.errors;
+        return errrorMessage
+    }
+}
+
+export async function apiCreateBani({ ...props }: IBani) {
+    try {
+        const data = {
+            baniId: props.baniId
+        }
+        const headers = {
+            Authorization: props.token,
+        };
+        const createBani = await axios.post(`${baseUrl}/user/profile/bani`, data, {headers})
+        return createBani
     } catch (error: any) {
         const errrorMessage = error.response.data.errors;
         return errrorMessage

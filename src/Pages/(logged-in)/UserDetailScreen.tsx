@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiChildren, apiDetailUser } from '../../Services/Api/AlkareemApi/get';
 import { env } from '../../Utils/env';
-import ProfileCard from '../../Components/DetailUserCard';
+import ProfileCard from '../../Components/Search/DetailUserCard';
 import Loading from '../../Components/Loading';
 import { ICurrentUser } from '../../Types/Alkareem/RES/CurrentUser';
 import { IChildren } from '../../Types/Alkareem/RES/ChildrenById';
@@ -67,7 +67,6 @@ const UserDetailScreen = () => {
               return
             } else {
               const husbandId = user.data.data.profil.husband.userId
-              console.log(husbandId)
               var children = await apiChildren({ token: token, id: husbandId })
             }
           }
@@ -115,6 +114,7 @@ const UserDetailScreen = () => {
           postal={userData?.data.profil?.address?.postal_code}
           phone={userData?.data.profil?.contact?.phone}
           instagram={userData?.data.profil?.contact?.instagram}
+          profileBani={userData?.data.profil?.profileBani}
         />
       }
     </>

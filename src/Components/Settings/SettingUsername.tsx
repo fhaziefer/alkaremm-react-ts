@@ -16,7 +16,7 @@ const SettingUsername = ({ onConfirm, onCancel, ...props }: Props) => {
     const { getItem } = useLocalStorage()
     const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')
     const [usernameValue, setUsernameValue] = useState('')
 
