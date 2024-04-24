@@ -3,6 +3,7 @@ import Button from '../Ui/Button'
 import baniList from '../../JSON/selectBani.json'
 import generasiList from '../../JSON/generasiOption.json'
 import statusList from '../../JSON/statusOption.json'
+import anakKeList from '../../JSON/anakKeOption.json'
 import { useMultiselect } from '../../Hooks/useMultiSelect';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiGetBani, apiSearchProfile } from '../../Services/Api/AlkareemApi/get';
@@ -27,14 +28,18 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
+    const [anakKeDisable, setAnakKeDisable] = useState(true)
     const [generasiDisable, setGenerasiDisable] = useState(true)
     const [statusDisable, setStatusDisable] = useState(true)
     const [orangtuaDisable, setOrangtuaDisable] = useState(true)
-    const [partnerDisable, setPartnerDisable] = useState(true)
+    const [pasanganDisable, setPasanganDisable] = useState(true)
 
+    const [anakKe, setAnakKe] = useState('')
     const [query, setQuery] = useState('')
     const [generasi, setGenerasi] = useState('')
     const [status, setStatus] = useState('')
+    const [orangtua, setOrangtua] = useState('')
+    const [pasangan, setPasangan] = useState('')
 
     const debouncedQuery = useDebounce(query);
 
@@ -45,15 +50,13 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
         fetchSearchProfil()
 
         if (selected.length > 0) {
-            setError(false)
-            setGenerasiDisable(false)
+            setAnakKeDisable(false)
         } else {
+            setAnakKeDisable(true)
             setError(true)
-            setGenerasiDisable(true)
-            setStatusDisable(true)
         }
 
-    }, [selected, debouncedQuery, status])
+    }, [selected, debouncedQuery])
 
     const fetchAddBani = async () => {
         const numbers = ['1', '2', '3', '4', '5', '6', '7'];
@@ -96,6 +99,15 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
         }
     }
 
+    const anakKeHandler = (id: string, text: string) => {
+        if (!id) {
+            setGenerasiDisable(true)
+        } else {
+            setGenerasiDisable(false)
+            setAnakKe(id)
+        }
+    }
+
     const generasiHandler = (id: string, text: string) => {
         if (!id) {
             setStatusDisable(true)
@@ -108,10 +120,11 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
     const statusHandler = (id: string, text: string) => {
         setStatus(id)
         if (id !== 'SINGLE') {
-            setPartnerDisable(false)
+            setPasanganDisable(false)
         } else {
-            setPartnerDisable(true)
+            setPasanganDisable(true)
         }
+
         if (!id) {
             setOrangtuaDisable(true)
         } else {
@@ -120,24 +133,49 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
     }
 
     const orangtuaHandler = (id: string, text: string) => {
-        console.log(`${id}, ${text}`)
+        if (!id) {
+            setError(true)
+        } else {
+            setError(false)
+        }
+        setOrangtua(id)
     }
 
     const partnerHandler = (id: string, text: string) => {
-        console.log(`${id}, ${text}`)
+        if (!id) {
+            setError(true)
+        } else {
+            setError(false)
+        }
+        setPasangan(id)
+    }
+
+    const resetData = () => {
+        setSelected([])
+        setAnakKe('')
+        setGenerasi('')
+        setStatus('')
+        setOrangtua('')
+        setPasangan('')
+        setAnakKeDisable(true)
+        setGenerasiDisable(true)
+        setStatusDisable(true)
+        setOrangtuaDisable(true)
+        setPasanganDisable(true)
     }
 
     const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true);
         if (onConfirm) {
             fetchAddBani().then(() => onConfirm(event)).catch(() => setIsLoading(false));
+            resetData()
         }
     };
 
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
         setError(true);
         if (onCancel) {
-            setSelected([])
+            resetData()
             onCancel(event);
         }
     }
@@ -146,7 +184,7 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
         <div className="flex flex-col">
             <h1 className="text-3xl font-bold pl-1 mb-9">Informasi Hubungan Keluarga</h1>
 
-            <div className='flex flex-row justify-between gap-2 p-4 items-end'>
+            <div className='flex flex-row justify-between gap-2 p-4 items-atart'>
                 {/* FORM BANI */}
                 <div className='form-control w-[49%]'>
                     <h1 className='mb-2 text-sm'>Pilih Bani Anda</h1>
@@ -167,11 +205,15 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
 
                 <div className='flex w-[49%] flex-col gap-4'>
                     <div className='form-control'>
-                        <h1 className='mb-2 text-sm'>Pilih generasi</h1>
+                        <h1 className='mb-2 text-sm'>Anak ke?</h1>
+                        <DropdownOption onClicked={anakKeHandler} disabled={anakKeDisable} data={anakKeList.data} label='Anak ke' />
+                    </div>
+                    <div className='form-control'>
+                        <h1 className='mb-2 text-sm'>Generasi</h1>
                         <DropdownOption onClicked={generasiHandler} disabled={generasiDisable} data={generasiList.data} label='Generasi' />
                     </div>
                     <div className='form-control'>
-                        <h1 className='mb-2 text-sm'>Pilih status pernikahan</h1>
+                        <h1 className='mb-2 text-sm'>Status Pernikahan</h1>
                         <DropdownOption onClicked={statusHandler} disabled={statusDisable} data={statusList.data} label='Status' />
                     </div>
                 </div>
@@ -179,7 +221,7 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
             <div className='p-4'>
                 <AutoComplete
                     index={2}
-                    label='Pilih Orang tua'
+                    label='Orang tua'
                     disabled={orangtuaDisable}
                     placeholder='Orang tua'
                     helper='Orang tua dari keturunan KH. Abdul Karim'
@@ -190,8 +232,8 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
             <div className='p-4'>
                 <AutoComplete
                     index={1}
-                    label='Pilih Pasangan'
-                    disabled={partnerDisable}
+                    label='Pasangan'
+                    disabled={pasanganDisable}
                     placeholder='Pasangan'
                     onQueryChange={(e) => setQuery(e)}
                     data={users?.data}

@@ -81,7 +81,7 @@ const AutoComplete = ({ index, helper, label, data, placeholder, disabled = fals
         <div ref={autoCompleteRef} className={`relative z-[${index}]`}>
             {label && <h1 className='mb-2 text-sm'>{label}</h1>}
             <Input className='text-sm' disabled={disabled} placeholder={placeholder} onChange={handleChangeInput} value={string} />
-            {helper && <span className='text-xs text-gray-500 -mb-6 font italic absolute right-2 bottom-0'>{helper}</span>}
+            {helper && isOpen && <span className='text-xs text-gray-500 font italic absolute right-2 top-0'>{helper}</span>}
             {isOpen && <Button onClick={clearContent} variant='ghost' className='absolute rounded-full right-0'><RxCross2 /></Button>}
             {isOpen && (
                 <div className={`absolute order-first top-full left-0 right-0 overflow-y-auto rounded-b-xl border border-gray-700 bg-base-100`} style={{ maxHeight: 120, height: containerHeight }}>
