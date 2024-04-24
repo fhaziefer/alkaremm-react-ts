@@ -95,7 +95,7 @@ export interface IGenerasi {
 
 export interface IStatus {
     token?: string
-    status?: 'MARRIED' | 'SINGLE' | 'WIDOWED' | 'UNKNOWN'
+    status?: string
 }
 
 export interface IParent {

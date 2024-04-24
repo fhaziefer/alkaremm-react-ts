@@ -13,13 +13,15 @@ import { apiCreateBani } from '../../Services/Api/AlkareemApi/post';
 import { apiDeleteBani } from '../../Services/Api/AlkareemApi/delete';
 import { useDebounce } from '../../Hooks/useDebounce'
 import { ISearchProfile } from '../../Types/Alkareem/RES/SearchProfile'
+import { apiChangeAnakKe, apiChangeGenerasi, apiChangeHusband, apiChangeParent, apiChangeStatus } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    gender?: string
 };
 
-const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
+const SettingFamilyInfo = ({ onConfirm, onCancel, gender }: Props) => {
 
     const { getItem } = useLocalStorage()
     const token = getItem('token')
@@ -100,23 +102,104 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
     };
 
     const fetchUpdateAnakKe = async () => {
-
+        try {
+            if (anakKe.length !== 0) {
+                const updateAnakKe = await apiChangeAnakKe({ token: token, anak_ke: anakKe });
+                if (updateAnakKe.status === 200) {
+                    setError(false);
+                    setIsLoading(false);
+                } else {
+                    throw new Error('Gagal memperbaharui data anak ke, status: ' + updateAnakKe.status);
+                }
+            } else {
+                throw new Error('Gagal memperbaharui data anak ke: Anak ke tidak valid');
+            }
+        } catch (error: any) {
+            setError(true);
+            setErrorMessage('Gagal memperbaharui data anak ke: ' + error.message);
+            setIsLoading(false);
+        }
     }
 
-    const fetchUpdateGenerasi = async () => {
 
+    const fetchUpdateGenerasi = async () => {
+        try {
+            if (generasi.length !== 0) {
+                const updateGenerasi = await apiChangeGenerasi({ token: token, generasiId: generasi });
+                if (updateGenerasi.status === 200) {
+                    setError(false);
+                    setIsLoading(false);
+                } else {
+                    throw new Error('Gagal memperbaharui data generasi, status: ' + updateGenerasi.status);
+                }
+            } else {
+                throw new Error('Gagal memperbaharui data generasi');
+            }
+        } catch (error: any) {
+            setError(true);
+            setErrorMessage('Gagal memperbaharui data generasi: ' + error.message);
+            setIsLoading(false);
+        }
     }
 
     const fetchUpdateStatus = async () => {
-
+        try {
+            if (orangtua.length !== 0) {
+                const updateStatus = await apiChangeStatus({ token: token, status: status });
+                if (updateStatus.status === 200) {
+                    setError(false);
+                    setIsLoading(false);
+                } else {
+                    throw new Error('Gagal memperbaharui data status, status: ' + updateStatus.status);
+                }
+            } else {
+                throw new Error('Gagal memperbaharui data status');
+            }
+        } catch (error: any) {
+            setError(true);
+            setErrorMessage('Gagal memperbaharui data status: ' + error.message);
+            setIsLoading(false);
+        }
     }
 
     const fetchUpdateOrangtua = async () => {
-
+        try {
+            if (orangtua.length !== 0) {
+                const updateOrangtua = await apiChangeParent({ token: token, parentId: orangtua });
+                if (updateOrangtua.status === 200) {
+                    setError(false);
+                    setIsLoading(false);
+                } else {
+                    throw new Error('Gagal memperbaharui data orangtua, status: ' + updateOrangtua.status);
+                }
+            } else {
+                throw new Error('Gagal memperbaharui data orangtua');
+            }
+        } catch (error: any) {
+            setError(true);
+            setErrorMessage('Gagal memperbaharui data orangtua: ' + error.message);
+            setIsLoading(false);
+        }
     }
 
     const fetchUpdatePasangan = async () => {
-
+        try {
+            if (pasangan.length !== 0) {
+                const updateOrangtua = await apiChangeHusband({ token: token, husbandId: pasangan });
+                if (updateOrangtua.status === 200) {
+                    setError(false);
+                    setIsLoading(false);
+                } else {
+                    throw new Error('Gagal memperbaharui data suami, status: ' + updateOrangtua.status);
+                }
+            } else {
+                throw new Error('Gagal memperbaharui data suami');
+            }
+        } catch (error: any) {
+            setError(true);
+            setErrorMessage('Gagal memperbaharui data suami: ' + error.message);
+            setIsLoading(false);
+        }
     }
 
     const anakKeHandler = (id: string, text: string) => {
@@ -139,8 +222,13 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
 
     const statusHandler = (id: string, text: string) => {
         setStatus(id)
+
         if (id !== 'SINGLE') {
-            setPasanganDisable(false)
+            if (gender === 'FEMALE') {
+                setPasanganDisable(false)
+            } else {
+                setPasanganDisable(true)
+            }
         } else {
             setPasanganDisable(true)
         }
@@ -186,10 +274,17 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
 
     const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true);
-        if (onConfirm) {
-            fetchAddBani().then(() => onConfirm(event)).catch(() => setIsLoading(false));
-            resetData()
-        }
+        Promise.all([fetchAddBani(), fetchUpdateAnakKe(), fetchUpdateGenerasi(), fetchUpdateStatus(), fetchUpdateOrangtua(), fetchUpdatePasangan()])
+            .then(() => {
+                onConfirm && onConfirm(event);
+            })
+            .catch(() => {
+                console.error('An error occurred while fetching or updating data.');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+        resetData();
     };
 
     const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -241,9 +336,9 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
             <div className='p-4'>
                 <AutoComplete
                     index={2}
-                    label='Orang tua'
+                    label='Nama Orang tua'
                     disabled={orangtuaDisable}
-                    placeholder='Orang tua'
+                    placeholder='Nama Orang tua'
                     helper='Orang tua dari keturunan KH. Abdul Karim'
                     onQueryChange={(e) => setQuery(e)}
                     data={users?.data}
@@ -252,9 +347,9 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
             <div className='p-4'>
                 <AutoComplete
                     index={1}
-                    label='Pasangan'
+                    label='Nama Suami'
                     disabled={pasanganDisable}
-                    placeholder='Pasangan'
+                    placeholder='Nama Suami'
                     onQueryChange={(e) => setQuery(e)}
                     data={users?.data}
                     onClicked={partnerHandler} />

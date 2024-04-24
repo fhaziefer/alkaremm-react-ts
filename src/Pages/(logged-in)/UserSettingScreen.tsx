@@ -235,6 +235,7 @@ const UserSettingScreen = () => {
             open={familyInfoOpen}
             onClose={() => setFamilyInfoOpen((prev) => !prev)}>
             <SettingFamilyInfo
+              gender={gender !== undefined ? gender : undefined}
               onConfirm={familyInfoHandler}
               onCancel={() => setFamilyInfoOpen((prev) => !prev)} />
           </Modal>
