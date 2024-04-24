@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../Ui/Button'
+import DropdownOption from '../Ui/DropdownOption';
+import AutoComplete from '../Ui/AutoComplete'
 import baniList from '../../JSON/selectBani.json'
 import generasiList from '../../JSON/generasiOption.json'
 import statusList from '../../JSON/statusOption.json'
@@ -9,8 +11,6 @@ import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiGetBani, apiSearchProfile } from '../../Services/Api/AlkareemApi/get';
 import { apiCreateBani } from '../../Services/Api/AlkareemApi/post';
 import { apiDeleteBani } from '../../Services/Api/AlkareemApi/delete';
-import DropdownOption from '../Ui/DropdownOption';
-import AutoComplete from '../Ui/AutoComplete'
 import { useDebounce } from '../../Hooks/useDebounce'
 import { ISearchProfile } from '../../Types/Alkareem/RES/SearchProfile'
 
@@ -34,8 +34,8 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
     const [orangtuaDisable, setOrangtuaDisable] = useState(true)
     const [pasanganDisable, setPasanganDisable] = useState(true)
 
-    const [anakKe, setAnakKe] = useState('')
     const [query, setQuery] = useState('')
+    const [anakKe, setAnakKe] = useState('')
     const [generasi, setGenerasi] = useState('')
     const [status, setStatus] = useState('')
     const [orangtua, setOrangtua] = useState('')
@@ -44,6 +44,14 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
     const debouncedQuery = useDebounce(query);
 
     const { selected, setSelected, isSelected, onChange } = useMultiselect([]);
+
+    const fetchSearchProfil = async () => {
+        const profilData = await apiSearchProfile({ token: token, query: debouncedQuery })
+        if (profilData.status !== 200) {
+        } else {
+            setUsers(profilData.data)
+        }
+    }
 
     useEffect(() => {
 
@@ -91,12 +99,24 @@ const SettingFamilyInfo = ({ onConfirm, onCancel }: Props) => {
         }
     };
 
-    const fetchSearchProfil = async () => {
-        const profilData = await apiSearchProfile({ token: token, query: debouncedQuery })
-        if (profilData.status !== 200) {
-        } else {
-            setUsers(profilData.data)
-        }
+    const fetchUpdateAnakKe = async () => {
+
+    }
+
+    const fetchUpdateGenerasi = async () => {
+
+    }
+
+    const fetchUpdateStatus = async () => {
+
+    }
+
+    const fetchUpdateOrangtua = async () => {
+
+    }
+
+    const fetchUpdatePasangan = async () => {
+
     }
 
     const anakKeHandler = (id: string, text: string) => {

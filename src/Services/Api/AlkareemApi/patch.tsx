@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IAddress, IAvatar, IBio, IBirthday, IContact, IPassword, IProfileInfo, IToken, IUsername } from "../../../Types/Alkareem/REQ/ReqType";
+import { IAddress, IAnakKe, IAvatar, IBio, IBirthday, IContact, IGenerasi, IHusband, IParent, IPassword, IProfileInfo, IStatus, IToken, IUsername } from "../../../Types/Alkareem/REQ/ReqType";
 const baseUrl = env.REACT_APP_BASE_URL
 
 //* USERNAME
@@ -143,7 +143,7 @@ export async function apiRemoveAvatar({ ...props }: IToken) {
 }
 
 //* CHANGE AVATAR
-export async function apiUploadAvatar(token:string, avatar:File) {
+export async function apiUploadAvatar(token: string, avatar: File) {
     try {
         const formData = new FormData();
         formData.append('avatar', avatar);
@@ -161,7 +161,7 @@ export async function apiUploadAvatar(token:string, avatar:File) {
 }
 
 //* NAME AND GENDER
-export async function apiChangeProfileInfo({...props}:IProfileInfo) {
+export async function apiChangeProfileInfo({ ...props }: IProfileInfo) {
     try {
         const data = {
             name: props.name,
@@ -172,6 +172,91 @@ export async function apiChangeProfileInfo({...props}:IProfileInfo) {
         };
         const profileInfo = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
         return profileInfo
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* ANAK KE
+export async function apiChangeAnakKe({ ...props }: IAnakKe) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            anak_ke: props.anak_ke,
+        }
+        const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* GENERASI
+export async function apiChangeGenerasi({ ...props }: IGenerasi) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            generasiId: props.generasiId,
+        }
+        const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* STATUS
+export async function apiChangeStatus({ ...props }: IStatus) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            status: props.status,
+        }
+        const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* PARENT
+export async function apiChangeParent({ ...props }: IParent) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            parentId: props.parentId,
+        }
+        const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* HUSBAND
+export async function apiChangeHusband({ ...props }: IHusband) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            husbandId: props.husbandId,
+        }
+        const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return fetch
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
         return errorMessage

@@ -21,6 +21,11 @@ export interface IReqSearchUsers {
     size?: number;
 }
 
+export interface IReqSearchProfile {
+    token?: string;
+    query?: string;
+}
+
 export interface IReqDetailUser {
     id?: string;
     token?: string;
@@ -78,7 +83,27 @@ export interface IBani {
     baniId?: string;
 }
 
-export interface IReqSearchProfile {
+export interface IAnakKe {
     token?: string;
-    query?: string;
+    anak_ke?: string;
+}
+
+export interface IGenerasi {
+    token?: string
+    generasiId?: string
+}
+
+export interface IStatus {
+    token?: string
+    status?: 'MARRIED' | 'SINGLE' | 'WIDOWED' | 'UNKNOWN'
+}
+
+export interface IParent {
+    token?: string;
+    parentId?: string;
+}
+
+export interface IHusband {
+    token?: string;
+    husbandId?: string;
 }
