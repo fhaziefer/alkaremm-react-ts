@@ -2,24 +2,21 @@ import React, { useEffect, useState } from 'react';
 import Button from '../Ui/Button';
 import Input from '../Ui/Input';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiChangePassword } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    token?: string
 };
 
-const SettingPassword = ({ onConfirm, onCancel }: Props) => {
+const SettingPassword = ({ token, onConfirm, onCancel }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [password, setPassword] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
 
     const handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = event.target.value;

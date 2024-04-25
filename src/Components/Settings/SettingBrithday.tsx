@@ -4,19 +4,15 @@ import DropdownOption from '../Ui/DropdownOption';
 import dateList from '../../JSON/date.json'
 import monthList from '../../JSON/month.json'
 import yearList from '../../JSON/year.json'
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiChangeBrithday } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    token?: string;
 }
 
-const SettingBrithday = ({ onConfirm, onCancel, ...props }: Props) => {
-
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
-
+const SettingBrithday = ({ token, onConfirm, onCancel, ...props }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')

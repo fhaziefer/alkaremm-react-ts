@@ -1,10 +1,9 @@
 import DropdownOption from '../Ui/DropdownOption';
-import { ReactEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IGetAddress } from '../../Types/Address/GetAddress';
 import { apiCity, apiDistrict, apiPostal, apiProvince, apiVillage } from '../../Services/Api/AddressApi/addressApi';
 import Input from '../Ui/Input';
 import Button from '../Ui/Button';
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiChangeAddress } from '../../Services/Api/AlkareemApi/patch';
 import { apiCreateAddress } from '../../Services/Api/AlkareemApi/post';
 import { apiGetAddressCurrent } from '../../Services/Api/AlkareemApi/get';
@@ -12,12 +11,11 @@ import { apiGetAddressCurrent } from '../../Services/Api/AlkareemApi/get';
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    token?: string
 };
 
-const SettingAddress = ({ onConfirm, onCancel, ...props }: Props) => {
+const SettingAddress = ({ token, onConfirm, onCancel, ...props }: Props) => {
 
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')

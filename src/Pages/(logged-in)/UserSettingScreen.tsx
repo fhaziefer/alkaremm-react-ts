@@ -163,6 +163,7 @@ const UserSettingScreen = () => {
             <SettingAvatar
               avatarNow={avatar}
               gender={gender}
+              token={token}
               onCancel={() => setAvatarOpen((prev) => !prev)}
               onConfirm={avatarHandler}
             />
@@ -173,6 +174,7 @@ const UserSettingScreen = () => {
             onClose={
               () => setUsernameOpen((prev) => !prev)}>
             <SettingUsername
+              token={token}
               onCancel={() => setUsernameOpen((prev) => !prev)}
               onConfirm={usernameHandler} />
           </Modal>
@@ -181,6 +183,7 @@ const UserSettingScreen = () => {
             open={bioOpen}
             onClose={() => setBioOpen((prev) => !prev)}>
             <SettingBio
+              token={token}
               onConfirm={bioHandler}
               onCancel={() => setBioOpen((prev) => !prev)}
             />
@@ -190,6 +193,7 @@ const UserSettingScreen = () => {
             open={birthdayOpen}
             onClose={() => setBirthdayOpen((prev) => !prev)}>
             <SettingBrithday
+              token={token}
               onConfirm={birthdayHandler}
               onCancel={() => setBirthdayOpen((prev) => !prev)}
             />
@@ -199,6 +203,7 @@ const UserSettingScreen = () => {
             open={addressOpen}
             onClose={() => setAddressOpen((prev) => !prev)}>
             <SettingAddress
+              token={token}
               onConfirm={addressHandler}
               onCancel={() => setAddressOpen((prev) => !prev)}
             />
@@ -208,6 +213,7 @@ const UserSettingScreen = () => {
             open={contactOpen}
             onClose={() => setContactOpen((prev) => !prev)}>
             <SettingContact
+              token={token}
               onConfirm={contactHandler}
               onCancel={() => setContactOpen((prev) => !prev)}
             />
@@ -217,6 +223,7 @@ const UserSettingScreen = () => {
             open={passwordOpen}
             onClose={() => setPasswordOpen((prev) => !prev)}>
             <SettingPassword
+              token={token}
               onConfirm={passwordHandler}
               onCancel={() => setPasswordOpen((prev) => !prev)}
             />
@@ -226,6 +233,7 @@ const UserSettingScreen = () => {
             open={profileInfoOpen}
             onClose={() => setProfileInfoOpen((prev) => !prev)}>
             <SettingProfileInfo
+              token={token}
               onConfirm={profileInfohandler}
               onCancel={() => setProfileInfoOpen((prev) => !prev)}
             />
@@ -235,6 +243,7 @@ const UserSettingScreen = () => {
             open={familyInfoOpen}
             onClose={() => setFamilyInfoOpen((prev) => !prev)}>
             <SettingFamilyInfo
+              token={token}
               gender={gender !== undefined ? gender : undefined}
               onConfirm={familyInfoHandler}
               onCancel={() => setFamilyInfoOpen((prev) => !prev)} />

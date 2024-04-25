@@ -1,16 +1,14 @@
-import { ChangeEvent, ReactEventHandler, useState } from 'react';
-import Button from '../Ui/Button';
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
+import { ChangeEvent, useState } from 'react';
 import { apiChangeBio } from '../../Services/Api/AlkareemApi/patch';
+import Button from '../Ui/Button';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    token?: string
 }
 
-const SettingBio = ({ onConfirm, onCancel, ...props }: Props) => {
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
+const SettingBio = ({ token, onConfirm, onCancel, ...props }: Props) => {
     const [bio, setBio] = useState('')
     const [charCount, setCharCount] = useState(0)
     const [isLoading, setIsLoading] = useState(false)

@@ -10,6 +10,7 @@ import { apiChangeProfileInfo } from '../../Services/Api/AlkareemApi/patch';
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    token?: string
 };
 
 const genderOption = [
@@ -23,10 +24,8 @@ const genderOption = [
     }
 ]
 
-const SettingProfileInfo = ({ onConfirm, onCancel, ...props }: Props) => {
+const SettingProfileInfo = ({ token, onConfirm, onCancel, ...props }: Props) => {
 
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')

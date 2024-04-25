@@ -7,7 +7,6 @@ import generasiList from '../../JSON/generasiOption.json'
 import statusList from '../../JSON/statusOption.json'
 import anakKeList from '../../JSON/anakKeOption.json'
 import { useMultiselect } from '../../Hooks/useMultiSelect';
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiGetBani, apiSearchProfile } from '../../Services/Api/AlkareemApi/get';
 import { apiCreateBani } from '../../Services/Api/AlkareemApi/post';
 import { apiDeleteBani } from '../../Services/Api/AlkareemApi/delete';
@@ -19,12 +18,11 @@ type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     gender?: string
+    token?: string
 };
 
-const SettingFamilyInfo = ({ onConfirm, onCancel, gender }: Props) => {
+const SettingFamilyInfo = ({ onConfirm, onCancel, gender, token }: Props) => {
 
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
     const [users, setUsers] = useState<ISearchProfile | null>(null);
     const [error, setError] = useState(true)
     const [isLoading, setIsLoading] = useState(false)

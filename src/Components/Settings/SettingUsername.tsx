@@ -9,12 +9,11 @@ type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     usernameNow?: string;
+    token?: string
 }
 
-const SettingUsername = ({ onConfirm, onCancel, ...props }: Props) => {
+const SettingUsername = ({ token, onConfirm, onCancel, ...props }: Props) => {
 
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')

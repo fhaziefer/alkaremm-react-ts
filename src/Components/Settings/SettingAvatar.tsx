@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Button from '../Ui/Button';
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiRemoveAvatar, apiUploadAvatar } from '../../Services/Api/AlkareemApi/patch';
 import { env } from '../../Utils/env';
 import '../../css/avaLoading.css'
@@ -10,9 +9,10 @@ type Props = {
   onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   avatarNow?: string;
   gender?: string;
+  token?: string
 };
 
-const SettingAvatar = ({ onConfirm, onCancel, ...props }: Props) => {
+const SettingAvatar = ({ token, onConfirm, onCancel, ...props }: Props) => {
 
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,8 +20,6 @@ const SettingAvatar = ({ onConfirm, onCancel, ...props }: Props) => {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(props.avatarNow || '');
   const [errorMessage, setErrorMessage] = useState('');
-  const { getItem } = useLocalStorage();
-  const token = getItem('token');
   const baseUrl = env.REACT_APP_BASE_URL
   const MAX_FILE_SIZE_MB = 1;
   const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
@@ -73,7 +71,7 @@ const SettingAvatar = ({ onConfirm, onCancel, ...props }: Props) => {
     if (onConfirm) {
       try {
         if (avatar) {
-          const changeAvatar = await apiUploadAvatar(token, avatar);
+          const changeAvatar = await apiUploadAvatar(token!, avatar);
           if (changeAvatar.status !== 200) {
             setError(true);
             setErrorMessage(changeAvatar);

@@ -1,7 +1,6 @@
 import { useState, ReactEventHandler } from 'react'
 import Button from '../Ui/Button'
 import Input from '../Ui/Input'
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiGetContactCurrent } from '../../Services/Api/AlkareemApi/get';
 import { apiCreateContact } from '../../Services/Api/AlkareemApi/post';
 import { apiChangeContact, apiChangePhone } from '../../Services/Api/AlkareemApi/patch';
@@ -9,12 +8,11 @@ import { apiChangeContact, apiChangePhone } from '../../Services/Api/AlkareemApi
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    token?: string
 };
 
-const SettingContact = ({ onCancel, onConfirm, ...props }: Props) => {
+const SettingContact = ({ token, onCancel, onConfirm, ...props }: Props) => {
 
-    const { getItem } = useLocalStorage()
-    const token = getItem('token')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')
