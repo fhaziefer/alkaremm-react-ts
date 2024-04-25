@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../Ui/Button'
 import { UserListProps } from '../../Types/Components/UserTable'
 
 const UserTable: React.FC<UserListProps> = ({ ...props }) => {
+    const [username, setUsername] = useState<string | undefined>(undefined)
+
+    useEffect(() => {
+        if (props.username && props.username.includes('alkareem')) {
+            setUsername(undefined);
+        } else {
+            setUsername(props.username);
+        }
+    }, [props.username]);
+
     return (
         <tr className="hover:bg-gray-900 focus:bg-gray-900 cursor-pointer" key={props.id}>
             <td id={props.id} onClick={props.profileButton}>
@@ -14,7 +24,7 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                     </div>
                     <div>
                         <div className="font-bold xs:max-w-[200px]"> {props.name}</div>
-                        <div className="text-sm opacity-50">@{props.username}</div>
+                        {username !== undefined && <div className="text-sm opacity-50">@{username}</div>}
                     </div>
                 </div>
             </td>
