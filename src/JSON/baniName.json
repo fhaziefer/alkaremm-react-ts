@@ -7,31 +7,31 @@
     {
         "id":"1",
         "query":"hannah",
-        "label":"Bani Hannah/Abdulloh"
+        "label":"Bani Hannah"
     },
     {
         "id":"2",
         "query":"salamah",
-        "label":"Bani Salamah/Manshur"
+        "label":"Bani Salamah"
     },
     {
         "id":"3",
         "query":"aisyah",
-        "label":"Bani Aisyah/Jauhari"
+        "label":"Bani Aisyah"
     },
     {
         "id":"4",
         "query":"maryam",
-        "label":"Bani Maryam/Marzuqi"
+        "label":"Bani Maryam"
     },
     {
         "id":"5",
         "query":"zainab",
-        "label":"Bani Zainab/Mahrus"
+        "label":"Bani Zainab"
     },
     {
         "id":"6",
         "query":"qomariyah",
-        "label":"Bani Qomariyah/Zaini"
+        "label":"Bani Qomariyah"
     }
 ]
