@@ -12,6 +12,8 @@ import Modal from '../../Components/Ui/Modal'
 import SettingItems from '../../Components/Ui/SettingItems'
 
 import { SettingAvatar, SettingAddress, SettingBio, SettingBrithday, SettingContact, SettingFamilyInfo, SettingPassword, SettingProfileInfo, SettingUsername } from '../../Components/Settings/SettingComponents'
+import AboutScreen from './AboutScreen'
+import Button from '../../Components/Ui/Button'
 
 const UserSettingScreen = () => {
 
@@ -29,6 +31,7 @@ const UserSettingScreen = () => {
   const [contactOpen, setContactOpen] = useState(false)
   const [familyInfoOpen, setFamilyInfoOpen] = useState(false)
   const [passwordOpen, setPasswordOpen] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
 
   //* STATING API
   const [userData, setUserData] = useState<ICurrentUser | null>(null)
@@ -146,6 +149,12 @@ const UserSettingScreen = () => {
     setPasswordOpen((prev) => !prev)
   }
 
+  //* HANDLER PASSWORD USER
+  const aboutHandler = () => {
+    getUserData()
+    setAboutOpen((prev) => !prev)
+  }
+
   const clickHandler = () => {
     alert('Clicked')
   }
@@ -240,6 +249,15 @@ const UserSettingScreen = () => {
           </Modal>
 
           <Modal
+            open={aboutOpen}
+            onClose={() => setAboutOpen((prev) => !prev)}>
+            <div className='flex-1'>
+              <AboutScreen />
+              <Button className='w-full mb-4' variant='primary' onClick={() => setAboutOpen((prev) => !prev)}>Tutup</Button>
+            </div>
+          </Modal>
+
+          <Modal
             open={familyInfoOpen}
             onClose={() => setFamilyInfoOpen((prev) => !prev)}>
             <SettingFamilyInfo
@@ -319,7 +337,7 @@ const UserSettingScreen = () => {
               subLabel='Hubungi Admin' />
 
             <SettingItems
-              onClick={clickHandler}
+              onClick={() => setAboutOpen((prev) => !prev)}
               label='Tentang' />
 
             <div className="divider px-4 md:px-0"></div>
