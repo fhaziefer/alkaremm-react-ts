@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LogoutAlert from './LogoutAlert';
+import { env } from '../Utils/env';
 
 const Header = () => {
 
     const [modalOpen, setModalOpen] = useState(false)
+
+    const baseUrl = env.REACT_APP_BASE_URL
 
     const navigate = useNavigate();
 
@@ -29,7 +32,7 @@ const Header = () => {
             <LogoutAlert open={modalOpen} />
             <div className="flex-1">
                 <a onClick={homeHandler} className="btn btn-ghost text-xl rounded-full hover:text-white">
-                    <img className='w-7 mr-2' src='logo.png'></img><span>Alkareem</span>
+                    <img className='w-7 mr-2' src={`${baseUrl}/images/asset/logo.png`}></img><span>Alkareem</span>
                 </a>
             </div>
             <div className="flex-none gap-2">
