@@ -15,16 +15,19 @@ const Footer = () => {
     return (
         <footer className="footer py-10 text-neutral-content">
             <aside>
-                <img className="h-14 ml-1" src={`${baseUrl}/images/asset/logo.png`} alt="logo" />
-                <p><b className="text-md">Alkareem</b><br /><br />Official Website of Bani KH. Abdul Karim Lirboyo<br />Copyright Ⓒ {year}</p>
+                <div className="flex flex-col gap-2 items-center">
+                <img className="w-14" src={`${baseUrl}/images/asset/logo.png`} alt="logo" />
+                <h1 className="text-md font-bold">Alkareem</h1>
+                </div>
+                <p>Official Website of Bani KH. Abdul Karim Lirboyo<br />Copyright Ⓒ {year}</p>
             </aside>
             <nav>
                 <h6 className="footer-title">Social</h6>
                 <div className="grid grid-flow-col gap-4">
-                    <a href={instagram}><FaInstagram className="h-6 w-6 hover:text-rose-400"/></a>
-                    <a href={twitter}><FaXTwitter className="h-6 w-6 hover:text-white"/></a>
-                    <a href={facebook}><FaFacebook className="h-6 w-6 hover:text-blue-500"/></a>
-                    <a href={youtube}><FaYoutube className="h-6 w-6 hover:text-red-600"/></a>
+                    <a href={instagram}><FaInstagram className="h-6 w-6 hover:text-rose-400" /></a>
+                    <a href={twitter}><FaXTwitter className="h-6 w-6 hover:text-white" /></a>
+                    <a href={facebook}><FaFacebook className="h-6 w-6 hover:text-blue-500" /></a>
+                    <a href={youtube}><FaYoutube className="h-6 w-6 hover:text-red-600" /></a>
                 </div>
             </nav>
         </footer>
