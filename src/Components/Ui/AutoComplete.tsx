@@ -85,7 +85,7 @@ const AutoComplete = ({ index, helper, label, data, placeholder, disabled = fals
             {isOpen && <Button onClick={clearContent} variant='ghost' className='absolute rounded-full right-0'><RxCross2 /></Button>}
             {isOpen && (
                 <div className={`absolute order-first top-full left-0 right-0 overflow-y-auto rounded-b-xl border border-gray-700 bg-base-100`} style={{ maxHeight: 120, height: containerHeight }}>
-                    <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-full">
+                    <ul className={`p-2 shadow menu dropdown-content z-[${index}] bg-base-100 rounded-box w-full`}>
                         {filteredData?.map((item) => (
                             <React.Fragment key={item.id}>
                                 <li><a onClick={() => handleItemClick(item.id, item.bani_name || item.name || item.text)}>{item.bani_name || item.name || item.text || item.string}</a></li>

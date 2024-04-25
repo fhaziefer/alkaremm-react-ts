@@ -333,7 +333,7 @@ const SettingFamilyInfo = ({ onConfirm, onCancel, gender, token }: Props) => {
             </div>
             <div className='p-4'>
                 <AutoComplete
-                    index={2}
+                    index={1}
                     label='Nama Orang tua'
                     disabled={orangtuaDisable}
                     placeholder='Nama Orang tua'
@@ -344,7 +344,7 @@ const SettingFamilyInfo = ({ onConfirm, onCancel, gender, token }: Props) => {
             </div>
             <div className='p-4'>
                 <AutoComplete
-                    index={1}
+                    index={0}
                     label='Nama Suami'
                     disabled={pasanganDisable}
                     placeholder='Nama Suami'
