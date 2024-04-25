@@ -37,13 +37,15 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                         Delete
                     </Button>
                 </div>
-            </td> : <td className='items-end'>
-                <div className='flex flex-col items-end gap-2'>
-                    {props.profileBani?.map((data) => (
-                        <div key={data.bani?.id} className="badge badge-neutral badge-sm text-xs text-gray-400">{data.bani?.bani_name}</div>
-                    ))}
-                </div>
-            </td>}
+            </td>
+                :
+                <td key={props.id} className='items-end'>
+                    <div className='flex flex-col items-end gap-2'>
+                        {props.profileBani?.map((data) => (
+                            <div key={data.bani?.id} className="badge badge-neutral badge-sm text-xs text-gray-400">{data.bani?.bani_name}</div>
+                        ))}
+                    </div>
+                </td>}
         </tr>
 
     )
