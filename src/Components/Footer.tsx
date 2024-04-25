@@ -6,16 +6,17 @@ import { FaXTwitter } from "react-icons/fa6";
 const Footer = () => {
 
     const year = getYearNow()
+    const baseUrl = env.REACT_APP_BASE_URL
     const instagram = env.REACT_APP_INSTAGRAM_URL
     const twitter = env.REACT_APP_TWITTER_URL
     const youtube = env.REACT_APP_YOUTUBE_URL
     const facebook = env.REACT_APP_FACEBOOK_URL
 
     return (
-        <footer className="footer p-10 text-neutral-content">
+        <footer className="footer py-10 text-neutral-content">
             <aside>
-                <img className="w-16 h-16 fill-gray-400" src="logo.png" alt="logo" />
-                <p><b>Alkareem</b><br />Official Website of Bani KH. Abdul Karim Lirboyo<br />Copyright Ⓒ {year}</p>
+                <img className="h-14 ml-1" src={`${baseUrl}/images/asset/logo.png`} alt="logo" />
+                <p><b className="text-md">Alkareem</b><br /><br />Official Website of Bani KH. Abdul Karim Lirboyo<br />Copyright Ⓒ {year}</p>
             </aside>
             <nav>
                 <h6 className="footer-title">Social</h6>
