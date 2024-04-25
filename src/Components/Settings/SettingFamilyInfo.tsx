@@ -352,6 +352,7 @@ const SettingFamilyInfo = ({ onConfirm, onCancel, gender, token }: Props) => {
                     data={users?.data}
                     onClicked={partnerHandler} />
             </div>
+            <p className='text-xs mb-4 p-4 text-justify'><strong className='text-gray-200'>Note: </strong>Untuk memastikan informasi hubungan keluarga Anda yang akurat, harap isi semua detail yang diminta, seperti daftar bani, urutan anak dalam keluarga, nama generasi, status pernikahan, nama orang tua asli KH. Abdul Karim (kosongkan jika Anda adalah menantu), dan nama suami (jika Anda perempuan).</p>
             <div className="flex-row flex w-full justify-between my-6">
                 <Button
                     onClick={handleCancel}
