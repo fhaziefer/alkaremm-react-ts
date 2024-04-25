@@ -1,7 +1,7 @@
 import React from 'react'
 import { DetailUserCardProps } from '../../Types/Components/DetailUserCardProps'
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
-import { FaLocationDot, FaUserGroup } from "react-icons/fa6";
+import { FaLocationDot } from "react-icons/fa6";
 import TableDetailChildrenCard from './TableDetailChildrenCard';
 import TableDetailWives from './TableDetailWives';
 import TableBaniCard from './TableBaniCard';
@@ -10,8 +10,6 @@ import Button from '../Ui/Button';
 const DetailUserCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
 
     const fullAddress = props.street + ', ' + props.village + ', ' + props.district + ', ' + props.city + ', ' + props.province + ', ' + props.postal
-    const shortAddress = props.city + ', ' + props.province
-
     return (
         <div className="font-sans antialiased text-gray-900 leading-normal tracking-wider" >
             <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0 relative">
