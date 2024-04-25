@@ -20,26 +20,17 @@ const Header = () => {
         navigate('/profile/setting', { replace: true })
     }
 
-    const handleAdress = (
-        street: string,
-        village: string,
-        district: string,
-        city: string,
-        province: string,
-        postal: string) => {
-        console.log(street, village, district, city, province, postal)
-        setModalOpen((prev) => !prev)
-    }
-
     const logoutHandler = () => {
         setModalOpen((prev) => !prev)
     }
 
     return (
         <div className="px-4 navbar bg-base-100 md:hidden lg:hidden">
-            <LogoutAlert open={modalOpen}/>
+            <LogoutAlert open={modalOpen} />
             <div className="flex-1">
-                <a onClick={homeHandler} className="btn btn-ghost text-xl rounded-full hover:text-white">Alkareem</a>
+                <a onClick={homeHandler} className="btn btn-ghost text-xl rounded-full hover:text-white">
+                    <img className='w-7 mr-2' src='logo.png'></img><span>Alkareem</span>
+                </a>
             </div>
             <div className="flex-none gap-2">
                 <div className="dropdown dropdown-end">

@@ -151,7 +151,7 @@ const SearchScreen = () => {
           : <button disabled className="join-item btn btn-outline">Next page</button>
         }
       </div> : null}
-      <div className='w-full mt-4'>
+      <div className='w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%] mt-4'>
         <Footer />
       </div>
     </div>

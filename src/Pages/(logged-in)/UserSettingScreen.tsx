@@ -330,7 +330,7 @@ const UserSettingScreen = () => {
               label='Keluar'
               subLabel='Keluar dari akun Anda' />
 
-            <div className='w-full mt-4'>
+            <div className='w-full mt-4 px-4'>
               <Footer />
             </div>
 
