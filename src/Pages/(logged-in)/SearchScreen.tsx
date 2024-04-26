@@ -19,11 +19,12 @@ const SearchScreen = () => {
   const [baniQuery, setBaniQuery] = useState('')
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
-  
+
   const { getItem } = useLocalStorage()
   const navigate = useNavigate();
   const token = getItem('token')
   const profileId = getItem('id')
+  const role = getItem('role')
 
   const debouncedQuery = useDebounce(query)
 
@@ -71,13 +72,6 @@ const SearchScreen = () => {
     // navigate(`/profile/${value}`, { replace: false });
   };
 
-  useEffect(() => {
-    const admin = getItem('role')
-    if (admin !== 'USER') {
-      setIsAdmin(true)
-    }
-  }, [])
-
   const fetchUsers = async () => {
     setIsLoading(true)
     const users = await apiSearchUser({ token: token, bani: baniQuery, query: debouncedQuery, page: page })
@@ -92,8 +86,33 @@ const SearchScreen = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, [debouncedQuery, baniQuery, page]);
+    if (role !== 'USER') {
+      setIsAdmin(true)
+    }
+
+    if (role === 'KOORHANNAH') {
+      setBaniQuery('hannah')
+      fetchUsers();
+    } else if (role === 'KOORSALAMAH') {
+      setBaniQuery('salamah')
+      fetchUsers();
+    } else if (role === 'KOORAISYAH') {
+      setBaniQuery('aisyah')
+      fetchUsers();
+    } else if (role === 'KOORMARYAM') {
+      setBaniQuery('maryam')
+      fetchUsers();
+    } else if (role === 'KOORZAINAB') {
+      setBaniQuery('zainab')
+      fetchUsers();
+    } else if (role === 'KOORQOMARIYAH') {
+      setBaniQuery('qomariyah')
+      fetchUsers();
+    } else {
+      fetchUsers();
+    }
+
+  }, [debouncedQuery, baniQuery, page, role]);
 
   return (
     <div className="flex flex-col min-h-screen items-center pt-4">
@@ -101,23 +120,27 @@ const SearchScreen = () => {
         handleQuery(
           (e.target as HTMLInputElement)
         )} placeholder="Nama, alamat..." />
-      <div className='w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%] carousel carousel-start rounded-box my-4'>
-        <div onChange={(e) => { handleOption(e.target) }} className="carousel-item gap-2 md:gap-4">
-          {baniName.map((bani) => (
-            <input
-              value={bani.query}
-              key={bani.query}
-              className="join-item btn btn-sm"
-              type="radio"
-              name="options"
-              aria-label={bani.label} />
-          ))}
+      {(role === 'ADMIN' || role === 'USER') && (
+        <div className='w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%] carousel carousel-start rounded-box mt-4'>
+          <div onChange={(e) => { handleOption(e.target) }} className="carousel-item gap-2 md:gap-4">
+            {baniName.map((bani) => (
+              <input
+                value={bani.query}
+                key={bani.query}
+                className="join-item btn btn-sm"
+                type="radio"
+                name="options"
+                aria-label={bani.label} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
       {isLoading ? (
         <Loading />
       ) : (
-        <div className='w-full sm:w-[80%] md:w-[80%] lg:w-[60%]'>
+
+        <div className='w-full sm:w-[80%] md:w-[80%] lg:w-[60%] mt-4'>
           {users?.data.length !== 0 ?
             <table className='table rounded-none'>
               <thead className='hidden'>
@@ -145,6 +168,7 @@ const SearchScreen = () => {
             </table>
             : <h1 className='text-center'>Data tidak ditemukan</h1>}
         </div>
+
       )}
       {totalPage > 1 ? <div className=" mt-4 join grid grid-cols-2 mx-4">
         {page !== 1

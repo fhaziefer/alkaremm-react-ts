@@ -28,13 +28,8 @@ const Routes = (props: Props) => {
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='/login' element={<LoginScreen />} />
 
-      //* ADMIN ROUTE
-      <Route element={<AdminRoute />}>
-        <Route path='/admin/dashboard' element={<AdminDashboardScreen />} />
-      </Route>
-
-      //* USER LOGED-IN ROUTE
       <Route element={<UserRoute />}>
+        <Route path='/admin/dashboard' element={<AdminDashboardScreen />} />
         <Route path='/' element={<HomeScreen />} />
         <Route path='/search' element={<SearchScreen />} />
         <Route path='/:id' element={<UserDetailScreen />} />
@@ -42,7 +37,7 @@ const Routes = (props: Props) => {
         <Route path='/profile' element={<ProfileScreen />} />
         <Route path='/about' element={<AboutScreen />} />
       </Route>
-      
+
     </Router>
   )
 }

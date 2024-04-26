@@ -28,16 +28,18 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                     </div>
                 </div>
             </td>
-            {props.isAdmin ? <td className='items-end'>
-                <div className='flex flex-col items-end gap-2'>
-                    <Button id={props.id} onClick={props.editButton} size='tiny' variant='outline' className='w-[70px] text-xs'>
-                        Edit
-                    </Button>
-                    <Button id={props.id} onClick={props.deleteButton} size='tiny' variant='outline' className='w-[70px] text-xs'>
-                        Delete
-                    </Button>
-                </div>
-            </td>
+            {props.isAdmin
+                ?
+                <td className='items-end'>
+                    <div className='flex flex-col items-end gap-2'>
+                        <Button id={props.id} onClick={props.editButton} size='tiny' variant='outline' className='w-[70px] text-xs'>
+                            Edit
+                        </Button>
+                        <Button id={props.id} onClick={props.deleteButton} size='tiny' variant='outline' className='w-[70px] text-xs'>
+                            Delete
+                        </Button>
+                    </div>
+                </td>
                 :
                 <td key={props.id} className='items-end'>
                     <div className='flex flex-col items-end gap-2'>
@@ -45,9 +47,9 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                             <div key={data.bani?.id} className="badge badge-neutral badge-sm text-xs text-gray-400">{data.bani?.bani_name}</div>
                         ))}
                     </div>
-                </td>}
+                </td>
+            }
         </tr>
-
     )
 }
 
