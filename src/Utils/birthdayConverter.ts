@@ -75,6 +75,11 @@ export var getYearNow = function () {
     return newDate;
 }
 
+export var getFullDateNow = function () {
+    const newDate = dayjs(timeNow).format('dddd, D MMMM YYYY')
+    return newDate;
+}
+
 export var getDate = function (date: string | undefined) {
     const newDate = dayjs(date!).format('DD-MM-YYYY')
     return newDate
