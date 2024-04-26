@@ -10,6 +10,8 @@ import LoginScreen from '../Pages/LoginScreen'
 
 //* ADMIN ROUTE
 import AdminDashboardScreen from '../Pages/(admin)/AdminDashboardScreen'
+import AdminUserCreatorScreen from '../Pages/(admin)/AdminUserCreatorScreen'
+import AdminUserEditorScreen from '../Pages/(admin)/AdminUserEditorScreen'
 
 //* USER LOGED-IN ROUTE
 import HomeScreen from '../Pages/(logged-in)/HomeScreen'
@@ -30,6 +32,9 @@ const Routes = (props: Props) => {
 
       <Route element={<UserRoute />}>
         <Route path='/admin/dashboard' element={<AdminDashboardScreen />} />
+        <Route path='/admin/register' element={<AdminUserCreatorScreen />} />
+        <Route path='/admin/edit/:id' element={<AdminUserEditorScreen />} />
+        
         <Route path='/' element={<HomeScreen />} />
         <Route path='/search' element={<SearchScreen />} />
         <Route path='/:id' element={<UserDetailScreen />} />
