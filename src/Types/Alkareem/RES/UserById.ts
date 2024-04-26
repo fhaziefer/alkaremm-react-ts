@@ -35,7 +35,7 @@ interface Profil {
   generasi?: Generasi;
   subcription?: Subcription;
   parent?: Parent;
-  husband?: null;
+  husband?: Profil;
   wives?: Wife[];
   children?: Child[];
   address?: Address;

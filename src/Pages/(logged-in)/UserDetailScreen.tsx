@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiChildren, apiDetailUser } from '../../Services/Api/AlkareemApi/get';
 import { env } from '../../Utils/env';
-import ProfileCard from '../../Components/Search/DetailUserCard';
+import DetailUserCard from '../../Components/Search/DetailUserCard';
 import Loading from '../../Components/Loading';
-import { ICurrentUser } from '../../Types/Alkareem/RES/CurrentUser';
 import { IChildren } from '../../Types/Alkareem/RES/ChildrenById';
 import { Wife } from '../../Types/Alkareem/RES/Wives';
+import { IUserById } from '../../Types/Alkareem/RES/UserById';
 
 const UserDetailScreen = () => {
 
@@ -15,53 +15,42 @@ const UserDetailScreen = () => {
   const { getItem } = useLocalStorage()
   const token = getItem('token')
 
-  const [userData, setUserData] = useState<ICurrentUser | null>(null)
+  const [userData, setUserData] = useState<IUserById | null>(null)
   const [childrenData, setChildrenData] = useState<IChildren | null>(null)
   const [isLoading, setIsLoading] = useState(true);
-  const url = env.REACT_APP_BASE_URL
+  const baseUrl = env.REACT_APP_BASE_URL
 
   const fetchUsers = async () => {
 
     const user = await apiDetailUser({ token: token, id: id })
     if (user.status !== 200) {
       setIsLoading(false)
-      // setIsError(true)
     } else {
       setUserData(user.data)
       if (user.data.data.profil.status === 'SINGLE' || user.data.data.profil.status === 'UNKNOWN') {
         setIsLoading(false)
         return;
       } else {
-
         if (user.data.data.profil.children.length !== 0) {
-
           var children = await apiChildren({ token: token, id: id })
-
         } else {
-
           if (user.data.data.profil?.gender !== 'FEMALE') {
-
             if (user.data.data.profil?.wives === null) {
               setIsLoading(false)
               return
             } else {
-
               const wives = user.data.data.profil?.wives
-              let wifeId1 = undefined
-
+              let wifeId = undefined
               if (wives && wives.length > 0) {
                 wives.forEach((wife: Wife) => {
-                  wifeId1 = wife.userId
+                  wifeId = wife.userId
                 });
               } else {
                 console.log("No wife data available.");
               }
-
-              var children = await apiChildren({ token: token, id: wifeId1 })
+              var children = await apiChildren({ token: token, id: wifeId })
             }
-
           } else {
-
             if (user.data.data.profil.husband === null) {
               setIsLoading(false)
               return
@@ -71,7 +60,6 @@ const UserDetailScreen = () => {
             }
           }
         }
-
       }
       if (children.status !== 200) {
         setIsLoading(false)
@@ -91,7 +79,7 @@ const UserDetailScreen = () => {
       {isLoading
         ? <Loading />
         :
-        <ProfileCard
+        <DetailUserCard
           name={userData?.data.profil?.name}
           user_alive={userData?.data.profil?.alive_status}
           parent_alive={userData?.data.profil?.parent?.alive_status}
@@ -100,7 +88,7 @@ const UserDetailScreen = () => {
           bio={userData?.data.profil?.bio}
           birthday={userData?.data.profil?.birthday}
           bani={userData?.data.profil?.bani?.bani_name}
-          avatar={url + userData?.data.profil?.avatar}
+          avatar={baseUrl + userData?.data.profil?.avatar}
           gender={userData?.data.profil?.gender}
           husband={userData?.data.profil?.husband?.name}
           wife={userData?.data.profil?.wives}

@@ -22,6 +22,8 @@ const SearchScreen = () => {
   
   const { getItem } = useLocalStorage()
   const navigate = useNavigate();
+  const token = getItem('token')
+  const profileId = getItem('id')
 
   const debouncedQuery = useDebounce(query)
 
@@ -50,7 +52,11 @@ const SearchScreen = () => {
 
   const handleProfile = (event: any) => {
     const value = event.currentTarget.getAttribute('id')
-    navigate(`/${value}`, { replace: false });
+    if (value !== profileId) {
+      navigate(`/${value}`, { replace: false });
+    } else {
+      navigate(`/profile`, { replace: false })
+    }
   };
 
   const handleEdit = (event: any) => {
@@ -74,7 +80,6 @@ const SearchScreen = () => {
 
   const fetchUsers = async () => {
     setIsLoading(true)
-    const token = getItem('token')
     const users = await apiSearchUser({ token: token, bani: baniQuery, query: debouncedQuery, page: page })
     if (users.status !== 200) {
       setIsError(true)
@@ -110,7 +115,7 @@ const SearchScreen = () => {
         </div>
       </div>
       {isLoading ? (
-          <Loading />
+        <Loading />
       ) : (
         <div className='w-full sm:w-[80%] md:w-[80%] lg:w-[60%]'>
           {users?.data.length !== 0 ?
