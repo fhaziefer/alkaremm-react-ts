@@ -1,23 +1,14 @@
-import { useState } from "react"
-import { useLocalStorage } from "../../Hooks/useLocalStorage"
-import { useNavigate } from "react-router-dom"
-import Loading from "../../Components/Loading"
 import CarouselCountUser from "../../Components/CountUser/CarouselCountUser"
 import GreetingTime from "../../Components/Greetings/GreetingTime"
 import useAdminName from "../../Hooks/useAdminName"
 import LayoutSideBlank from "../../Components/Layout/LayoutSideBlank"
 import Footer from "../../Components/Footer"
-import Option from "../../Components/AdminDashboard/Option"
+import AdminOption from "../../Components/AdminDashboard/AdminOption"
+import { useNavigate } from "react-router-dom"
 
 const AdminDashboardScreen = () => {
 
-  const { getItem } = useLocalStorage()
-  const adminToken = getItem('token')
-  const role = getItem('role')
   const navigate = useNavigate();
-
-  const [isLoading] = useState(false)
-  const [error, setError] = useState(false)
 
   const adminName = useAdminName()
 
@@ -26,34 +17,30 @@ const AdminDashboardScreen = () => {
   }
 
   const updateHandler = () => {
-    alert('SignUp')
+    navigate('/search', { replace: false })
   }
 
   return (
-    <>
-      {isLoading ?
-        <Loading />
-        :
-        <LayoutSideBlank>
+    <LayoutSideBlank>
 
-          <GreetingTime
-            name={adminName} />
+      <GreetingTime
+        name={adminName}
+      />
 
-          <h1>Berikut adalah beberapa hal yang bisa Anda lakukan:</h1>
+      <h1>Berikut adalah beberapa hal yang bisa Anda lakukan:</h1>
 
-          <Option
-          signUpButton={signUpHandler}
-          updateButton={updateHandler}
-          />
+      <AdminOption
+        signUpButton={signUpHandler}
+        updateButton={updateHandler}
+      />
 
-          <CarouselCountUser
-            label="Keluarga Besar Bani KH. Abdul Karim Lirboyo" />
+      <CarouselCountUser
+        label="Keluarga Besar Bani KH. Abdul Karim Lirboyo"
+      />
 
-          <Footer />
+      <Footer />
 
-        </LayoutSideBlank>
-      }
-    </>
+    </LayoutSideBlank>
   )
 }
 

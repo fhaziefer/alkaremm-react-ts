@@ -44,7 +44,7 @@ const CarouselCountUser = ({ ...props }: Props) => {
         <>
             {isLoading ? <Loading /> :
                 <div className="flex flex-col items-center gap-1 my-8 bg-base-200 rounded-box py-4 border border-gray-500 shadow">
-                    {props.label && <><h1 className="font-bold text-2xl text-center max-w-[80%]">{props.label}</h1> <h1 className="text-xs italic text-gray-600">(Terakhir diperbaharui: {dateNow})</h1></>}
+                    {props.label && <><h1 className="font-bold text-2xl text-center max-w-[80%] mt-4">{props.label}</h1> <h1 className="text-xs italic text-gray-500">(Terakhir diperbaharui: {dateNow})</h1></>}
                     {error ? <span className="text-error my-10 font-bold text-xl">Error, tidak dapat memuat data</span> :
                         <div className="w-full carousel rounded-box bg-base-200">
                             <div className="carousel-item">

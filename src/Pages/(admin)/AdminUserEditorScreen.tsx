@@ -2,8 +2,7 @@ import { useEffect } from "react"
 import { useLocalStorage } from "../../Hooks/useLocalStorage"
 import { useNavigate } from "react-router-dom"
 
-
-const UserCreatorScreen = () => {
+const AdminUserEditorScreen = () => {
     const { getItem } = useLocalStorage()
     const role = getItem('role')
     const navigate = useNavigate();
@@ -11,13 +10,12 @@ const UserCreatorScreen = () => {
     //* CHECK ADMIN STATUS
     useEffect(() => {
         if (role === 'USER') {
-            navigate('/', { replace: false });
+            navigate('/', { replace: true });
         }
     }, [role])
-
     return (
-        <div>UserCreatorScreen</div>
+        <div>UserEditorScreen</div>
     )
 }
 
-export default UserCreatorScreen
+export default AdminUserEditorScreen

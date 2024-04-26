@@ -2,7 +2,8 @@ import { useEffect } from "react"
 import { useLocalStorage } from "../../Hooks/useLocalStorage"
 import { useNavigate } from "react-router-dom"
 
-const UserEditorScreen = () => {
+
+const AdminUserCreatorScreen = () => {
     const { getItem } = useLocalStorage()
     const role = getItem('role')
     const navigate = useNavigate();
@@ -13,9 +14,10 @@ const UserEditorScreen = () => {
             navigate('/', { replace: false });
         }
     }, [role])
+
     return (
-        <div>UserEditorScreen</div>
+        <div>UserCreatorScreen</div>
     )
 }
 
-export default UserEditorScreen
+export default AdminUserCreatorScreen

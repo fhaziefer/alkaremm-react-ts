@@ -7,7 +7,7 @@ interface Props {
     updateButton: () => void;
 }
 
-const Option = ({ signUpButton, updateButton, ...props }: Props) => {
+const AdminOption = ({ signUpButton, updateButton, ...props }: Props) => {
 
     const signUpItems = [
         {
@@ -47,13 +47,17 @@ const Option = ({ signUpButton, updateButton, ...props }: Props) => {
             <div className="space-y-8 lg:grid lg:grid-cols-2 sm:gap-6 xl:gap-10 lg:space-y-0 mt-4">
 
                 <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border border-gray-500 bg-base-200 shadow relative">
-                    <h3 className="mb-4 text-2xl font-bold">Registrasi</h3>
-                    <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Membuatkan akun baru untuk anggota bani di bawah koordinasi Anda.</p>
+                    <h3 className="mb-4 text-2xl font-bold">
+                        Registrasi
+                    </h3>
+                    <p className="font-light text-md">
+                        Membuatkan akun baru untuk anggota bani di bawah koordinasi Anda.
+                    </p>
                     <div className="flex justify-center items-baseline my-2">
                     </div>
-                    <ul role="list" className="mb-8 space-y-4 text-left mb-20">
+                    <ul role="list" className="mb-8 space-y-4 text-left mb-20 text-sm">
                         {signUpItems.map((data) => (
-                            <li className="flex items-center space-x-3">
+                            <li key={data.item} className="flex items-center space-x-3 ">
                                 <FaCheck className="text-primary ml-1" />
                                 <span>{data.item}</span>
                             </li>
@@ -63,13 +67,17 @@ const Option = ({ signUpButton, updateButton, ...props }: Props) => {
                 </div>
 
                 <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border border-gray-500 bg-base-200 shadow relative">
-                    <h3 className="mb-4 text-2xl font-bold">Update</h3>
-                    <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Perbaharui informasi akun anggota bani di bawah koordinasi Anda.</p>
+                    <h3 className="mb-4 text-2xl font-bold">
+                        Update
+                    </h3>
+                    <p className="font-light text-md">
+                        Perbaharui informasi akun anggota bani di bawah koordinasi Anda.
+                    </p>
                     <div className="flex justify-center items-baseline my-2">
                     </div>
-                    <ul role="list" className="mb-8 space-y-4 text-left mb-20">
+                    <ul role="list" className="mb-8 space-y-4 text-left mb-20 text-sm">
                         {updateItems.map((data) => (
-                            <li className="flex items-center space-x-3">
+                            <li key={data.item} className="flex items-center space-x-3">
                                 <FaCheck className="text-primary ml-1" />
                                 <span>{data.item}</span>
                             </li>
@@ -83,4 +91,4 @@ const Option = ({ signUpButton, updateButton, ...props }: Props) => {
     )
 }
 
-export default Option
+export default AdminOption
