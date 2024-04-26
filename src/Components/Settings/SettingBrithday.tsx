@@ -10,9 +10,11 @@ type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     token?: string;
+    id?: string;
+    isAdmin?: boolean;
 }
 
-const SettingBrithday = ({ token, onConfirm, onCancel, ...props }: Props) => {
+const SettingBrithday = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')

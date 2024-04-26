@@ -8,9 +8,11 @@ type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     token?: string
+    id?: string;
+    isAdmin?: boolean;
 };
 
-const SettingPassword = ({ token, onConfirm, onCancel }: Props) => {
+const SettingPassword = ({ isAdmin=false, token, onConfirm, onCancel }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');

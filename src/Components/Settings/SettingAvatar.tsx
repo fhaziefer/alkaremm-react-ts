@@ -10,9 +10,11 @@ type Props = {
   avatarNow?: string;
   gender?: string;
   token?: string
+  id?: string;
+  isAdmin?: boolean;
 };
 
-const SettingAvatar = ({ token, onConfirm, onCancel, ...props }: Props) => {
+const SettingAvatar = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
 
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

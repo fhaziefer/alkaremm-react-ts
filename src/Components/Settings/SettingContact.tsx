@@ -8,10 +8,12 @@ import { apiChangeContact, apiChangePhone } from '../../Services/Api/AlkareemApi
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-    token?: string
+    token?: string;
+    id?: string;
+    isAdmin?: boolean;
 };
 
-const SettingContact = ({ token, onCancel, onConfirm, ...props }: Props) => {
+const SettingContact = ({ isAdmin=false, token, onCancel, onConfirm, ...props }: Props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)

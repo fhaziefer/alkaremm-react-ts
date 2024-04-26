@@ -19,9 +19,11 @@ type Props = {
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     gender?: string
     token?: string
+    id?: string;
+    isAdmin?: boolean;
 };
 
-const SettingFamilyInfo = ({ onConfirm, onCancel, gender, token }: Props) => {
+const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }: Props) => {
 
     const [users, setUsers] = useState<ISearchProfile | null>(null);
     const [error, setError] = useState(true)

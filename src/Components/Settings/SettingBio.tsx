@@ -6,9 +6,11 @@ type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     token?: string
+    id?: string;
+    isAdmin?: boolean;
 }
 
-const SettingBio = ({ token, onConfirm, onCancel, ...props }: Props) => {
+const SettingBio = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
     const [bio, setBio] = useState('')
     const [charCount, setCharCount] = useState(0)
     const [isLoading, setIsLoading] = useState(false)

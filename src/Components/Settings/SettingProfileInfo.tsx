@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Input from '../Ui/Input'
 import Button from '../Ui/Button'
 import DropdownOption from '../Ui/DropdownOption';
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiGetProfile } from '../../Services/Api/AlkareemApi/get';
 import { apiCreateProfile } from '../../Services/Api/AlkareemApi/post';
 import { apiChangeProfileInfo } from '../../Services/Api/AlkareemApi/patch';
@@ -10,7 +9,9 @@ import { apiChangeProfileInfo } from '../../Services/Api/AlkareemApi/patch';
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-    token?: string
+    token?: string;
+    id?: string;
+    isAdmin?: boolean;
 };
 
 const genderOption = [
@@ -24,7 +25,7 @@ const genderOption = [
     }
 ]
 
-const SettingProfileInfo = ({ token, onConfirm, onCancel, ...props }: Props) => {
+const SettingProfileInfo = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)

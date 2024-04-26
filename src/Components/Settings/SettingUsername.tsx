@@ -1,18 +1,19 @@
-import { ReactEventHandler, useState } from 'react';
+import { useState } from 'react';
 import Input from '../Ui/Input';
 import { LuAtSign } from "react-icons/lu";
 import Button from '../Ui/Button';
-import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { apiChangeUsername } from '../../Services/Api/AlkareemApi/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     onCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     usernameNow?: string;
-    token?: string
+    token?: string;
+    id?: string;
+    isAdmin?: boolean
 }
 
-const SettingUsername = ({ token, onConfirm, onCancel, ...props }: Props) => {
+const SettingUsername = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
