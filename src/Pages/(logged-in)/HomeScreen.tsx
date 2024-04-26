@@ -1,63 +1,40 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
-import { apiCountUser } from '../../Services/Api/AlkareemApi/get';
 import Button from '../../Components/Ui/Button';
-import { useEffect, useState } from 'react';
-import { apiLogout } from '../../Services/Api/AlkareemApi/delete';
-import { ICountTotalUsers } from '../../Types/Alkareem/RES/CountUser';
 import LayoutSideBlank from '../../Components/Layout/LayoutSideBlank';
+import LogoutAlert from '../../Components/LogoutAlert';
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
-  const [totalUser, setTotalUser] = useState<ICountTotalUsers | null>(null)
   const { getItem, clearItem } = useLocalStorage()
   const navigate = useNavigate();
   const token = getItem('token')
+  const [logoutOpen, setLogoutOpen] = useState(false)
 
   const handleSearch = (event: any) => {
     navigate(`/search`, { replace: false });
+  };
+
+  const handleDashboard = (event: any) => {
+    navigate(`/admin/dashboard`, { replace: false });
   };
 
   const handleAbout = (event: any) => {
     navigate(`/about`, { replace: true });
   };
 
-  const handleLogout = (event: any) => {
-    logout()
-  };
-
-  const logout = async () => {
-    const logout = await apiLogout({ token: token })
-    if (logout.status !== 200) {
-      return;
-    } else {
-      clearItem()
-      navigate(`/login`, { replace: true });
-    }
-  }
-
-  const getTotalUser = async () => {
-    const total = await apiCountUser({ token: token })
-    if (total.status !== 200) {
-      return;
-    } else {
-      setTotalUser(total.data)
-    }
-  }
-
-  useEffect(() => {
-    getTotalUser()
-  }, [token])
-
   return (
     <LayoutSideBlank>
-      <div className="p-4">
-        <div>Total Jumlah Bani Abdul Karim: {totalUser?.data.totalUser}</div>
-        <div>Total Jumlah KK Bani Abdul Karim: {totalUser?.data.totalFamily}</div>
+      <LogoutAlert
+        open={logoutOpen}
+      />
+      <div className="flex flex-col gap-4">
         <Button onClick={handleAbout}>About</Button>
         <Button onClick={handleSearch}>Search</Button>
-        <Button onClick={handleLogout}>Logout</Button>
+        <Button onClick={handleDashboard}>Dashboard</Button>
+        <Button onClick={() => setLogoutOpen((prev) => !prev)}>Logout</Button>
       </div>
     </LayoutSideBlank>
   );
