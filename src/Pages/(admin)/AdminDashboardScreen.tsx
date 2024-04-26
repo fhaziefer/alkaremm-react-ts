@@ -5,7 +5,6 @@ import { getGreeting } from "../../Utils/birthdayConverter"
 import { apiCountUser } from "../../Services/Api/AlkareemApi/get"
 import { ICountTotalUsers } from "../../Types/Alkareem/RES/CountUser"
 import Loading from "../../Components/Loading"
-import CountUser from "../../Components/CountUser/CountUser"
 import CarouselCountUser from "../../Components/CountUser/CarouselCountUser"
 
 const AdminDashboardScreen = () => {
@@ -67,7 +66,7 @@ const AdminDashboardScreen = () => {
         <Loading />
         :
         <div className="w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%] mx-auto p-4 mt-0 md:mt-16 lg:mt-16">
-          
+
           <div className="font-bold text-4xl my-4">
             <h1>
               Selamat {greeting},
