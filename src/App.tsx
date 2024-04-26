@@ -6,7 +6,9 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <AuthProvider><Routes /></AuthProvider>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </BrowserRouter>
   )
 }

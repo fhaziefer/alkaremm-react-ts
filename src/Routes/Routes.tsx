@@ -24,7 +24,6 @@ type Props = {}
 const Routes = (props: Props) => {
   return (
     <Router>
-      
       //* PUBLIC ROUTE
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='/login' element={<LoginScreen />} />

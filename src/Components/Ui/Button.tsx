@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../Utils/cn';
 
 type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
-    variant?: 'outline' | 'neutral' | 'primary' | 'secondary' | 'ghost' | 'link' | 'join';
+    variant?: 'outline' | 'neutral' | 'primary' | 'secondary' | 'ghost' | 'link' | 'join' | 'error';
     disabled?: boolean
     size?: 'normal' | 'tiny' | 'small' | 'large'
 }
@@ -19,6 +19,7 @@ const buttonVariants = cva(
                 outline: 'btn-outline hover:bg-gray-400 hover:text-black',
                 neutral: 'btn-neutral',
                 primary: 'btn-primary text-white hover:text-gray-100',
+                error: 'btn-error text-white hover:text-gray-100 hover:bg-red-600',
                 secondary: 'btn-secondary text-white hover:text-gray-100',
                 ghost: 'btn-ghost hover:text-white',
                 link: 'btn-link',
