@@ -5,11 +5,12 @@ import Button from '../../Components/Ui/Button';
 import { useEffect, useState } from 'react';
 import { apiLogout } from '../../Services/Api/AlkareemApi/delete';
 import { ICountTotalUsers } from '../../Types/Alkareem/RES/CountUser';
+import LayoutSideBlank from '../../Components/Layout/LayoutSideBlank';
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
-  const [totalUser, setTotalUser] = useState<ICountTotalUsers|null>(null)
+  const [totalUser, setTotalUser] = useState<ICountTotalUsers | null>(null)
   const { getItem, clearItem } = useLocalStorage()
   const navigate = useNavigate();
   const token = getItem('token')
@@ -37,7 +38,7 @@ const HomeScreen = (props: Props) => {
   }
 
   const getTotalUser = async () => {
-    const total = await apiCountUser({token: token})
+    const total = await apiCountUser({ token: token })
     if (total.status !== 200) {
       return;
     } else {
@@ -50,13 +51,15 @@ const HomeScreen = (props: Props) => {
   }, [token])
 
   return (
-    <div className="p-4">
-      <div>Total Jumlah Bani Abdul Karim: {totalUser?.data.totalUser}</div>
-      <div>Total Jumlah KK Bani Abdul Karim: {totalUser?.data.totalFamily}</div>
-      <Button onClick={handleAbout}>About</Button>
-      <Button onClick={handleSearch}>Search</Button>
-      <Button onClick={handleLogout}>Logout</Button>
-    </div>
+    <LayoutSideBlank>
+      <div className="p-4">
+        <div>Total Jumlah Bani Abdul Karim: {totalUser?.data.totalUser}</div>
+        <div>Total Jumlah KK Bani Abdul Karim: {totalUser?.data.totalFamily}</div>
+        <Button onClick={handleAbout}>About</Button>
+        <Button onClick={handleSearch}>Search</Button>
+        <Button onClick={handleLogout}>Logout</Button>
+      </div>
+    </LayoutSideBlank>
   );
 };
 
