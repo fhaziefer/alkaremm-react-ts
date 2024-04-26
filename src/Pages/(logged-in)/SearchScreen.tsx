@@ -53,28 +53,108 @@ const SearchScreen = () => {
 
   const handleProfile = (event: any) => {
     const value = event.currentTarget.getAttribute('id')
-    if (value !== profileId) {
-      navigate(`/${value}`, { replace: false });
+    if (role !== 'USER') {
+      navigate(`/admin/edit/${value}`, { replace: false })
     } else {
-      navigate(`/profile`, { replace: false })
+      if (value !== profileId) {
+        navigate(`/${value}`, { replace: false });
+      } else {
+        navigate(`/profile`, { replace: false })
+      }
     }
   };
 
   const handleEdit = (event: any) => {
     const value = event.currentTarget.getAttribute('id')
-    alert(`Edit ${value}`)
-    // navigate(`/profile/${value}`, { replace: false });
+    navigate(`/admin/edit/${value}`, { replace: false })
   };
 
   const handleDelete = (event: any) => {
     const value = event.currentTarget.getAttribute('id')
-    alert(`Delete ${value}`)
-    // navigate(`/profile/${value}`, { replace: false });
+    navigate(`/admin/edit/${value}`, { replace: false })
   };
 
   const fetchUsers = async () => {
     setIsLoading(true)
     const users = await apiSearchUser({ token: token, bani: baniQuery, query: debouncedQuery, page: page })
+    if (users.status !== 200) {
+      setIsError(true)
+      setIsLoading(false)
+    } else {
+      setUsers(users.data)
+      setTotalPage(users.data.paging.total_page)
+      setIsLoading(false)
+    }
+  };
+
+  const fetchUsersHannah = async () => {
+    setIsLoading(true)
+    const users = await apiSearchUser({ token: token, bani: 'hannah', query: debouncedQuery, page: page })
+    if (users.status !== 200) {
+      setIsError(true)
+      setIsLoading(false)
+    } else {
+      setUsers(users.data)
+      setTotalPage(users.data.paging.total_page)
+      setIsLoading(false)
+    }
+  };
+
+  const fetchUsersSalamah = async () => {
+    setIsLoading(true)
+    const users = await apiSearchUser({ token: token, bani: 'salamah', query: debouncedQuery, page: page })
+    if (users.status !== 200) {
+      setIsError(true)
+      setIsLoading(false)
+    } else {
+      setUsers(users.data)
+      setTotalPage(users.data.paging.total_page)
+      setIsLoading(false)
+    }
+  };
+
+  const fetchUsersAisyah = async () => {
+    setIsLoading(true)
+    const users = await apiSearchUser({ token: token, bani: 'aisyah', query: debouncedQuery, page: page })
+    if (users.status !== 200) {
+      setIsError(true)
+      setIsLoading(false)
+    } else {
+      setUsers(users.data)
+      setTotalPage(users.data.paging.total_page)
+      setIsLoading(false)
+    }
+  };
+
+  const fetchUsersMaryam = async () => {
+    setIsLoading(true)
+    const users = await apiSearchUser({ token: token, bani: 'maryam', query: debouncedQuery, page: page })
+    if (users.status !== 200) {
+      setIsError(true)
+      setIsLoading(false)
+    } else {
+      setUsers(users.data)
+      setTotalPage(users.data.paging.total_page)
+      setIsLoading(false)
+    }
+  };
+
+  const fetchUsersZainab = async () => {
+    setIsLoading(true)
+    const users = await apiSearchUser({ token: token, bani: 'zainab', query: debouncedQuery, page: page })
+    if (users.status !== 200) {
+      setIsError(true)
+      setIsLoading(false)
+    } else {
+      setUsers(users.data)
+      setTotalPage(users.data.paging.total_page)
+      setIsLoading(false)
+    }
+  };
+
+  const fetchUsersQomariyah = async () => {
+    setIsLoading(true)
+    const users = await apiSearchUser({ token: token, bani: 'qomariyah', query: debouncedQuery, page: page })
     if (users.status !== 200) {
       setIsError(true)
       setIsLoading(false)
@@ -91,23 +171,17 @@ const SearchScreen = () => {
     }
 
     if (role === 'KOORHANNAH') {
-      setBaniQuery('hannah')
-      fetchUsers();
+      fetchUsersHannah()
     } else if (role === 'KOORSALAMAH') {
-      setBaniQuery('salamah')
-      fetchUsers();
+      fetchUsersSalamah()
     } else if (role === 'KOORAISYAH') {
-      setBaniQuery('aisyah')
-      fetchUsers();
+      fetchUsersAisyah()
     } else if (role === 'KOORMARYAM') {
-      setBaniQuery('maryam')
-      fetchUsers();
+      fetchUsersMaryam()
     } else if (role === 'KOORZAINAB') {
-      setBaniQuery('zainab')
-      fetchUsers();
+      fetchUsersZainab()
     } else if (role === 'KOORQOMARIYAH') {
-      setBaniQuery('qomariyah')
-      fetchUsers();
+      fetchUsersQomariyah()
     } else {
       fetchUsers();
     }
