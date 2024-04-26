@@ -149,12 +149,6 @@ const UserSettingScreen = () => {
     setPasswordOpen((prev) => !prev)
   }
 
-  //* HANDLER PASSWORD USER
-  const aboutHandler = () => {
-    getUserData()
-    setAboutOpen((prev) => !prev)
-  }
-
   const clickHandler = () => {
     alert('Clicked')
   }

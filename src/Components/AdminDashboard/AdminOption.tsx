@@ -63,7 +63,7 @@ const AdminOption = ({ signUpButton, updateButton, ...props }: Props) => {
                             </li>
                         ))}
                     </ul>
-                    <Button onClick={signUpButton} className="absolute bottom-6 right-6 left-6" variant="primary">Registrasi User Baru</Button>
+                    <Button onClick={signUpButton} className="absolute bottom-6 right-6 left-6 cursor-pointer" variant="primary">Registrasi User Baru</Button>
                 </div>
 
                 <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border border-gray-500 bg-base-200 shadow relative">
@@ -83,7 +83,7 @@ const AdminOption = ({ signUpButton, updateButton, ...props }: Props) => {
                             </li>
                         ))}
                     </ul>
-                    <Button onClick={updateButton} className="absolute bottom-6 right-6 left-6" variant="primary">Update User</Button>
+                    <Button onClick={updateButton} className="absolute bottom-6 right-6 left-6 cursor-pointer" variant="primary">Update User</Button>
                 </div>
 
             </div>
