@@ -15,7 +15,9 @@ const AdminDashboardScreen = () => {
   }, [role])
 
   return (
-    <div>Admin Dashboard Screen</div>
+    <div className="w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%] mx-auto p-4">
+      Admin Dashboard Screen
+    </div>
   )
 }
 
