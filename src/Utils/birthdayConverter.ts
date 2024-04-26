@@ -36,6 +36,20 @@ dayjs.updateLocale('en', {
 
 const timeNow = new Date()
 
+export var getGreeting = function () {
+    const hour = dayjs().hour();
+
+    if (hour >= 0 && hour < 10) {
+        return "Pagi";
+    } else if (hour >= 10 && hour < 15) {
+        return "Siang";
+    } else if (hour >= 15 && hour < 18) {
+        return "Sore";
+    } else {
+        return "Malam";
+    }
+}
+
 export var getDayNowNumber = function () {
     const newDate = dayjs(timeNow).format('D')
     return newDate;
