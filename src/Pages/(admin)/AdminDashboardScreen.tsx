@@ -13,7 +13,7 @@ const AdminDashboardScreen = () => {
   const adminName = useAdminName()
 
   const signUpHandler = () => {
-    alert('SignUp')
+    navigate('/admin/register', { replace: false })
   }
 
   const updateHandler = () => {

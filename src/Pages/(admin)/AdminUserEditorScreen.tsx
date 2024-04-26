@@ -1,20 +1,11 @@
-import { useEffect } from "react"
-import { useLocalStorage } from "../../Hooks/useLocalStorage"
-import { useNavigate } from "react-router-dom"
+import useAdminName from "../../Hooks/useAdminName"
 
 const AdminUserEditorScreen = () => {
-    const { getItem } = useLocalStorage()
-    const role = getItem('role')
-    const navigate = useNavigate();
 
-    //* CHECK ADMIN STATUS
-    useEffect(() => {
-        if (role === 'USER') {
-            navigate('/', { replace: true });
-        }
-    }, [role])
+    const adminName = useAdminName()
+    
     return (
-        <div>UserEditorScreen</div>
+        <div>{adminName}</div>
     )
 }
 
