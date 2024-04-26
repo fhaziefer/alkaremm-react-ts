@@ -42,7 +42,7 @@ const CarouselCountUser = ({ ...props }: Props) => {
     return (
         <>
             {isLoading ? <Loading /> :
-                <div className="flex flex-col items-center gap-1 my-4 bg-base-200 rounded-box py-4 border border-gray-500 shadow">
+                <div className="flex flex-col items-center gap-1 my-8 bg-base-200 rounded-box py-4 border border-gray-500 shadow">
                     {props.label && <><h1 className="font-bold text-2xl text-center max-w-[80%]">{props.label}</h1> <h1 className="text-xs italic text-gray-600">(Terakhir diperbaharui: {dateNow})</h1></>}
                     <div className="w-full carousel rounded-box bg-base-200">
                         <div className="carousel-item">
