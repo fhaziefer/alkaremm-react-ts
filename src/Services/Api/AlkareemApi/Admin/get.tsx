@@ -1,7 +1,6 @@
 import axios from "axios";
-import { IUserById } from "../../../../Types/Alkareem/RES/UserById";
 import { env } from "../../../../Utils/env";
-import { IReqUserByIdAdmin } from "../../../../Types/Alkareem/REQ/AdminReqType";
+import { IReqUserByIdAdmin, ITokenAdmin } from "../../../../Types/Alkareem/REQ/AdminReqType";
 import { IGetUserByIdAdmin } from "../../../../Types/Alkareem/RES/AdminGetById";
 
 const baseUrl = env.REACT_APP_BASE_URL
@@ -14,6 +13,62 @@ export async function apiAdminGetUserById({ ...props }: IReqUserByIdAdmin) {
         const user = await axios
             .get<IGetUserByIdAdmin>
             (`${baseUrl}/admin/user/${props.userId}`, { headers })
+        return user
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiAdminGetProfileById({ ...props }: ITokenAdmin) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const user = await axios
+            .get(`${baseUrl}/admin/user/profile/${props.userId}`, { headers })
+        return user
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiAdminGetAddressById({ ...props }: ITokenAdmin) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const user = await axios
+            .get(`${baseUrl}/admin/user/profile/address/${props.userId}`, { headers })
+        return user
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiAdminGetContactById({ ...props }: ITokenAdmin) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const user = await axios
+            .get(`${baseUrl}/admin/user/profile/contact/${props.userId}`, { headers })
+        return user
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiAdminGetBaniById({ ...props }: ITokenAdmin) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const user = await axios
+            .get(`${baseUrl}/admin/user/profile/bani/${props.userId}`, { headers })
         return user
     } catch (error: any) {
         const errorMessage = error.response.data.errors;
