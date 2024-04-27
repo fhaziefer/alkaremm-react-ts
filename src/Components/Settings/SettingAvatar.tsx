@@ -3,6 +3,7 @@ import Button from '../Ui/Button';
 import { apiRemoveAvatar, apiUploadAvatar } from '../../Services/Api/AlkareemApi/patch';
 import { env } from '../../Utils/env';
 import '../../css/avaLoading.css'
+import { apiRemoveAvatarAdmin, apiUploadAvatarAdmin } from '../../Services/Api/AlkareemApi/Admin/patch';
 
 type Props = {
   onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -14,7 +15,7 @@ type Props = {
   isAdmin?: boolean;
 };
 
-const SettingAvatar = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
+const SettingAvatar = ({ isAdmin = false, token, onConfirm, onCancel, ...props }: Props) => {
 
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +74,11 @@ const SettingAvatar = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: 
     if (onConfirm) {
       try {
         if (avatar) {
-          const changeAvatar = await apiUploadAvatar(token!, avatar);
+          if (isAdmin === true) {
+            var changeAvatar = await apiUploadAvatarAdmin(props.id!, token!, avatar,);
+          } else {
+            var changeAvatar = await apiUploadAvatar(token!, avatar);
+          }
           if (changeAvatar.status !== 200) {
             setError(true);
             setErrorMessage(changeAvatar);
@@ -85,7 +90,11 @@ const SettingAvatar = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: 
         }
 
         if (remove) {
-          const removeAvatar = await apiRemoveAvatar({ token });
+          if (isAdmin === true) {
+            var removeAvatar = await apiRemoveAvatarAdmin({ token, userId:props.id });
+          } else {
+            var removeAvatar = await apiRemoveAvatar({ token });
+          }
           if (removeAvatar.status !== 200) {
             setError(true);
             setErrorMessage('Gagal menghapus foto profil, coba lagi.');

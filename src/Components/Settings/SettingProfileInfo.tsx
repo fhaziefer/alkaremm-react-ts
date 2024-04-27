@@ -5,6 +5,9 @@ import DropdownOption from '../Ui/DropdownOption';
 import { apiGetProfile } from '../../Services/Api/AlkareemApi/get';
 import { apiCreateProfile } from '../../Services/Api/AlkareemApi/post';
 import { apiChangeProfileInfo } from '../../Services/Api/AlkareemApi/patch';
+import { apiAdminGetProfileById } from '../../Services/Api/AlkareemApi/Admin/get';
+import { apiCreateProfileAdmin } from '../../Services/Api/AlkareemApi/Admin/post';
+import { apiChangeProfileInfoAdmin } from '../../Services/Api/AlkareemApi/Admin/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -25,7 +28,7 @@ const genderOption = [
     }
 ]
 
-const SettingProfileInfo = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
+const SettingProfileInfo = ({ isAdmin = false, token, onConfirm, onCancel, ...props }: Props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
@@ -63,9 +66,17 @@ const SettingProfileInfo = ({ isAdmin=false, token, onConfirm, onCancel, ...prop
     const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true);
         if (onConfirm) {
-            const checkProfile = await apiGetProfile({ token: token })
+            if (isAdmin === true) {
+                var checkProfile = await apiAdminGetProfileById({ token: token, userId: props.id })
+            } else {
+                var checkProfile = await apiGetProfile({ token: token })
+            }
             if (checkProfile.status !== 200) {
-                const createProfile = await apiCreateProfile({ token: token, name: name, gender: gender })
+                if (isAdmin === true) {
+                    var createProfile = await apiCreateProfileAdmin({ token: token, name: name, gender: gender, userId: props.id })
+                } else {
+                    var createProfile = await apiCreateProfile({ token: token, name: name, gender: gender })
+                }
                 if (createProfile.status !== 200) {
                     setIsLoading(false)
                     setError(true)
@@ -76,7 +87,12 @@ const SettingProfileInfo = ({ isAdmin=false, token, onConfirm, onCancel, ...prop
                     resetInput()
                 }
             } else {
-                const changeProfile = await apiChangeProfileInfo({ token: token, name: name, gender: gender })
+                if (isAdmin === true) {
+                    var changeProfile = await apiChangeProfileInfoAdmin({ token: token, name: name, gender: gender, userId: props.id })
+                } else {
+                    var changeProfile = await apiChangeProfileInfo({ token: token, name: name, gender: gender })
+                }
+                console.log(changeProfile)
                 if (changeProfile.status !== 200) {
                     setIsLoading(false)
                     setError(true)

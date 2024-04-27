@@ -3,6 +3,7 @@ import Input from '../Ui/Input';
 import { LuAtSign } from "react-icons/lu";
 import Button from '../Ui/Button';
 import { apiChangeUsername } from '../../Services/Api/AlkareemApi/patch';
+import { apiChangeUsernameAdmin } from '../../Services/Api/AlkareemApi/Admin/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -13,7 +14,7 @@ type Props = {
     isAdmin?: boolean
 }
 
-const SettingUsername = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
+const SettingUsername = ({ isAdmin = false, token, onConfirm, onCancel, ...props }: Props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
@@ -42,7 +43,11 @@ const SettingUsername = ({ isAdmin=false, token, onConfirm, onCancel, ...props }
         const username = usernameValue
         //! SET API HERE
         if (onConfirm) {
-            const changeUsername = await apiChangeUsername({ token: token, username: username })
+            if (isAdmin === true) {
+                var changeUsername = await apiChangeUsernameAdmin({ token: token, username: username, userId:props.id })
+            } else {
+                var changeUsername = await apiChangeUsername({ token: token, username: username })
+            }
             if (changeUsername.status !== 200) {
                 setErrorMessage(changeUsername)
                 setUsernameValue('')

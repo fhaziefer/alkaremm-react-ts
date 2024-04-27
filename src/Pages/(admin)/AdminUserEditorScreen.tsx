@@ -1,21 +1,26 @@
 import { useParams } from "react-router-dom"
-import useAdminName from "../../Hooks/useAdminName"
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react"
 import { apiAdminGetUserById } from "../../Services/Api/AlkareemApi/Admin/get"
 import { useLocalStorage } from "../../Hooks/useLocalStorage"
 import { IGetUserByIdAdmin } from "../../Types/Alkareem/RES/AdminGetById"
 import { env } from "../../Utils/env"
+import { RiArrowLeftSLine } from "react-icons/ri";
+import { SettingAvatar, SettingAddress, SettingContact, SettingFamilyInfo, SettingPassword, SettingProfileInfo, SettingUsername } from '../../Components/Settings/SettingComponents'
+import useAdminName from "../../Hooks/useAdminName"
 import Loading from "../../Components/Loading"
 import LayoutSideBlank from "../../Components/Layout/LayoutSideBlank"
-import { RiArrowLeftSLine } from "react-icons/ri";
 import SettingItems from "../../Components/Ui/SettingItems"
 import Footer from "../../Components/Footer"
 import Button from "../../Components/Ui/Button"
-import { SettingAvatar, SettingAddress, SettingBio, SettingBrithday, SettingContact, SettingFamilyInfo, SettingPassword, SettingProfileInfo, SettingUsername } from '../../Components/Settings/SettingComponents'
 import Modal from "../../Components/Ui/Modal"
+import ModalDialog from "../../Components/Ui/ModalDialog";
+import { apiDeleteUserAdmin } from "../../Services/Api/AlkareemApi/Admin/delete";
 
 
 const AdminUserEditorScreen = () => {
+
+    const navigate = useNavigate();
 
     const { id } = useParams()
     const { getItem } = useLocalStorage()
@@ -30,13 +35,12 @@ const AdminUserEditorScreen = () => {
     //* MODAL OPEN AND CLOSE
     const [avatarOpen, setAvatarOpen] = useState(false)
     const [usernameOpen, setUsernameOpen] = useState(false)
-    const [bioOpen, setBioOpen] = useState(false)
     const [profileInfoOpen, setProfileInfoOpen] = useState(false)
-    const [birthdayOpen, setBirthdayOpen] = useState(false)
     const [addressOpen, setAddressOpen] = useState(false)
     const [contactOpen, setContactOpen] = useState(false)
     const [familyInfoOpen, setFamilyInfoOpen] = useState(false)
     const [passwordOpen, setPasswordOpen] = useState(false)
+    const [deleteUserOpen, setDeleteUserOpen] = useState(false)
 
     //* STATING API
     const [uiGender, setUiGender] = useState('')
@@ -74,6 +78,20 @@ const AdminUserEditorScreen = () => {
         }
     }
 
+    const deleteUser = async () => {
+        setIsLoading(true)
+        const deleteUser = await apiDeleteUserAdmin({ token: token, userId: userId })
+        if (deleteUser.status !== 200) {
+            setError(true)
+            setErrorMessage(deleteUser)
+            setIsLoading(false)
+        } else {
+            navigate(-1)
+            setError(false)
+            setIsLoading(false)
+        }
+    }
+
     useEffect(() => {
         if (id) setUserId(id);
         if (adminName) setIsAdmin(true)
@@ -82,10 +100,6 @@ const AdminUserEditorScreen = () => {
     useEffect(() => {
         if (userId) fetchUser();
     }, [userId]);
-
-    const buttonBackHandler = () => {
-        alert('Back')
-    }
 
     //* SHORTING API
     const street = userData?.data?.profil?.address?.street
@@ -125,22 +139,10 @@ const AdminUserEditorScreen = () => {
         setUsernameOpen((prev) => !prev)
     }
 
-    //* HANDLER BIO USER
-    const bioHandler = () => {
-        fetchUser()
-        setBioOpen((prev) => !prev)
-    }
-
     //* HANDLER PROFILE INFO USER
     const profileInfohandler = () => {
         fetchUser()
         setProfileInfoOpen((prev) => !prev)
-    }
-
-    //* HANDLER BIRTHDAY USER
-    const birthdayHandler = () => {
-        fetchUser()
-        setBirthdayOpen((prev) => !prev)
     }
 
     //* HANDLER ADDRESS USER
@@ -167,10 +169,11 @@ const AdminUserEditorScreen = () => {
         setPasswordOpen((prev) => !prev)
     }
 
-    const clickHandler = () => {
-        alert('Clicked')
+    //* HANDLER DELETE USER
+    const deleteUserHandler = () => {
+        deleteUser()
+        setDeleteUserOpen((prev) => !prev)
     }
-
 
     return (
         <>
@@ -266,12 +269,32 @@ const AdminUserEditorScreen = () => {
                             onCancel={() => setFamilyInfoOpen((prev) => !prev)} />
                     </Modal>
 
-                    <div onClick={buttonBackHandler} className="flex flex-row gap-1 mt-4 md:mt-0 font-bold text-2xl items-center cursor-pointer hover:text-white">
+                    <Modal
+                        open={deleteUserOpen}
+                        onClose={() => setDeleteUserOpen((prev) => !prev)}>
+                        <div>
+                            <h1 className='font-bold text-xl'>Hapus Akun</h1>
+                            <h1 className='py-4'>Apakah Anda yakin ingin menghapus akun <span className="font-bold">@{userData?.data?.username}</span></h1>
+                            <div className="flex-row flex w-full justify-between my-6">
+                                <Button onClick={() => setDeleteUserOpen((prev) => !prev)} disabled={isLoading} variant="ghost" className="w-[49%]">
+                                    Batal
+                                </Button>
+                                <Button onClick={deleteUserHandler} disabled={isLoading} variant="error" className="w-[49%]">
+                                    {isLoading ? <span className="loading loading-spinner loading-md"></span> : 'Ya, Hapus.'}
+                                </Button>
+                            </div>
+                        </div>
+                    </Modal>
+
+                    <div onClick={() => navigate(-1)} className="flex flex-row gap-1 mt-4 md:mt-0 font-bold text-2xl items-center cursor-pointer hover:text-white">
                         <RiArrowLeftSLine className="text-3xl" />
                         <h1 className="mr-3">Edit Profil</h1>
                     </div>
 
-                    <div className="flex items-center mx-auto flex-col w-48 my-16 shadow-xl rounded-full cursor-pointer hover:opacity-75">
+                    <div
+                        className="flex items-center mx-auto flex-col w-48 my-16 shadow-xl rounded-full cursor-pointer hover:opacity-75"
+                        onClick={() => setAvatarOpen((prev) => !prev)}
+                    >
                         <img className="rounded-full shadow-xl" src={avatar} />
                     </div>
 
@@ -315,7 +338,7 @@ const AdminUserEditorScreen = () => {
                         subLabel='Ubah kata sandi' />
 
                     <div className="flex flex-col items-center mx-4 my-4">
-                        <Button variant="error" className="w-full">
+                        <Button onClick={() => setDeleteUserOpen((prev) => !prev)} variant="error" className="w-full">
                             Hapus Akun @{userData?.data?.username}
                         </Button>
                     </div>

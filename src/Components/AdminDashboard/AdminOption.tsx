@@ -71,7 +71,7 @@ const AdminOption = ({ signUpButton, updateButton, ...props }: Props) => {
                         Update
                     </h3>
                     <p className="font-light text-md">
-                        Perbaharui informasi akun anggota bani di bawah koordinasi Anda.
+                        Memperbaharui informasi akun anggota bani di bawah koordinasi Anda.
                     </p>
                     <div className="flex justify-center items-baseline my-2">
                     </div>

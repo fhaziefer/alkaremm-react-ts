@@ -3,6 +3,7 @@ import Button from '../Ui/Button';
 import Input from '../Ui/Input';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { apiChangePassword } from '../../Services/Api/AlkareemApi/patch';
+import { apiChangePasswordAdmin } from '../../Services/Api/AlkareemApi/Admin/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -12,7 +13,7 @@ type Props = {
     isAdmin?: boolean;
 };
 
-const SettingPassword = ({ isAdmin=false, token, onConfirm, onCancel }: Props) => {
+const SettingPassword = ({ isAdmin = false, token, onConfirm, onCancel, ...props }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -56,7 +57,11 @@ const SettingPassword = ({ isAdmin=false, token, onConfirm, onCancel }: Props) =
     const handleButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsLoading(true);
         if (onConfirm) {
-            const changePassword = await apiChangePassword({ token: token, password: retypePassword })
+            if (isAdmin === true) {
+                var changePassword = await apiChangePasswordAdmin({ token: token, password: retypePassword, userId:props.id })
+            } else {
+                var changePassword = await apiChangePassword({ token: token, password: retypePassword })
+            }
             if (changePassword.status !== 200) {
                 setErrorMessage('Gagal memperbaharui password, coba ulangi.')
                 setPassword('');

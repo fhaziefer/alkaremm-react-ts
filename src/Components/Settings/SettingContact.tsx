@@ -4,6 +4,9 @@ import Input from '../Ui/Input'
 import { apiGetContactCurrent } from '../../Services/Api/AlkareemApi/get';
 import { apiCreateContact } from '../../Services/Api/AlkareemApi/post';
 import { apiChangeContact, apiChangePhone } from '../../Services/Api/AlkareemApi/patch';
+import { apiAdminGetContactById } from '../../Services/Api/AlkareemApi/Admin/get';
+import { apiCreateContactAdmin } from '../../Services/Api/AlkareemApi/Admin/post';
+import { apiChangeContactAdmin, apiChangePhoneAdmin } from '../../Services/Api/AlkareemApi/Admin/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -13,7 +16,7 @@ type Props = {
     isAdmin?: boolean;
 };
 
-const SettingContact = ({ isAdmin=false, token, onCancel, onConfirm, ...props }: Props) => {
+const SettingContact = ({ isAdmin = false, token, onCancel, onConfirm, ...props }: Props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
@@ -54,9 +57,17 @@ const SettingContact = ({ isAdmin=false, token, onCancel, onConfirm, ...props }:
         setIsLoading(true)
         if (onConfirm) {
             try {
-                const checkContact = await apiGetContactCurrent({ token: token })
+                if (isAdmin === true) {
+                    var checkContact = await apiAdminGetContactById({ token: token, userId: props.id })
+                } else {
+                    var checkContact = await apiGetContactCurrent({ token: token })
+                }
                 if (checkContact.status !== 200) {
-                    const createContact = await apiCreateContact({ token: token, phone: phone, instagram: instagram })
+                    if (isAdmin === true) {
+                        var createContact = await apiCreateContactAdmin({ token: token, phone: phone, instagram: instagram, userId:props.id })
+                    } else {
+                        var createContact = await apiCreateContact({ token: token, phone: phone, instagram: instagram })
+                    }
                     if (createContact.status !== 200) {
                         setError(true)
                         setErrorMessage('Gagal memperbaharui, coba sekali lagi')
@@ -66,7 +77,11 @@ const SettingContact = ({ isAdmin=false, token, onCancel, onConfirm, ...props }:
                     }
                 } else {
                     if (instagram.length === 0) {
-                        const changePhone = await apiChangePhone({ token: token, phone: phone })
+                        if (isAdmin === true) {
+                            var changePhone = await apiChangePhoneAdmin({ token: token, phone: phone, userId:props.id })
+                        } else {
+                            var changePhone = await apiChangePhone({ token: token, phone: phone })
+                        }
                         if (changePhone.status !== 200) {
                             setError(true)
                             setErrorMessage('Gagal memperbaharui, coba sekali lagi')
@@ -75,7 +90,11 @@ const SettingContact = ({ isAdmin=false, token, onCancel, onConfirm, ...props }:
                             resetInput()
                         }
                     } else {
-                        const changeContact = await apiChangeContact({ token: token, phone: phone, instagram: instagram })
+                        if (isAdmin === true){
+                            var changeContact = await apiChangeContactAdmin({ token: token, phone: phone, instagram: instagram, userId:props.id })
+                        }else {
+                            var changeContact = await apiChangeContact({ token: token, phone: phone, instagram: instagram })
+                        }
                         if (changeContact.status !== 200) {
                             setError(true)
                             setErrorMessage('Gagal memperbaharui, coba sekali lagi')

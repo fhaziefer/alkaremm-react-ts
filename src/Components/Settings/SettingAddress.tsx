@@ -7,6 +7,9 @@ import Button from '../Ui/Button';
 import { apiChangeAddress } from '../../Services/Api/AlkareemApi/patch';
 import { apiCreateAddress } from '../../Services/Api/AlkareemApi/post';
 import { apiGetAddressCurrent } from '../../Services/Api/AlkareemApi/get';
+import { apiAdminGetAddressById } from '../../Services/Api/AlkareemApi/Admin/get';
+import { apiCreateAddressAdmin } from '../../Services/Api/AlkareemApi/Admin/post';
+import { apiChangeAddressAdmin } from '../../Services/Api/AlkareemApi/Admin/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -16,7 +19,7 @@ type Props = {
     isAdmin?: boolean;
 };
 
-const SettingAddress = ({ isAdmin=false, token, onConfirm, onCancel, ...props }: Props) => {
+const SettingAddress = ({ isAdmin = false, token, onConfirm, onCancel, ...props }: Props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(true)
@@ -216,10 +219,18 @@ const SettingAddress = ({ isAdmin=false, token, onConfirm, onCancel, ...props }:
 
         if (onConfirm) {
             try {
-                const checkAddressResponse = await apiGetAddressCurrent({ token });
+                if (isAdmin === true) {
+                    var checkAddressResponse = await apiAdminGetAddressById({ token, userId: props.id });
+                } else {
+                    var checkAddressResponse = await apiGetAddressCurrent({ token });
+                }
 
                 if (checkAddressResponse.status !== 200) {
-                    const createAddressResponse = await apiCreateAddress({ token, province, city, district, village, postal_code: postal, street });
+                    if (isAdmin === true) {
+                        var createAddressResponse = await apiCreateAddressAdmin({ token, province, city, district, village, postal_code: postal, street, userId: props.id });
+                    } else {
+                        var createAddressResponse = await apiCreateAddress({ token, province, city, district, village, postal_code: postal, street });
+                    }
 
                     if (createAddressResponse.status !== 200) {
                         setError(true);
@@ -231,7 +242,11 @@ const SettingAddress = ({ isAdmin=false, token, onConfirm, onCancel, ...props }:
                         onConfirm(event);
                     }
                 } else {
-                    const changeAddressResponse = await apiChangeAddress({ token, province, city, district, village, postal_code: postal, street });
+                    if (isAdmin === true) {
+                        var changeAddressResponse = await apiChangeAddressAdmin({ token, province, city, district, village, postal_code: postal, street, userId:props.id });
+                    } else {
+                        var changeAddressResponse = await apiChangeAddress({ token, province, city, district, village, postal_code: postal, street });
+                    }
 
                     if (changeAddressResponse.status === 403) {
                         const createAddressResponse = await apiCreateAddress({ token, province, city, district, village, postal_code: postal, street });

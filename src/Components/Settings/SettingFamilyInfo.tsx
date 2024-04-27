@@ -13,6 +13,10 @@ import { apiDeleteBani } from '../../Services/Api/AlkareemApi/delete';
 import { useDebounce } from '../../Hooks/useDebounce'
 import { ISearchProfile } from '../../Types/Alkareem/RES/SearchProfile'
 import { apiChangeAnakKe, apiChangeGenerasi, apiChangeHusband, apiChangeParent, apiChangeStatus } from '../../Services/Api/AlkareemApi/patch';
+import { apiAdminGetBaniById } from '../../Services/Api/AlkareemApi/Admin/get';
+import { apiCreateBaniAdmin } from '../../Services/Api/AlkareemApi/Admin/post';
+import { apiDeleteBaniAdmin } from '../../Services/Api/AlkareemApi/Admin/delete';
+import { apiChangeAnakKeAdmin, apiChangeGenerasiAdmin, apiChangeHusbandAdmin, apiChangeParentAdmin, apiChangeStatusAdmin } from '../../Services/Api/AlkareemApi/Admin/patch';
 
 type Props = {
     onConfirm?: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -23,7 +27,7 @@ type Props = {
     isAdmin?: boolean;
 };
 
-const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }: Props) => {
+const SettingFamilyInfo = ({ isAdmin = false, onConfirm, onCancel, gender, token, ...props }: Props) => {
 
     const [users, setUsers] = useState<ISearchProfile | null>(null);
     const [error, setError] = useState(true)
@@ -73,23 +77,30 @@ const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }
         try {
             if (selected.length > 0) {
                 for (const number of numbers) {
-
-                    await apiDeleteBani({ token: token, baniId: number });
-
+                    if (isAdmin === true) {
+                        await apiDeleteBaniAdmin({ token: token, baniId: number, userId: props.id });
+                    } else {
+                        await apiDeleteBani({ token: token, baniId: number });
+                    }
                 }
-
-                const checkBani = await apiGetBani({ token: token });
-
+                if (isAdmin === true) {
+                    var checkBani = await apiAdminGetBaniById({ token: token, userId: props.id });
+                } else {
+                    var checkBani = await apiGetBani({ token: token });
+                }
                 if (checkBani.data.data.length === 0) {
                     for (const baniId of selected) {
-                        const addBani = await apiCreateBani({ token: token, baniId: baniId });
+                        if (isAdmin === true) {
+                            var addBani = await apiCreateBaniAdmin({ token: token, baniId: baniId, userId: props.id });
+                        } else {
+                            var addBani = await apiCreateBani({ token: token, baniId: baniId });
+                        }
                         if (addBani.status !== 200) {
                             throw new Error('Gagal memperbaharui data bani, coba sekali lagi');
                         }
                     }
                     setError(false);
                     setIsLoading(false);
-
                 } else {
                     throw new Error('Gagal memperbaharui data bani, coba sekali lagi');
                 }
@@ -104,7 +115,11 @@ const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }
     const fetchUpdateAnakKe = async () => {
         try {
             if (anakKe.length !== 0) {
-                const updateAnakKe = await apiChangeAnakKe({ token: token, anak_ke: anakKe });
+                if (isAdmin === true) {
+                    var updateAnakKe = await apiChangeAnakKeAdmin({ token: token, anak_ke: anakKe, userId: props.id });
+                } else {
+                    var updateAnakKe = await apiChangeAnakKe({ token: token, anak_ke: anakKe });
+                }
                 if (updateAnakKe.status === 200) {
                     setError(false);
                     setIsLoading(false);
@@ -125,7 +140,11 @@ const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }
     const fetchUpdateGenerasi = async () => {
         try {
             if (generasi.length !== 0) {
-                const updateGenerasi = await apiChangeGenerasi({ token: token, generasiId: generasi });
+                if (isAdmin === true) {
+                    var updateGenerasi = await apiChangeGenerasiAdmin({ token: token, generasiId: generasi, userId: props.id });
+                } else {
+                    var updateGenerasi = await apiChangeGenerasi({ token: token, generasiId: generasi });
+                }
                 if (updateGenerasi.status === 200) {
                     setError(false);
                     setIsLoading(false);
@@ -145,7 +164,11 @@ const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }
     const fetchUpdateStatus = async () => {
         try {
             if (orangtua.length !== 0) {
-                const updateStatus = await apiChangeStatus({ token: token, status: status });
+                if (isAdmin === true) {
+                    var updateStatus = await apiChangeStatusAdmin({ token: token, status: status, userId: props.id });
+                } else {
+                    var updateStatus = await apiChangeStatus({ token: token, status: status });
+                }
                 if (updateStatus.status === 200) {
                     setError(false);
                     setIsLoading(false);
@@ -165,7 +188,11 @@ const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }
     const fetchUpdateOrangtua = async () => {
         try {
             if (orangtua.length !== 0) {
-                const updateOrangtua = await apiChangeParent({ token: token, parentId: orangtua });
+                if (isAdmin === true) {
+                    var updateOrangtua = await apiChangeParentAdmin({ token: token, parentId: orangtua, userId: props.id });
+                } else {
+                    var updateOrangtua = await apiChangeParent({ token: token, parentId: orangtua });
+                }
                 if (updateOrangtua.status === 200) {
                     setError(false);
                     setIsLoading(false);
@@ -185,7 +212,11 @@ const SettingFamilyInfo = ({ isAdmin=false, onConfirm, onCancel, gender, token }
     const fetchUpdatePasangan = async () => {
         try {
             if (pasangan.length !== 0) {
-                const updateOrangtua = await apiChangeHusband({ token: token, husbandId: pasangan });
+                if (isAdmin === true) {
+                    var updateOrangtua = await apiChangeHusbandAdmin({ token: token, husbandId: pasangan, userId: props.id });
+                } else {
+                    var updateOrangtua = await apiChangeHusband({ token: token, husbandId: pasangan });
+                }
                 if (updateOrangtua.status === 200) {
                     setError(false);
                     setIsLoading(false);
