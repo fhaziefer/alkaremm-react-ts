@@ -3,6 +3,11 @@ export interface IReqUserByIdAdmin {
     userId?: string
 }
 
+export interface IReqUserByUsernameAdmin {
+    token?: string
+    username?: string
+}
+
 export interface ITokenAdmin {
     userId?: string
     token?: string;
