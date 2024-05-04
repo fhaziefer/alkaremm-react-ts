@@ -11,7 +11,7 @@ import Loading from '../../Components/Loading';
 import CarouselCountUser from '../../Components/CountUser/CarouselCountUser';
 import Footer from '../../Components/Footer';
 import useAdminName from '../../Hooks/useAdminName';
-import { FaCheck } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 type Props = {};
 
@@ -75,9 +75,6 @@ const HomeScreen = (props: Props) => {
     {
       "item": "Kontak"
     },
-    {
-      "item": "Kontak"
-    },
   ]
 
   return (
@@ -109,27 +106,27 @@ const HomeScreen = (props: Props) => {
                 <GreetingTime
                   name={userData?.data.profil?.name}
                 />
-                <h1 className='text-gray-600 -mt-4 text-4xl font-bold w-[70%]'>Apa yang bisa kami bantu hari ini?</h1>
+                <h1 className='text-gray-600 -mt-4 text-4xl font-thin w-[70%]'>Apa yang bisa kami bantu hari ini?</h1>
               </div>
-              <div className="space-y-8 lg:grid lg:grid-cols-2 sm:gap-6 xl:gap-10 lg:space-y-0 mt-4">
+              <div className="space-y-8 lg:grid lg:grid-cols-1 sm:gap-6 xl:gap-10 lg:space-y-0 mt-4">
                 <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border border-gray-500 bg-base-200 shadow relative">
                   <h3 className="mb-4 text-2xl font-bold">
-                    Cari Keluarga Bani KH. Abdul Karim
+                    Daftar Anggota Keluarga Bani KH. Abdul Karim
                   </h3>
                   <p className="font-light text-md">
-                    Lihat daftar anggota keluarga besar Bani KH. Abdul Karim Lirboyo Kediri.
+                    Lihat atau cari daftar anggota keluarga besar Bani KH. Abdul Karim Lirboyo Kediri.
                   </p>
                   <div className="flex justify-center items-baseline my-2">
                   </div>
-                  <ul role="list" className="mb-8 space-y-4 text-left mb-20 text-sm">
+                  <ul role="list" className="mb-20 space-y-3 text-left mb-20 text-sm">
                     {searchItem.map((data) => (
                       <li key={data.item} className="flex items-center space-x-3 ">
-                        <FaCheck className="text-primary ml-1" />
+                        <FaSearch className="text-primary ml-1" />
                         <span>{data.item}</span>
                       </li>
                     ))}
                   </ul>
-                  <Button onClick={handleSearch} className="absolute bottom-6 right-6 left-6 cursor-pointer" variant="primary">Cari Data</Button>
+                  <Button onClick={handleSearch} className="absolute bottom-6 right-6 left-6 cursor-pointer" variant="primary">Lihat Data</Button>
                 </div>
               </div>
               <CarouselCountUser

@@ -17,6 +17,7 @@ const LoginForm = ({ username, setUsername, password, setPassword }: any) => {
                 type='text'
                 placeholder='Username'
                 value={username}
+                className='text-sm'
                 onChange={(e) =>
                     handleUsername(
                         (e.target as HTMLInputElement)
@@ -27,6 +28,7 @@ const LoginForm = ({ username, setUsername, password, setPassword }: any) => {
                 type='password'
                 placeholder='Password'
                 value={password}
+                className='text-sm'
                 onChange={(e) =>
                     handlePassword(
                         (e.target as HTMLInputElement)
