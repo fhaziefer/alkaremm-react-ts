@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../../Utils/env";
-import { IAddressAdmin, IAnakKeAdmin, IBioAdmin, IBirthdayAdmin, IContactAdmin, IGenerasiAdmin, IHusbandAdmin, IParentAdmin, IPasswordAdmin, IProfileInfoAdmin, IStatusAdmin, ITokenAdmin, IUsernameAdmin } from "../../../../Types/Alkareem/REQ/AdminReqType";
+import { IAddressAdmin, IAliveStatusAdmin, IAnakKeAdmin, IBioAdmin, IBirthdayAdmin, IContactAdmin, IGenerasiAdmin, IHusbandAdmin, IIstriKeAdmin, IParentAdmin, IPasswordAdmin, IProfileInfoAdmin, IStatusAdmin, ITokenAdmin, IUsernameAdmin } from "../../../../Types/Alkareem/REQ/AdminReqType";
 
 const baseUrl = env.REACT_APP_BASE_URL
 
@@ -187,6 +187,40 @@ export async function apiChangeAnakKeAdmin({ ...props }: IAnakKeAdmin) {
         };
         const data = {
             anak_ke: props.anak_ke,
+        }
+        const fetch = await axios.patch(`${baseUrl}/admin/user/profile/${props.userId}`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* ISTRI KE
+export async function apiChangeIstriKeAdmin({ ...props }: IIstriKeAdmin) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            istri_ke: props.istri_ke,
+        }
+        const fetch = await axios.patch(`${baseUrl}/admin/user/profile/${props.userId}`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* STATUS KEHIDUPAN
+export async function apiChangeAliveStatusAdmin({ ...props }: IAliveStatusAdmin) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            alive_status: props.alive_status,
         }
         const fetch = await axios.patch(`${baseUrl}/admin/user/profile/${props.userId}`, data, { headers })
         return fetch

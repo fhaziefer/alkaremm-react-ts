@@ -1,0 +1,20 @@
+{
+    "data":[
+        {
+            "id":"1",
+            "text":"Istri Pertama"
+        },
+        {
+            "id":"2",
+            "text":"Istri Kedua"
+        },
+        {
+            "id":"3",
+            "text":"Istri Ketiga"
+        },
+        {
+            "id":"4",
+            "text":"Istri Keempat"
+        }
+    ]
+}

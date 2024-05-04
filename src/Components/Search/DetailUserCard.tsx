@@ -15,8 +15,8 @@ const DetailUserCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
             <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0 relative">
                 <div id="profile" className="w-full lg:w-4/5 rounded-xl lg:rounded-l-lg lg:rounded-r-lg shadow-2xl bg-gray-300 mx-6 lg:mx-0">
                     <div className="p-4 md:p-12 text-center lg:text-left">
-                        <div className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center">
-                            <img src={props.avatar} className='w-full h-full rounded-full' />
+                        <div className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center avatar">
+                            <img src={props.avatar} className='rounded-full h-48 w-48' />
                         </div>
                         <h1 className="text-3xl font-bold pt-8 lg:pt-0 lg:max-w-[70%] md:max-w[60%]">{props.name}{props.user_alive ? null : <span>*</span>}{props.username?.includes('alkareem') ? null : <span className="text-gray-400 font-bold text-sm"> (@{props.username})</span>}</h1>
 
@@ -54,11 +54,9 @@ const DetailUserCard: React.FC<DetailUserCardProps> = ({ ...props }) => {
                                 </div>
                             )
                         )}
-
-
                     </div>
                 </div>
-                <div className="absolute right-16 order-first w-72 rounded-full hidden lg:block">
+                <div className="absolute right-16 order-first h-72 w-72 rounded-full hidden lg:block avatar">
                     <img src={props.avatar} className="rounded-full lg:rounded-full shadow-2xl" />
                 </div>
             </div>

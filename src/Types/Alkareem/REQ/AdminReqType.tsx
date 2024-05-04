@@ -66,6 +66,7 @@ export interface IProfileInfoAdmin {
     token?: string;
     name?: string;
     gender?: string;
+    alive_status?: boolean;
 }
 
 export interface IBaniAdmin {
@@ -78,6 +79,18 @@ export interface IAnakKeAdmin {
     userId?: string
     token?: string;
     anak_ke?: string;
+}
+
+export interface IIstriKeAdmin {
+    userId?: string
+    token?: string;
+    istri_ke?: string;
+}
+
+export interface IAliveStatusAdmin {
+    userId?: string
+    token?: string;
+    alive_status?: boolean;
 }
 
 export interface IGenerasiAdmin {

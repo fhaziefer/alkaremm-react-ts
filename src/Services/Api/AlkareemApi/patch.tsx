@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../../Utils/env";
-import { IAddress, IAnakKe, IAvatar, IBio, IBirthday, IContact, IGenerasi, IHusband, IParent, IPassword, IProfileInfo, IStatus, IToken, IUsername } from "../../../Types/Alkareem/REQ/ReqType";
+import { IAddress, IAliveStatus, IAnakKe, IAvatar, IBio, IBirthday, IContact, IGenerasi, IHusband, IIstriKe, IParent, IPassword, IProfileInfo, IStatus, IToken, IUsername } from "../../../Types/Alkareem/REQ/ReqType";
 const baseUrl = env.REACT_APP_BASE_URL
 
 //* USERNAME
@@ -186,6 +186,40 @@ export async function apiChangeAnakKe({ ...props }: IAnakKe) {
         };
         const data = {
             anak_ke: props.anak_ke,
+        }
+        const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* ISTRI KE
+export async function apiChangeIstriKe({ ...props }: IIstriKe) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            istri_ke: props.istri_ke,
+        }
+        const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
+        return fetch
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+//* STATUS KEHIDUPAN
+export async function apiChangeAliveStatus({ ...props }: IAliveStatus) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const data = {
+            alive_status: props.alive_status,
         }
         const fetch = await axios.patch(`${baseUrl}/user/profile/current`, data, { headers })
         return fetch

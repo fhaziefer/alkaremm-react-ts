@@ -37,13 +37,29 @@ const SettingProfileInfo = ({ isAdmin = false, token, onConfirm, onCancel, ...pr
     const [gender, setGender] = useState('')
 
     const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = event.target.value
-            .toLowerCase()
-            .split(' ')
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-        setName(inputValue)
+        let inputValue = event.target.value.trim();
+
+        // Check if input starts with "KH.", "HA.", or "HM."
+        if (inputValue.startsWith("KH.") || inputValue.startsWith("HA.") || inputValue.startsWith("HM.")) {
+            // Uppercase "KH.", "HA.", or "HM."
+            inputValue = inputValue.substring(0, 3).toUpperCase() + inputValue.substring(3);
+            // Capitalize the rest of the string
+            inputValue = inputValue
+                .split(' ')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        } else {
+            // If it doesn't start with "KH.", "HA.", or "HM.", then just capitalize the whole string
+            inputValue = inputValue
+                .toLowerCase()
+                .split(' ')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        setName(inputValue);
     };
+
 
     const handleGenderInput = (
         id: string, text: string

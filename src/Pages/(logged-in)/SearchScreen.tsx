@@ -53,14 +53,10 @@ const SearchScreen = () => {
 
   const handleProfile = (event: any) => {
     const value = event.currentTarget.getAttribute('id')
-    if (role !== 'USER') {
-      navigate(`/admin/edit/${value}`, { replace: false })
+    if (value !== profileId) {
+      navigate(`/${value}`, { replace: false });
     } else {
-      if (value !== profileId) {
-        navigate(`/${value}`, { replace: false });
-      } else {
-        navigate(`/profile`, { replace: false })
-      }
+      navigate(`/profile`, { replace: false })
     }
   };
 
@@ -234,6 +230,7 @@ const SearchScreen = () => {
                     profileBani={user.profil?.profileBani}
                     key={user.id}
                     name={user.profil?.name}
+                    is_alive={user.profil?.alive_status}
                     bani={user.profil?.bani?.bani_name}
                     avatar={`${process.env.REACT_APP_BASE_URL}${user.profil?.avatar}`}
                     username={user.username} />

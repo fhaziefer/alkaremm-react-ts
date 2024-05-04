@@ -26,6 +26,12 @@ export interface IReqSearchProfile {
     query?: string;
 }
 
+export interface IReqSearchFilterGeneration {
+    token?: string;
+    query?: string;
+    generasi?: string;
+}
+
 export interface IReqDetailUser {
     id?: string;
     token?: string;
@@ -86,6 +92,16 @@ export interface IBani {
 export interface IAnakKe {
     token?: string;
     anak_ke?: string;
+}
+
+export interface IIstriKe {
+    token?: string;
+    istri_ke?: string;
+}
+
+export interface IAliveStatus {
+    token?: string;
+    alive_status?: boolean;
 }
 
 export interface IGenerasi {

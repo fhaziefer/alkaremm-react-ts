@@ -28,7 +28,7 @@ export async function apiAdminGetUserByUsername({ ...props }: IReqUserByUsername
         };
         const user = await axios
             .get<IGetUserByUsernameAdmin>
-            (`${baseUrl}/admin/user/${props.username}`, { headers })
+            (`${baseUrl}/admin/user/username/${props.username}`, { headers })
         return user
     } catch (error: any) {
         const errorMessage = error.response.data.errors;

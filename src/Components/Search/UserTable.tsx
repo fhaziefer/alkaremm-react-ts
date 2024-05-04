@@ -19,12 +19,12 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                 <div className="flex items-center gap-3">
                     <div className="avatar">
                         <div className="mask mask-squircle w-12 h-12 rounded-full">
-                            <img src={props.avatar} alt="Avatar Tailwind CSS Component" />
+                            <img src={props.avatar}/>
                         </div>
                     </div>
                     <div>
-                        <div className="font-bold xs:max-w-[200px]"> {props.name}</div>
-                        {username !== undefined && <div className="text-sm opacity-50">@{username}</div>}
+                        <div className="font-bold text-xs"> {props.name} {props.is_alive === false && <span>*</span>}</div>
+                        {username !== undefined && <div className="text-xs opacity-50">@{username}</div>}
                     </div>
                 </div>
             </td>
@@ -42,9 +42,12 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                 </td>
                 :
                 <td key={props.id} className='items-end'>
-                    <div className='flex flex-col items-end gap-2'>
+                    <div className='flex flex-col items-end gap-3'>
                         {props.profileBani?.map((data) => (
-                            <div key={data.bani?.id} className="badge badge-neutral badge-sm text-xs text-gray-400">{data.bani?.bani_name}</div>
+                            <div key={data.bani?.id}
+                                className="badge badge-neutral badge-sm text-xs text-gray-400 text-right">
+                                <span>{data.bani?.bani_name}</span>
+                            </div>
                         ))}
                     </div>
                 </td>

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { env } from "../../../Utils/env"
-import { IReqDetailUser, IReqSearchProfile, IReqSearchUsers, IToken } from "../../../Types/Alkareem/REQ/ReqType"
+import { IReqDetailUser, IReqSearchFilterGeneration, IReqSearchProfile, IReqSearchUsers, IToken } from "../../../Types/Alkareem/REQ/ReqType"
 import { ICurrentUser } from "../../../Types/Alkareem/RES/CurrentUser"
 import { ISearchUser } from "../../../Types/Alkareem/RES/SearchUser"
 import { ICountTotalUsers } from "../../../Types/Alkareem/RES/CountUser"
@@ -147,6 +147,32 @@ export async function apiSearchProfile({ ...props }: IReqSearchProfile) {
             Authorization: props.token,
         };
         const profile = await axios.get<ISearchProfile>(`${baseUrl}/user/profile/search?keyword=${props.query}`, { headers })
+        return profile
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiSearchParent({ ...props }: IReqSearchFilterGeneration) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const profile = await axios.get<ISearchProfile>(`${baseUrl}/user/profile/parent/search?keyword=${props.query}&generasi=${props.generasi}`, { headers })
+        return profile
+    } catch (error: any) {
+        const errorMessage = error.response.data.errors;
+        return errorMessage
+    }
+}
+
+export async function apiSearchHusband({ ...props }: IReqSearchFilterGeneration) {
+    try {
+        const headers = {
+            Authorization: props.token,
+        };
+        const profile = await axios.get<ISearchProfile>(`${baseUrl}/user/profile/husband/search?keyword=${props.query}&generasi=${props.generasi}`, { headers })
         return profile
     } catch (error: any) {
         const errorMessage = error.response.data.errors;

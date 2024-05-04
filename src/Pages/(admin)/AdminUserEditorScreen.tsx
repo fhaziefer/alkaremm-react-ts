@@ -86,7 +86,7 @@ const AdminUserEditorScreen = () => {
             setErrorMessage(deleteUser)
             setIsLoading(false)
         } else {
-            navigate(-1)
+            navigate('/search')
             setError(false)
             setIsLoading(false)
         }
@@ -111,6 +111,11 @@ const AdminUserEditorScreen = () => {
     const avatar = `${baseUrl}${userData?.data?.profil?.avatar}`
     const gender = userData?.data?.profil?.gender
     const phone = `0${userData?.data?.profil?.contact?.phone?.slice(2)}`
+
+    const formattedBani = userData?.data?.profil?.profileBani?.map((data) => data.bani?.bani_name)
+        .join(' ∙ ');
+    const familyInfoItem = formattedBani ? `${formattedBani} ∙ ${userStatus}` : 'Belum ditambahkan';
+
     useEffect(() => {
 
         if (gender !== 'FEMALE') {
@@ -187,7 +192,7 @@ const AdminUserEditorScreen = () => {
                         onClose={() => setAvatarOpen((prev) => !prev)}
                     >
                         <SettingAvatar
-                            isAdmin={true}
+                            isAdmin={isAdmin}
                             id={userId}
                             avatarNow={avatar}
                             gender={gender}
@@ -202,7 +207,7 @@ const AdminUserEditorScreen = () => {
                         onClose={
                             () => setUsernameOpen((prev) => !prev)}>
                         <SettingUsername
-                            isAdmin={true}
+                            isAdmin={isAdmin}
                             id={userId}
                             token={token}
                             onCancel={() => setUsernameOpen((prev) => !prev)}
@@ -213,7 +218,7 @@ const AdminUserEditorScreen = () => {
                         open={addressOpen}
                         onClose={() => setAddressOpen((prev) => !prev)}>
                         <SettingAddress
-                            isAdmin={true}
+                            isAdmin={isAdmin}
                             id={userId}
                             token={token}
                             onConfirm={addressHandler}
@@ -225,7 +230,7 @@ const AdminUserEditorScreen = () => {
                         open={contactOpen}
                         onClose={() => setContactOpen((prev) => !prev)}>
                         <SettingContact
-                            isAdmin={true}
+                            isAdmin={isAdmin}
                             id={userId}
                             token={token}
                             onConfirm={contactHandler}
@@ -237,7 +242,7 @@ const AdminUserEditorScreen = () => {
                         open={passwordOpen}
                         onClose={() => setPasswordOpen((prev) => !prev)}>
                         <SettingPassword
-                            isAdmin={true}
+                            isAdmin={isAdmin}
                             id={userId}
                             token={token}
                             onConfirm={passwordHandler}
@@ -249,7 +254,7 @@ const AdminUserEditorScreen = () => {
                         open={profileInfoOpen}
                         onClose={() => setProfileInfoOpen((prev) => !prev)}>
                         <SettingProfileInfo
-                            isAdmin={true}
+                            isAdmin={isAdmin}
                             id={userId}
                             token={token}
                             onConfirm={profileInfohandler}
@@ -261,7 +266,7 @@ const AdminUserEditorScreen = () => {
                         open={familyInfoOpen}
                         onClose={() => setFamilyInfoOpen((prev) => !prev)}>
                         <SettingFamilyInfo
-                            isAdmin={true}
+                            isAdmin={isAdmin}
                             id={userId}
                             token={token}
                             gender={gender !== undefined ? gender : undefined}
@@ -292,10 +297,12 @@ const AdminUserEditorScreen = () => {
                     </div>
 
                     <div
-                        className="flex items-center mx-auto flex-col w-48 my-16 shadow-xl rounded-full cursor-pointer hover:opacity-75"
+                        className="flex items-center mx-auto flex-col w-48 my-16 shadow-xl rounded-full cursor-pointer hover:opacity-75 avatar"
                         onClick={() => setAvatarOpen((prev) => !prev)}
                     >
-                        <img className="rounded-full shadow-xl" src={avatar} />
+                        <div className="w-48 h-48 mask mask-squircle rounded-full">
+                            <img className="rounded-full shadow-xl" src={avatar} />
+                        </div>
                     </div>
 
                     <SettingItems
@@ -313,9 +320,7 @@ const AdminUserEditorScreen = () => {
                         onClick={() => setFamilyInfoOpen((prev) => !prev)}
                         label='Informasi Hubungan Keluarga'
                         subLabel='Edit Bani, status pernikahan, orang tua, dll...'
-                        item={(userData?.data?.profil?.profileBani && userStatus) ?
-                            `${userData?.data?.profil?.profileBani.map((data) => (` ${data.bani?.bani_name}`))} ∙ ${userStatus}` :
-                            (userData?.data?.profil?.bani?.bani_name || 'Belum ditambahkan')}
+                        item={familyInfoItem}
                     />
 
                     <SettingItems

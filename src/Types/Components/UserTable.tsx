@@ -5,6 +5,7 @@ export interface UserListProps {
     avatar?: string,
     username?: string,
     isAdmin?: boolean,
+    is_alive?: boolean, 
     profileBani?: ProfileBani[]
     profileButton: React.MouseEventHandler;
     editButton: React.MouseEventHandler<HTMLButtonElement>;

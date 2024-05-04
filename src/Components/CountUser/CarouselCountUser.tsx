@@ -56,6 +56,41 @@ const CarouselCountUser = ({ ...props }: Props) => {
                             </div>
                             <div className="carousel-item">
                                 <CountUser
+                                    label="Masih Hidup"
+                                    number={countUser?.data.totalAlive}
+                                    sublabel="Orang"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Sudah Wafat"
+                                    number={countUser?.data.totalDeath}
+                                    sublabel="Orang"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Laki-laki"
+                                    number={countUser?.data.totalMale}
+                                    sublabel="Orang"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Perempuan"
+                                    number={countUser?.data.totalFemale}
+                                    sublabel="Orang"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Belum Menikah"
+                                    number={countUser?.data.totalSingle}
+                                    sublabel="Orang"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
                                     label="Bani Hannah"
                                     number={countUser?.data.totalHannah}
                                     sublabel="Orang"
@@ -98,43 +133,50 @@ const CarouselCountUser = ({ ...props }: Props) => {
                             </div>
                             <div className="carousel-item">
                                 <CountUser
-                                    label="Masih Hidup"
-                                    number={countUser?.data.totalAlive}
-                                    sublabel="Orang"
-                                />
-                            </div>
-                            <div className="carousel-item">
-                                <CountUser
-                                    label="Sudah Wafat"
-                                    number={countUser?.data.totalDeath}
-                                    sublabel="Orang"
-                                />
-                            </div>
-                            <div className="carousel-item">
-                                <CountUser
-                                    label="Laki-laki"
-                                    number={countUser?.data.totalMale}
-                                    sublabel="Orang"
-                                />
-                            </div>
-                            <div className="carousel-item">
-                                <CountUser
-                                    label="Perempuan"
-                                    number={countUser?.data.totalFemale}
-                                    sublabel="Orang"
-                                />
-                            </div>
-                            <div className="carousel-item">
-                                <CountUser
                                     number={countUser?.data.totalFamily}
-                                    sublabel="Keluarga"
+                                    sublabel="Kepala Keluarga"
                                 />
                             </div>
                             <div className="carousel-item">
                                 <CountUser
-                                    label="Belum Menikah"
-                                    number={countUser?.data.totalSingle}
-                                    sublabel="Orang"
+                                    label="Bani Hannah"
+                                    number={countUser?.data.totalKKHannah}
+                                    sublabel="KK"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Bani Salamah"
+                                    number={countUser?.data.totalKKSalamah}
+                                    sublabel="KK"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Bani Aisyah"
+                                    number={countUser?.data.totalKKAisyah}
+                                    sublabel="KK"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Bani Maryam"
+                                    number={countUser?.data.totalKKMaryam}
+                                    sublabel="KK"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Bani Zainab"
+                                    number={countUser?.data.totalKKZainab}
+                                    sublabel="KK"
+                                />
+                            </div>
+                            <div className="carousel-item">
+                                <CountUser
+                                    label="Bani Qomariyah"
+                                    number={countUser?.data.totalKKQomariyah}
+                                    sublabel="KK"
                                 />
                             </div>
                         </div>

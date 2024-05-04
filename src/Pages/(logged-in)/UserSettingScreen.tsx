@@ -87,6 +87,11 @@ const UserSettingScreen = () => {
   const gender = userData?.data.profil?.gender
   const phone = `0${userData?.data.profil?.contact?.phone?.slice(2)}`
 
+  const formattedBani = userData?.data?.profil?.profileBani?.map((data) => data.bani?.bani_name)
+    .join(' ∙ ');
+  const familyInfoItem = formattedBani ? `${formattedBani} ∙ ${userStatus}` : 'Belum ditambahkan';
+
+
   useEffect(() => {
     if (gender !== 'FEMALE') {
       setUiGender('Laki-laki')
@@ -288,9 +293,7 @@ const UserSettingScreen = () => {
               onClick={() => setFamilyInfoOpen((prev) => !prev)}
               label='Informasi Hubungan Keluarga'
               subLabel='Edit Bani, status pernikahan, putra-putri, dll...'
-              item={(userData?.data.profil?.profileBani && userStatus) ?
-                `${userData?.data.profil?.profileBani.map((data) => (` ${data.bani?.bani_name}`))} ∙ ${userStatus}` :
-                (userData?.data.profil?.bani?.bani_name || 'Belum ditambahkan')} />
+              item={familyInfoItem} />
 
             <SettingItems
               onClick={() => setBioOpen((prev) => !prev)}

@@ -3,11 +3,11 @@ type Props = {
     data?: Data[];
     disabled?: boolean;
     loading?: boolean;
-    onClicked?: (id: string, text: string) => void;
+    onClicked?: (id: any, text: string) => void;
 };
 
 type Data = {
-    id?: string;
+    id?: any;
     text?: string;
 };
 

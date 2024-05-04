@@ -49,8 +49,8 @@ export default function SettingItems({ size, color, ...props }: Props) {
                     </div>
                 }
                 {props.image &&
-                    <div className="avatar mr-1">
-                        <div className="rounded-full">
+                    <div className="avatar mr-1 flex items-center">
+                        <div className="rounded-full mask mask-squircle w-12 h-12 items-center">
                             <img alt="User avatar" src={props.image} />
                         </div>
                     </div>

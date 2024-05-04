@@ -62,11 +62,20 @@ const SettingContact = ({ isAdmin = false, token, onCancel, onConfirm, ...props 
                 } else {
                     var checkContact = await apiGetContactCurrent({ token: token })
                 }
+                console.log("checkContact", checkContact)
                 if (checkContact.status !== 200) {
-                    if (isAdmin === true) {
-                        var createContact = await apiCreateContactAdmin({ token: token, phone: phone, instagram: instagram, userId:props.id })
+                    if (instagram.length === 0) {
+                        if (isAdmin === true) {
+                            var createContact = await apiCreateContactAdmin({ token: token, phone: phone, userId:props.id })
+                        } else {
+                            var createContact = await apiCreateContact({ token: token, phone: phone})
+                        }
                     } else {
-                        var createContact = await apiCreateContact({ token: token, phone: phone, instagram: instagram })
+                        if (isAdmin === true) {
+                            var createContact = await apiCreateContactAdmin({ token: token, phone: phone, instagram: instagram || '', userId:props.id })
+                        } else {
+                            var createContact = await apiCreateContact({ token: token, phone: phone, instagram: instagram || '' })
+                        }
                     }
                     if (createContact.status !== 200) {
                         setError(true)

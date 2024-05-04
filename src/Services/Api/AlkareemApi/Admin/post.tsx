@@ -7,7 +7,8 @@ export async function apiCreateProfileAdmin({ ...props }: IProfileInfoAdmin) {
     try {
         const data = {
             name: props.name,
-            gender: props.gender
+            gender: props.gender,
+            alive_status: props.alive_status
         }
         const headers = {
             Authorization: props.token
