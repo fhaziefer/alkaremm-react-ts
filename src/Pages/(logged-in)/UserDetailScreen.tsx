@@ -17,18 +17,21 @@ const UserDetailScreen = () => {
 
   const [userData, setUserData] = useState<IUserById | null>(null)
   const [childrenData, setChildrenData] = useState<IChildren | null>(null)
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const baseUrl = env.REACT_APP_BASE_URL
 
   const fetchUsers = async () => {
+    setIsLoading(true)
 
     const user = await apiDetailUser({ token: token, id: id })
     if (user.status !== 200) {
       setIsLoading(false)
+      setChildrenData(null)
     } else {
       setUserData(user.data)
       if (user.data.data.profil.status === 'SINGLE' || user.data.data.profil.status === 'UNKNOWN') {
         setIsLoading(false)
+        setChildrenData(null)
         return;
       } else {
         if (user.data.data.profil.children.length !== 0) {
@@ -37,6 +40,7 @@ const UserDetailScreen = () => {
           if (user.data.data.profil?.gender !== 'FEMALE') {
             if (user.data.data.profil?.wives === null) {
               setIsLoading(false)
+              setChildrenData(null)
               return
             } else {
               const wives = user.data.data.profil?.wives
@@ -47,12 +51,15 @@ const UserDetailScreen = () => {
                 });
               } else {
                 console.log("No wife data available.");
+                setIsLoading(false)
+                setChildrenData(null)
               }
               var children = await apiChildren({ token: token, id: wifeId })
             }
           } else {
             if (user.data.data.profil.husband === null) {
               setIsLoading(false)
+              setChildrenData(null)
               return
             } else {
               const husbandId = user.data.data.profil.husband.userId
@@ -90,6 +97,9 @@ const UserDetailScreen = () => {
           bani={userData?.data.profil?.bani?.bani_name}
           avatar={baseUrl + userData?.data.profil?.avatar}
           gender={userData?.data.profil?.gender}
+          husbandId={userData?.data.profil?.husband?.userId}
+          waliId={userData?.data.profil?.parent?.userId}
+          generasi={userData?.data.profil?.generasi?.generasi_name}
           husband={userData?.data.profil?.husband?.name}
           wife={userData?.data.profil?.wives}
           children={childrenData?.data.profil?.children}

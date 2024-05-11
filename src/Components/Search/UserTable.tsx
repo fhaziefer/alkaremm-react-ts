@@ -19,11 +19,11 @@ const UserTable: React.FC<UserListProps> = ({ ...props }) => {
                 <div className="flex items-center gap-3">
                     <div className="avatar">
                         <div className="mask mask-squircle w-12 h-12 rounded-full">
-                            <img src={props.avatar}/>
+                            <img src={props.avatar} />
                         </div>
                     </div>
                     <div>
-                        <div className="font-bold text-xs"> {props.name} {props.is_alive === false && <span>*</span>}</div>
+                        <div className="font-bold text-xs">{props.name}{props.is_alive === false && <span className='text-gray-500'>*</span>}</div>
                         {username !== undefined && <div className="text-xs opacity-50">@{username}</div>}
                     </div>
                 </div>

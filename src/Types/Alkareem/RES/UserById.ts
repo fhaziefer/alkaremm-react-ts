@@ -25,7 +25,7 @@ interface Profil {
   userId?: string;
   baniId?: number;
   generasiId?: number;
-  husbandId?: null;
+  husbandId?: string;
   parentId?: string;
   subscriptionId?: string;
   status?: string;

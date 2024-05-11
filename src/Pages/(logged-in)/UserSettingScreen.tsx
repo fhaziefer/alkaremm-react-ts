@@ -14,6 +14,7 @@ import SettingItems from '../../Components/Ui/SettingItems'
 import { SettingAvatar, SettingAddress, SettingBio, SettingBrithday, SettingContact, SettingFamilyInfo, SettingPassword, SettingProfileInfo, SettingUsername } from '../../Components/Settings/SettingComponents'
 import AboutScreen from './AboutScreen'
 import Button from '../../Components/Ui/Button'
+import AvatarCropper from '../../Components/Ui/AvatarCropper'
 
 const UserSettingScreen = () => {
 
@@ -21,6 +22,7 @@ const UserSettingScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   //* MODAL OPEN AND CLOSE
+  const [avatarCropOpen, setAvatarCropOpen] = useState(false)
   const [avatarOpen, setAvatarOpen] = useState(false)
   const [usernameOpen, setUsernameOpen] = useState(false)
   const [bioOpen, setBioOpen] = useState(false)
@@ -155,7 +157,7 @@ const UserSettingScreen = () => {
   }
 
   const clickHandler = () => {
-    alert('Clicked')
+    setAvatarCropOpen((prev) => !prev)
   }
 
   return (
@@ -163,6 +165,12 @@ const UserSettingScreen = () => {
       {isLoading ? <Loading /> :
 
         <div className='flex items-center'>
+
+          <Modal
+            open={avatarCropOpen}
+            onClose={() => setAvatarCropOpen((prev) => !prev)}>
+            <AvatarCropper />
+          </Modal>
 
           <Modal
             open={avatarOpen}
