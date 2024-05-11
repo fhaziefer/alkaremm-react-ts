@@ -199,31 +199,31 @@ const SearchScreen = () => {
         handleQuery(
           (e.target as HTMLInputElement)
         )} placeholder="Nama, alamat..." />
+        
+      {/* FILTER GENERASI */}
+
+      <div className='w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%] carousel carousel-start rounded-box mt-4'>
+        <div onChange={(e) => { handleGenerasi(e.target) }} className="carousel-item gap-2 md:gap-4">
+          <input
+            value=''
+            className="join-item btn btn-sm"
+            type="radio"
+            defaultChecked
+            name='generasiOptions'
+            aria-label='Semua' />
+          {generasiName.map((generasi) => (
+            <input
+              value={generasi.id}
+              key={generasi.id}
+              className="join-item btn btn-sm"
+              type="radio"
+              name='generasiOptions'
+              aria-label={generasi.label} />
+          ))}
+        </div>
+      </div>
       {(role === 'ADMIN' || role === 'USER') && (
         <>
-
-          {/* FILTER GENERASI */}
-
-          <div className='w-[94%] sm:w-[77%] md:w-[77%] lg:w-[57%] carousel carousel-start rounded-box mt-4'>
-            <div onChange={(e) => { handleGenerasi(e.target) }} className="carousel-item gap-2 md:gap-4">
-              <input
-                value=''
-                className="join-item btn btn-sm"
-                type="radio"
-                defaultChecked
-                name='generasiOptions'
-                aria-label='Semua' />
-              {generasiName.map((generasi) => (
-                <input
-                  value={generasi.id}
-                  key={generasi.id}
-                  className="join-item btn btn-sm"
-                  type="radio"
-                  name='generasiOptions'
-                  aria-label={generasi.label} />
-              ))}
-            </div>
-          </div>
 
           {/* FILTER BANI */}
 
